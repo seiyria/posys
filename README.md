@@ -1,2 +1,3 @@
-# posys
-A PoS system.
+# Posys
+
+A PoS System.

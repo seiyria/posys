@@ -1,0 +1,71 @@
+{
+  "name": "posys",
+  "description": "posys: A PoS System",
+  "version": "0.0.1",
+  "license": "GPL-3.0",
+  "repository": "https://github.com/seiyria/posys",
+  "scripts": {
+    "electron": "electron .",
+    "electron dist": "electron .",
+    "test:lint": "tslint --force 'src/**/*.ts'",
+    "test:lint:fail": "tslint 'src/**/*.ts'",
+    "test": "npm run test:lint:fail",
+    "clear:all": "rm -rf ./platforms/*-x64",
+    "clear:osx": "rm -rf *-darwin-x64; rm -rf ./platforms/*-mas-x64",
+    "clear:win": "rm -rf *-win32-ia32; rm -rf ./platforms/*-win32-x64",
+    "clear:nix": "rm -rf *-linux-ia32; rm -rf ./platforms/*-linux-x64",
+    "pack:osx": "npm run clear:osx && electron-packager ./www/ --platform=darwin,mas --arch=x64 --asar --out=platforms",
+    "pack:win": "npm run clear:win && electron-packager ./www/ --platform=win32 --arch=ia32,x64 --asar --out=platforms",
+    "pack:nix": "npm run clear:nix && electron-packager ./www/ --platform=linux --arch=ia32,x64 --asar --out=platforms",
+    "ionic:build": "ionic-app-scripts build",
+    "ionic:build:electron": "npm run ionic:build && cp electron.js www/electron.js && cp package.json www/package.json",
+    "ionic:serve": "ionic-app-scripts serve"
+  },
+  "main": "electron.js",
+  "dependencies": {
+    "@angular/common": "2.1.1",
+    "@angular/compiler": "2.1.1",
+    "@angular/compiler-cli": "2.1.1",
+    "@angular/core": "2.1.1",
+    "@angular/forms": "2.1.1",
+    "@angular/http": "2.1.1",
+    "@angular/platform-browser": "2.1.1",
+    "@angular/platform-browser-dynamic": "2.1.1",
+    "@angular/platform-server": "2.1.1",
+    "@ionic/storage": "1.1.6",
+    "ionic-angular": "2.0.0-rc.3",
+    "ionic-native": "2.2.3",
+    "ionicons": "3.0.0",
+    "lodash": "^4.17.2",
+    "rxjs": "5.0.0-beta.12",
+    "tslint": "^4.0.0",
+    "zone.js": "0.6.26"
+  },
+  "devDependencies": {
+    "@ionic/app-scripts": "0.0.45",
+    "@types/lodash": "^4.14.39",
+    "codelyzer": "1.0.0-beta.3",
+    "del": "2.2.0",
+    "electron-packager": "^7.3.0",
+    "electron-prebuilt": "^1.2.6",
+    "tslint": "^3.15.1",
+    "typescript": "2.0.6"
+  },
+  "cordovaPlugins": [
+    "cordova-plugin-device",
+    "cordova-plugin-console",
+    "cordova-plugin-whitelist",
+    "cordova-plugin-splashscreen",
+    "cordova-plugin-statusbar",
+    "ionic-plugin-keyboard"
+  ],
+  "cordovaPlatforms": [
+    "ios",
+    {
+      "platform": "ios",
+      "version": "",
+      "locator": "ios"
+    },
+    "android"
+  ]
+}
