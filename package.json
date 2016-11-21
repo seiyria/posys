@@ -19,7 +19,8 @@
     "pack:nix": "npm run clear:nix && electron-packager ./www/ --platform=linux --arch=ia32,x64 --asar --out=platforms",
     "ionic:build": "ionic-app-scripts build",
     "ionic:build:electron": "npm run ionic:build && cp electron.js www/electron.js && cp package.json www/package.json",
-    "ionic:serve": "ionic-app-scripts serve"
+    "ionic:serve": "ionic-app-scripts serve",
+    "start": "npm run ionic:serve"
   },
   "main": "electron.js",
   "dependencies": {
