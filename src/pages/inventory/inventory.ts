@@ -1,0 +1,21 @@
+import { Component } from '@angular/core';
+import { ModalController } from 'ionic-angular';
+
+import { InventoryManagerComponent } from './inventoryManagement/inventoryManager';
+
+@Component({
+  selector: 'my-page-inventory',
+  templateUrl: 'inventory.html'
+})
+export class InventoryPageComponent {
+
+  constructor(public modalCtrl: ModalController) {
+
+  }
+
+  openNewModal() {
+      let modal = this.modalCtrl.create(InventoryManagerComponent);
+      modal.present();
+  }
+
+}

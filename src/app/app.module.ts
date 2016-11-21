@@ -5,6 +5,8 @@ import { AboutPageComponent } from '../pages/about/about';
 import { ContactPageComponent } from '../pages/contact/contact';
 import { HomePageComponent } from '../pages/home/home';
 import { TabsPageComponent } from '../pages/tabs/tabs';
+import { InventoryPageComponent } from '../pages/inventory/inventory';
+import { InventoryManagerComponent } from '../pages/inventory/inventoryManagement/inventoryManager';
 
 import { TopIconButtonComponent } from '../components/top-icon-button';
 
@@ -15,6 +17,8 @@ import { TopIconButtonComponent } from '../components/top-icon-button';
     ContactPageComponent,
     HomePageComponent,
     TabsPageComponent,
+    InventoryPageComponent,
+    InventoryManagerComponent,
 
     TopIconButtonComponent
   ],
@@ -27,7 +31,9 @@ import { TopIconButtonComponent } from '../components/top-icon-button';
     AboutPageComponent,
     ContactPageComponent,
     HomePageComponent,
-    TabsPageComponent
+    TabsPageComponent,
+    InventoryPageComponent,
+    InventoryManagerComponent
   ],
   providers: []
 })
