@@ -22,11 +22,13 @@ import { Component, Input } from '@angular/core';
   
     button[top-icon] .icon {
       font-size: 100px;
+      padding-top: 30px;
       padding-bottom: 30px;
     }
     
     button[top-icon] .full-width {
       width: 100%;
+      padding: 10px;
     }
 `
   ]
