@@ -4,7 +4,6 @@ import { MyAppComponent } from './app.component';
 import { AboutPageComponent } from '../pages/about/about';
 import { ContactPageComponent } from '../pages/contact/contact';
 import { HomePageComponent } from '../pages/home/home';
-import { TabsPageComponent } from '../pages/tabs/tabs';
 
 import { TopIconButtonComponent } from '../components/top-icon-button';
 
@@ -14,7 +13,6 @@ import { TopIconButtonComponent } from '../components/top-icon-button';
     AboutPageComponent,
     ContactPageComponent,
     HomePageComponent,
-    TabsPageComponent,
 
     TopIconButtonComponent
   ],
@@ -26,8 +24,7 @@ import { TopIconButtonComponent } from '../components/top-icon-button';
     MyAppComponent,
     AboutPageComponent,
     ContactPageComponent,
-    HomePageComponent,
-    TabsPageComponent
+    HomePageComponent
   ],
   providers: []
 })
