@@ -19,8 +19,8 @@ function createWindow() {
         height: 600
     });
 
-    var url = 'http://localhost:8100';
-    var Args = process.argv.slice(2);
+    let url = 'http://localhost:8100';
+    const Args = process.argv.slice(2);
     Args.forEach(function (val) {
         if (val === "dist") {
             url = 'file://' + __dirname + '/www/index.html'
