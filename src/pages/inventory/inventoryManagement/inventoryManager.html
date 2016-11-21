@@ -12,5 +12,71 @@
 </ion-header>
 
 <ion-content>
-  Hello Modal
+  <ion-grid>
+    <ion-row>
+      <ion-col width-50></ion-col>
+      <ion-col width-50>
+          <ion-list>
+            <ion-item>
+              <ion-label stacked>Stock Keeping Unit (SKU)</ion-label>
+              <ion-input type="text"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label stacked>Stock ID (vendor-tracking)</ion-label>
+              <ion-input type="text"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label stacked>Photo (TODO)</ion-label>
+              <ion-input type="text"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label stacked>Description</ion-label>
+              <ion-textarea></ion-textarea>
+            </ion-item>
+
+            <ion-item>
+              <ion-label stacked>Department</ion-label>
+              <ion-select>
+                <ion-option value="1">Test department</ion-option>
+                <ion-option value="2">Other department</ion-option>
+              </ion-select>
+            </ion-item>
+
+            <ion-item>
+              <ion-label stacked>Taxable</ion-label>
+              <ion-checkbox></ion-checkbox>
+            </ion-item>
+
+            <ion-item>
+              <ion-label stacked>Cost</ion-label>
+              <ion-input type="number"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label stacked>Sale Price</ion-label>
+              <ion-input type="number"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label stacked>Quanity</ion-label>
+              <ion-input type="number"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label stacked>Reorder Alert Threshold</ion-label>
+              <ion-input type="number"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label stacked>Reorder Up-To Quantity</ion-label>
+              <ion-input type="number"></ion-input>
+            </ion-item>
+          </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-content>
