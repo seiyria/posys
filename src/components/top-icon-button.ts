@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'my-top-icon-button',
   template: `
-    <button ion-button outline block round top-icon>
+    <button ion-button outline block round top-icon color="dark">
       <ion-grid>
         <ion-row>
           <ion-col><ion-icon name="{{ icon }}"></ion-icon></ion-col>
