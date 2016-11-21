@@ -1,7 +1,13 @@
 my-page-home {
 
-  [height-25] {
-    height: 25%;
+  ion-grid[vertical-center] {
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  [main-button] {
+    height: 30%;
 
     button {
       height: 100%;

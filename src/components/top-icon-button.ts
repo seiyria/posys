@@ -4,13 +4,13 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'my-top-icon-button',
   template: `
-    <button ion-button outline block round top-icon>
+    <button ion-button outline block round top-icon color="dark">
       <ion-grid>
         <ion-row>
           <ion-col><ion-icon name="{{ icon }}"></ion-icon></ion-col>
         </ion-row>
-        <ion-row center>
-          {{ text }}
+        <ion-row>
+          <div class="full-width">{{ text }}</div>
         </ion-row>
       </ion-grid>
     </button>
@@ -22,6 +22,13 @@ import { Component, Input } from '@angular/core';
   
     button[top-icon] .icon {
       font-size: 100px;
+      padding-top: 30px;
+      padding-bottom: 30px;
+    }
+    
+    button[top-icon] .full-width {
+      width: 100%;
+      padding: 10px;
     }
 `
   ]
