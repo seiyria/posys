@@ -22,8 +22,8 @@ import { TopIconButtonComponent } from '../components/top-icon-button';
   bootstrap: [IonicApp],
   entryComponents: [
     MyAppComponent,
-    HomePageComponent
-	InventoryPageComponent,
+    HomePageComponent,
+    InventoryPageComponent,
     InventoryManagerComponent
   ],
   providers: []
