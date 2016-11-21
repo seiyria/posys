@@ -2,7 +2,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'top-icon-button',
+  selector: 'my-top-icon-button',
   template: `
     <button ion-button outline block round top-icon>
       <ion-grid>
@@ -10,7 +10,7 @@ import { Component, Input } from '@angular/core';
           <ion-col><ion-icon name="{{ icon }}"></ion-icon></ion-col>
         </ion-row>
         <ion-row center>
-          <div text-center>{{ text }}</div>
+          {{ text }}
         </ion-row>
       </ion-grid>
     </button>
