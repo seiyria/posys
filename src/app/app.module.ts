@@ -6,13 +6,17 @@ import { ContactPageComponent } from '../pages/contact/contact';
 import { HomePageComponent } from '../pages/home/home';
 import { TabsPageComponent } from '../pages/tabs/tabs';
 
+import { TopIconButtonComponent } from '../components/top-icon-button';
+
 @NgModule({
   declarations: [
     MyAppComponent,
     AboutPageComponent,
     ContactPageComponent,
     HomePageComponent,
-    TabsPageComponent
+    TabsPageComponent,
+
+    TopIconButtonComponent
   ],
   imports: [
     IonicModule.forRoot(MyAppComponent)

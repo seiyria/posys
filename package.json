@@ -6,7 +6,6 @@
   "repository": "https://github.com/seiyria/posys",
   "scripts": {
     "electron": "electron .",
-    "electron dist": "electron .",
     "test:lint": "tslint --force 'src/**/*.ts'",
     "test:lint:fail": "tslint 'src/**/*.ts'",
     "test": "npm run test:lint:fail",
@@ -39,7 +38,6 @@
     "ionicons": "3.0.0",
     "lodash": "^4.17.2",
     "rxjs": "5.0.0-beta.12",
-    "tslint": "^4.0.0",
     "zone.js": "0.6.26"
   },
   "devDependencies": {
