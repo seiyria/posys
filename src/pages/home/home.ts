@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { InventoryPageComponent } from '../inventory/inventory';
+import { SettingsPageComponent } from '../settings/settings';
 
 @Component({
   selector: 'my-page-home',
@@ -15,7 +16,11 @@ export class HomePageComponent {
   }
 
   goToInventory() {
-      this.navCtrl.push(InventoryPageComponent);
+    this.navCtrl.push(InventoryPageComponent);
+  }
+
+  goToSettings() {
+    this.navCtrl.push(SettingsPageComponent);
   }
 
 }

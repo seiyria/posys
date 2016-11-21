@@ -4,6 +4,8 @@ import { MyAppComponent } from './app.component';
 import { HomePageComponent } from '../pages/home/home';
 import { InventoryPageComponent } from '../pages/inventory/inventory';
 import { InventoryManagerComponent } from '../pages/inventory/inventoryManagement/inventoryManager';
+import { AboutComponent } from '../pages/settings/about/about';
+import { SettingsPageComponent } from '../pages/settings/settings';
 
 import { TopIconButtonComponent } from '../components/top-icon-button';
 
@@ -13,6 +15,8 @@ import { TopIconButtonComponent } from '../components/top-icon-button';
     HomePageComponent,
     InventoryPageComponent,
     InventoryManagerComponent,
+    SettingsPageComponent,
+    AboutComponent,
 
     TopIconButtonComponent
   ],
@@ -24,7 +28,9 @@ import { TopIconButtonComponent } from '../components/top-icon-button';
     MyAppComponent,
     HomePageComponent,
     InventoryPageComponent,
-    InventoryManagerComponent
+    InventoryManagerComponent,
+    SettingsPageComponent,
+    AboutComponent
   ],
   providers: []
 })
