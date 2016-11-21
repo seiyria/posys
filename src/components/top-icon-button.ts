@@ -9,8 +9,8 @@ import { Component, Input } from '@angular/core';
         <ion-row>
           <ion-col><ion-icon name="{{ icon }}"></ion-icon></ion-col>
         </ion-row>
-        <ion-row center>
-          {{ text }}
+        <ion-row>
+          <div class="full-width">{{ text }}</div>
         </ion-row>
       </ion-grid>
     </button>
@@ -22,6 +22,11 @@ import { Component, Input } from '@angular/core';
   
     button[top-icon] .icon {
       font-size: 100px;
+      padding-bottom: 30px;
+    }
+    
+    button[top-icon] .full-width {
+      width: 100%;
     }
 `
   ]
