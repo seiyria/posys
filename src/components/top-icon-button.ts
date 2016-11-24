@@ -40,9 +40,9 @@ import { Component, Input } from '@angular/core';
   ]
 })
 export class TopIconButtonComponent {
-  @Input() text = '';
-  @Input() icon = '';
-  @Input() size = 'large';
+  @Input() text: string = '';
+  @Input() icon: string = '';
+  @Input() size: string = 'large';
 
   constructor() {}
 
