@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Posys Point of Sale</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid full-height>
+    <ion-row full-height>
+      <ion-col width-67 full-height>
+        <ion-list item-list>
+
+        </ion-list>
+        <ion-list total-area>
+          <ion-item>
+            Subtotal
+            <ion-note item-right>0.00</ion-note>
+          </ion-item>
+          <ion-item>
+            Tax
+            <ion-note item-right>0.00</ion-note>
+          </ion-item>
+          <ion-item>
+            Total
+            <ion-note item-right>0.00</ion-note>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+
+      <ion-col width-33 full-height>
+        <ion-grid>
+          <ion-row>
+            <ion-col main-button>
+              <my-top-icon-button text="Hold" icon="pause" size="medium"></my-top-icon-button>
+            </ion-col>
+            <ion-col main-button>
+              <my-top-icon-button text="Void" icon="close" size="medium"></my-top-icon-button>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col main-button>
+              <my-top-icon-button text="Pay" icon="cash" size="medium"></my-top-icon-button>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-row>
+                <ion-col main-button>
+                  <my-top-icon-button text="Cash" icon="cash" size="medium"></my-top-icon-button>
+                </ion-col>
+                <ion-col main-button>
+                  <my-top-icon-button text="Check" icon="cash" size="medium"></my-top-icon-button>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col main-button>
+                  <my-top-icon-button text="Credit" icon="card" size="medium"></my-top-icon-button>
+                </ion-col>
+                <ion-col main-button>
+                  <my-top-icon-button text="Debit" icon="card" size="medium"></my-top-icon-button>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

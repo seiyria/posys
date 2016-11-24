@@ -15,6 +15,10 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+[full-height] {
+  height: 100%;
+}
+
 ion-grid[vertical-center] {
   align-items: center;
   justify-content: center;
@@ -22,6 +26,7 @@ ion-grid[vertical-center] {
 }
 
 [main-button] {
+
   height: 30%;
 
   button {

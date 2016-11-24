@@ -7,7 +7,7 @@ import { Component, Input } from '@angular/core';
     <button ion-button outline block round top-icon color="dark">
       <ion-grid>
         <ion-row>
-          <ion-col><ion-icon name="{{ icon }}"></ion-icon></ion-col>
+          <ion-col class="icon-{{size}}"><ion-icon name="{{ icon }}"></ion-icon></ion-col>
         </ion-row>
         <ion-row>
           <div class="full-width">{{ text }}</div>
@@ -20,10 +20,16 @@ import { Component, Input } from '@angular/core';
       white-space: pre;
     }
   
-    button[top-icon] .icon {
+    button[top-icon] .icon-large .icon {
       font-size: 100px;
       padding-top: 30px;
       padding-bottom: 30px;
+    }
+  
+    button[top-icon] .icon-medium .icon {
+      font-size: 50px;
+      padding-top: 15px;
+      padding-bottom: 15px;
     }
     
     button[top-icon] .full-width {
@@ -36,6 +42,7 @@ import { Component, Input } from '@angular/core';
 export class TopIconButtonComponent {
   @Input() text = '';
   @Input() icon = '';
+  @Input() size = 'large';
 
   constructor() {}
 

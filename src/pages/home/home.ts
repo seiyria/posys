@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 
+import { PointOfSaleComponent } from '../pointofsale/pointofsale';
 import { InventoryPageComponent } from '../inventory/inventory';
 import { SettingsPageComponent } from '../settings/settings';
 
@@ -21,6 +22,10 @@ export class HomePageComponent {
 
   goToSettings() {
     this.navCtrl.push(SettingsPageComponent);
+  }
+
+  goToPointOfSale() {
+    this.navCtrl.push(PointOfSaleComponent);
   }
 
 }

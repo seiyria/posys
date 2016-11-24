@@ -6,6 +6,7 @@ import { InventoryPageComponent } from '../pages/inventory/inventory';
 import { InventoryManagerComponent } from '../pages/inventory/inventoryManagement/inventoryManager';
 import { AboutComponent } from '../pages/settings/about/about';
 import { SettingsPageComponent } from '../pages/settings/settings';
+import { PointOfSaleComponent } from '../pages/pointofsale/pointofsale';
 
 import { TopIconButtonComponent } from '../components/top-icon-button';
 
@@ -17,6 +18,7 @@ import { TopIconButtonComponent } from '../components/top-icon-button';
     InventoryManagerComponent,
     SettingsPageComponent,
     AboutComponent,
+    PointOfSaleComponent,
 
     TopIconButtonComponent
   ],
@@ -30,7 +32,8 @@ import { TopIconButtonComponent } from '../components/top-icon-button';
     InventoryPageComponent,
     InventoryManagerComponent,
     SettingsPageComponent,
-    AboutComponent
+    AboutComponent,
+    PointOfSaleComponent
   ],
   providers: []
 })
