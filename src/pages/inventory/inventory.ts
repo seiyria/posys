@@ -3,6 +3,8 @@ import { ModalController } from 'ionic-angular';
 
 import { InventoryManagerComponent } from './inventoryManagement/inventoryManager';
 
+import { StockItem } from '../../models/stockItem';
+
 @Component({
   selector: 'my-page-inventory',
   templateUrl: 'inventory.html'
@@ -14,7 +16,9 @@ export class InventoryPageComponent {
   }
 
   openNewModal() {
-      let modal = this.modalCtrl.create(InventoryManagerComponent);
+      let modal = this.modalCtrl.create(InventoryManagerComponent, {
+          stockItem: new StockItem()
+      });
       modal.present();
   }
 
