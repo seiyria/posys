@@ -12,5 +12,7 @@ export class StockItem {
   reorderThreshold: number;
   reorderUpToAmount: number;
 
-  constructor() { }
+  constructor(initializer?: StockItem) {
+    Object.assign(this, initializer);
+  }
 }
