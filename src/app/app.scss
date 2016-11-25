@@ -38,6 +38,14 @@ ion-grid[vertical-center] {
   border-bottom: none !important;
 }
 
+[no-margin-bottom] {
+  margin-bottom: 0 !important;
+}
+
+[full-height] {
+  height: 100%;
+}
+
 [true-center] {
   display: flex;
   align-items: center;
@@ -50,4 +58,8 @@ ion-grid[vertical-center] {
 
 [background-text] {
   color: #c5c5c5;
+}
+
+[list-header] {
+  border-bottom: 1px solid #dedede;
 }

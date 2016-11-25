@@ -21,6 +21,7 @@ import { LoggerService } from '../services/logger.service';
 import { StockItemService } from '../models/stockitem.service';
 
 import { CurrencyFromSettingsPipe } from '../pipes/currency-from-settings';
+import { TruncatePipe } from '../pipes/truncate';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { CurrencyFromSettingsPipe } from '../pipes/currency-from-settings';
     TransactionItemComponent,
     QueryItemComponent,
 
-    CurrencyFromSettingsPipe
+    CurrencyFromSettingsPipe,
+    TruncatePipe
   ],
   imports: [
     IonicModule.forRoot(MyAppComponent)

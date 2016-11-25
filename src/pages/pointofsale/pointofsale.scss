@@ -4,9 +4,21 @@ my-page-pointofsale {
     height: 60px;
   }
 
-  [item-list] {
-    height: calc(100% - 100px - 56px - 60px);
-    overflow: auto;
+  [body-area] {
+    height: calc(100% - 100px - 56px - 16px - 5px - 5px - 60px);
+
+    [header] {
+      border-bottom: 1px solid #dedede;
+    }
+
+    [can-scroll] {
+      overflow: auto;
+      height: 100%;
+
+      &[has-header] {
+        height: calc(100% - 44px);
+      }
+    }
   }
 
   [total-area] {
