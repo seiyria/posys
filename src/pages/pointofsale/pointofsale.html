@@ -24,12 +24,15 @@
           </ion-item>
         </ion-list>
 
-        <ion-list item-list *ngIf="!showSearchItems" id="transaction-list">
-          <ion-item no-border-bottom *ngIf="!currentTransaction.length">No items in current transaction.</ion-item>
+        <ion-list item-list *ngIf="!showSearchItems && currentTransaction.length" id="transaction-list">
           <ion-item>
             <transaction-item [item]="item" [index]="i+1" *ngFor="let item of currentTransaction; let i = index"></transaction-item>
           </ion-item>
         </ion-list>
+
+        <div item-list true-center big-text background-text *ngIf="!showSearchItems && !currentTransaction.length">
+          No items in current transaction.
+        </div>
 
         <ion-list total-area>
           <ion-item>

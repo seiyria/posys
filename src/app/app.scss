@@ -37,3 +37,17 @@ ion-grid[vertical-center] {
 [no-border-bottom] .item-inner {
   border-bottom: none !important;
 }
+
+[true-center] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[big-text] {
+  font-size: 300%;
+}
+
+[background-text] {
+  color: #c5c5c5;
+}
