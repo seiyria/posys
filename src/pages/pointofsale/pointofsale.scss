@@ -1,7 +1,12 @@
 my-page-pointofsale {
 
+  [search-area] {
+    height: 60px;
+  }
+
   [item-list] {
-    height: calc(100% - 100px - 56px);
+    height: calc(100% - 100px - 56px - 60px);
+    overflow: auto;
   }
 
   [total-area] {

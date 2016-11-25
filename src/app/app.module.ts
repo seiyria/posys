@@ -9,6 +9,12 @@ import { SettingsPageComponent } from '../pages/settings/settings';
 import { PointOfSaleComponent } from '../pages/pointofsale/pointofsale';
 
 import { TopIconButtonComponent } from '../components/top-icon-button';
+import { OmnisearchComponent } from '../components/omnisearch';
+import { TransactionItemComponent } from '../pages/pointofsale/transactionitem';
+import { QueryItemComponent } from '../pages/pointofsale/queryitem';
+
+import { LoggerService } from '../services/logger.service';
+import { StockItemService } from '../models/stockitem.service';
 
 @NgModule({
   declarations: [
@@ -20,7 +26,10 @@ import { TopIconButtonComponent } from '../components/top-icon-button';
     AboutComponent,
     PointOfSaleComponent,
 
-    TopIconButtonComponent
+    TopIconButtonComponent,
+    OmnisearchComponent,
+    TransactionItemComponent,
+    QueryItemComponent
   ],
   imports: [
     IonicModule.forRoot(MyAppComponent)
@@ -35,6 +44,9 @@ import { TopIconButtonComponent } from '../components/top-icon-button';
     AboutComponent,
     PointOfSaleComponent
   ],
-  providers: []
+  providers: [
+    LoggerService,
+    StockItemService
+  ]
 })
 export class AppModule {}

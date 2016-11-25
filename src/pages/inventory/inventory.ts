@@ -3,7 +3,7 @@ import { ModalController } from 'ionic-angular';
 
 import { InventoryManagerComponent } from './inventoryManagement/inventoryManager';
 
-import { StockItem } from '../../models/stockItem';
+import { StockItem } from '../../models/stockitem';
 
 @Component({
   selector: 'my-page-inventory',

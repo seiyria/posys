@@ -33,3 +33,7 @@ ion-grid[vertical-center] {
     height: 100%;
   }
 }
+
+[no-border-bottom] .item-inner {
+  border-bottom: none !important;
+}

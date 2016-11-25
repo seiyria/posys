@@ -8,9 +8,29 @@
   <ion-grid full-height>
     <ion-row full-height>
       <ion-col width-67 full-height>
-        <ion-list item-list>
 
+        <ion-row search-area>
+          <ion-col>
+            <my-omnisearch
+              (hasQuery)="setShowResults($event)"
+              (searchResults)="setSearchResults($event)"></my-omnisearch>
+          </ion-col>
+        </ion-row>
+
+        <ion-list item-list *ngIf="showSearchItems">
+          <ion-item no-border-bottom *ngIf="!searchItems.length">No search results.</ion-item>
+          <ion-item>
+            <my-query-item [item]="item" *ngFor="let item of searchItems"></my-query-item>
+          </ion-item>
         </ion-list>
+
+        <ion-list item-list *ngIf="!showSearchItems" id="transaction-list">
+          <ion-item no-border-bottom *ngIf="!currentTransaction.length">No items in current transaction.</ion-item>
+          <ion-item>
+            <my-transaction-item [item]="item" *ngFor="let item of currentTransaction"></my-transaction-item>
+          </ion-item>
+        </ion-list>
+
         <ion-list total-area>
           <ion-item>
             Subtotal
