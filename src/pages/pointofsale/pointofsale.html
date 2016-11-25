@@ -11,38 +11,38 @@
 
         <ion-row search-area>
           <ion-col>
-            <my-omnisearch
+            <omni-search
               (hasQuery)="setShowResults($event)"
-              (searchResults)="setSearchResults($event)"></my-omnisearch>
+              (searchResults)="setSearchResults($event)"></omni-search>
           </ion-col>
         </ion-row>
 
         <ion-list item-list *ngIf="showSearchItems">
           <ion-item no-border-bottom *ngIf="!searchItems.length">No search results.</ion-item>
           <ion-item>
-            <my-query-item [item]="item" *ngFor="let item of searchItems"></my-query-item>
+            <query-item [item]="item" *ngFor="let item of searchItems"></query-item>
           </ion-item>
         </ion-list>
 
         <ion-list item-list *ngIf="!showSearchItems" id="transaction-list">
           <ion-item no-border-bottom *ngIf="!currentTransaction.length">No items in current transaction.</ion-item>
           <ion-item>
-            <my-transaction-item [item]="item" *ngFor="let item of currentTransaction"></my-transaction-item>
+            <transaction-item [item]="item" [index]="i+1" *ngFor="let item of currentTransaction; let i = index"></transaction-item>
           </ion-item>
         </ion-list>
 
         <ion-list total-area>
           <ion-item>
             Subtotal
-            <ion-note item-right>0.00</ion-note>
+            <ion-note item-right>{{ subtotal | currencyFromSettings }}</ion-note>
           </ion-item>
           <ion-item>
             Tax
-            <ion-note item-right>0.00</ion-note>
+            <ion-note item-right>{{ tax | currencyFromSettings }}</ion-note>
           </ion-item>
           <ion-item>
             Total
-            <ion-note item-right>0.00</ion-note>
+            <ion-note item-right>{{ total | currencyFromSettings }}</ion-note>
           </ion-item>
         </ion-list>
       </ion-col>
@@ -51,33 +51,33 @@
         <ion-grid>
           <ion-row>
             <ion-col main-button>
-              <my-top-icon-button text="Hold" icon="pause" size="medium"></my-top-icon-button>
+              <top-icon-button text="Hold" icon="pause" size="medium"></top-icon-button>
             </ion-col>
             <ion-col main-button>
-              <my-top-icon-button text="Void" icon="close" size="medium"></my-top-icon-button>
+              <top-icon-button text="Void" icon="close" size="medium"></top-icon-button>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col main-button>
-              <my-top-icon-button text="Pay" icon="cash" size="medium"></my-top-icon-button>
+              <top-icon-button text="Pay" icon="cash" size="medium"></top-icon-button>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col>
               <ion-row>
                 <ion-col main-button>
-                  <my-top-icon-button text="Cash" icon="cash" size="medium"></my-top-icon-button>
+                  <top-icon-button text="Cash" icon="cash" size="medium"></top-icon-button>
                 </ion-col>
                 <ion-col main-button>
-                  <my-top-icon-button text="Check" icon="cash" size="medium"></my-top-icon-button>
+                  <top-icon-button text="Check" icon="cash" size="medium"></top-icon-button>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col main-button>
-                  <my-top-icon-button text="Credit" icon="card" size="medium"></my-top-icon-button>
+                  <top-icon-button text="Credit" icon="card" size="medium"></top-icon-button>
                 </ion-col>
                 <ion-col main-button>
-                  <my-top-icon-button text="Debit" icon="card" size="medium"></my-top-icon-button>
+                  <top-icon-button text="Debit" icon="card" size="medium"></top-icon-button>
                 </ion-col>
               </ion-row>
             </ion-col>

@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core';
 import { StockItem } from '../../models/stockitem';
 
 @Component({
-  selector: 'my-query-item',
+  selector: 'query-item',
   template: `
     <ion-grid>
       <ion-row>

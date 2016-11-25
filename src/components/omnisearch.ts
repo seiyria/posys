@@ -5,7 +5,7 @@ import { StockItemService } from '../models/stockitem.service';
 import { StockItem } from '../models/stockitem';
 
 @Component({
-  selector: 'my-omnisearch',
+  selector: 'omni-search',
   providers: [StockItemService],
   template: `
     <ion-searchbar [(ngModel)]="searchQuery"

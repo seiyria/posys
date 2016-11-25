@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
+
 import { IonicApp, IonicModule } from 'ionic-angular';
+
 import { MyAppComponent } from './app.component';
 import { HomePageComponent } from '../pages/home/home';
 import { InventoryPageComponent } from '../pages/inventory/inventory';
-import { InventoryManagerComponent } from '../pages/inventory/inventoryManagement/inventoryManager';
+import { InventoryManagerComponent } from '../pages/inventory/management/inventory.management';
 import { AboutComponent } from '../pages/settings/about/about';
 import { SettingsPageComponent } from '../pages/settings/settings';
 import { PointOfSaleComponent } from '../pages/pointofsale/pointofsale';
@@ -13,8 +16,11 @@ import { OmnisearchComponent } from '../components/omnisearch';
 import { TransactionItemComponent } from '../pages/pointofsale/transactionitem';
 import { QueryItemComponent } from '../pages/pointofsale/queryitem';
 
+import { ApplicationSettingsService } from '../services/settings.service';
 import { LoggerService } from '../services/logger.service';
 import { StockItemService } from '../models/stockitem.service';
+
+import { CurrencyFromSettingsPipe } from '../pipes/currency-from-settings';
 
 @NgModule({
   declarations: [
@@ -29,7 +35,9 @@ import { StockItemService } from '../models/stockitem.service';
     TopIconButtonComponent,
     OmnisearchComponent,
     TransactionItemComponent,
-    QueryItemComponent
+    QueryItemComponent,
+
+    CurrencyFromSettingsPipe
   ],
   imports: [
     IonicModule.forRoot(MyAppComponent)
@@ -45,8 +53,10 @@ import { StockItemService } from '../models/stockitem.service';
     PointOfSaleComponent
   ],
   providers: [
+    ApplicationSettingsService,
     LoggerService,
-    StockItemService
+    StockItemService,
+    CurrencyPipe
   ]
 })
 export class AppModule {}

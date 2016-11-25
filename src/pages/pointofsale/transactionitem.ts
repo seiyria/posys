@@ -4,12 +4,23 @@ import { Component, Input } from '@angular/core';
 import { StockItem } from '../../models/stockitem';
 
 @Component({
-  selector: 'my-transaction-item',
+  selector: 'transaction-item',
   template: `
     <ion-grid>
       <ion-row>
         <ion-col>
-        {{ item | json }}
+          #{{ index }}
+        </ion-col>
+        <ion-col>
+          {{ item.name }}
+        </ion-col>
+        <ion-col>
+          {{ item.name }}
+        </ion-col>
+        <ion-col>
+          {{ item.name }}
+        </ion-col>
+        <ion-col>
           {{ item.name }}
         </ion-col>
       </ion-row>
@@ -18,6 +29,7 @@ import { StockItem } from '../../models/stockitem';
 })
 export class TransactionItemComponent {
   @Input() item: StockItem;
+  @Input() index: number;
 
   constructor() {}
 

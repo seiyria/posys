@@ -3,7 +3,7 @@ import { ViewController, NavParams } from 'ionic-angular';
 import { StockItem } from '../../../models/stockitem';
 
 @Component({
-  templateUrl: 'inventoryManager.html'
+  templateUrl: 'inventory.management.html'
 })
 export class InventoryManagerComponent {
   stockItem: StockItem;

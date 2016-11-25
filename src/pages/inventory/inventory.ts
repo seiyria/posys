@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 
-import { InventoryManagerComponent } from './inventoryManagement/inventoryManager';
+import { InventoryManagerComponent } from './management/inventory.management';
 
 import { StockItem } from '../../models/stockitem';
 
