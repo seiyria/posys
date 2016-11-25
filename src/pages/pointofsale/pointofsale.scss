@@ -7,8 +7,8 @@ my-page-pointofsale {
   [body-area] {
     height: calc(100% - 100px - 56px - 16px - 5px - 5px - 60px);
 
-    [header] {
-      border-bottom: 1px solid #dedede;
+    [header] ion-col {
+      font-weight: bold;
     }
 
     [can-scroll] {
