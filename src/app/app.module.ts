@@ -12,7 +12,7 @@ import { SettingsPageComponent } from '../pages/settings/settings';
 import { PointOfSaleComponent } from '../pages/pointofsale/pointofsale';
 
 import { TopIconButtonComponent } from '../components/top-icon-button';
-import { OmnisearchComponent } from '../components/omnisearch';
+import { OmnisearchComponent } from '../components/omni-search';
 import { TransactionItemComponent } from '../pages/pointofsale/transactionitem';
 import { QueryItemComponent } from '../pages/pointofsale/queryitem';
 
