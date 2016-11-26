@@ -25,7 +25,12 @@ export class PointOfSaleComponent {
   }
 
   addTransactionItem(item: StockItem): void {
-    this.currentTransaction.push(item);
+
+    // clone so we can set the quantity to 1
+    const newItem = _.cloneDeep(item);
+    newItem.quantity = 1;
+
+    this.currentTransaction.push(newItem);
     // wait for next render cycle
     setTimeout(() => {
       const transactionList = document.getElementById('transaction-list');
@@ -51,8 +56,12 @@ export class PointOfSaleComponent {
     return _.reduce(this.currentTransaction, (prev, cur) => prev + (cur.cost * cur.quantity), 0);
   }
 
+  get subtotalTaxable(): number {
+    return _.reduce(this.currentTransaction, (prev, cur) => prev + (cur.taxable ? (cur.cost * cur.quantity) : 0), 0);
+  }
+
   get tax(): number {
-    return (this.settings.taxRate / 100) * this.subtotal;
+    return (this.settings.taxRate / 100) * this.subtotalTaxable;
   }
 
   get total(): number {

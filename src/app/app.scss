@@ -63,3 +63,20 @@ ion-grid[vertical-center] {
 [list-header] {
   border-bottom: 1px solid #dedede;
 }
+
+[shrunk-item-checkbox] {
+  padding: 0 !important;
+  min-height: 0 !important;
+
+  ion-checkbox {
+    margin: 0 !important;
+  }
+
+  .item-inner {
+    text-align: right;
+
+    .label {
+      margin: 0 !important;
+    }
+  }
+}
