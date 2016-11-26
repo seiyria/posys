@@ -10,7 +10,6 @@ export class StockItem {
   departmentId?: number;
   taxable: boolean;
   cost: number;
-  salePrice?: number;
   quantity: number;
   reorderThreshold?: number;
   reorderUpToAmount?: number;

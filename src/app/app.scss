@@ -52,6 +52,11 @@ ion-grid[vertical-center] {
   justify-content: center;
 }
 
+[vertical-center] {
+  display: flex;
+  align-items: center;
+}
+
 [big-text] {
   font-size: 300%;
 }

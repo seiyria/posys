@@ -12,16 +12,30 @@
         <ion-row search-area>
           <ion-col>
             <omni-search
+              [cancelWatcher]="omniCancelControl"
               (hasQuery)="setShowResults($event)"
               (searchResults)="setSearchResults($event)"></omni-search>
           </ion-col>
         </ion-row>
 
         <div body-area>
-          <ion-list can-scroll *ngIf="showSearchItems">
+          <ion-list *ngIf="showSearchItems" no-margin-bottom header>
+            <ion-item>
+              <ion-grid no-padding>
+                <ion-row>
+                  <ion-col width-50 no-padding>Product</ion-col>
+                  <ion-col width-20 no-padding>SKU</ion-col>
+                  <ion-col width-10 no-padding>Cost</ion-col>
+                  <ion-col width-20 no-padding></ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+          </ion-list>
+
+          <ion-list has-header can-scroll *ngIf="showSearchItems">
             <ion-item no-border-bottom *ngIf="!searchItems.length">No search results.</ion-item>
             <ion-item *ngFor="let item of searchItems">
-              <query-item [item]="item"></query-item>
+              <query-item [item]="item" (choose)="addToTransaction($event)"></query-item>
             </ion-item>
           </ion-list>
 

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { Component } from '@angular/core';
+import { Component, EventEmitter } from '@angular/core';
 
 import { NavController, ModalController } from 'ionic-angular';
 
@@ -17,6 +17,7 @@ export class PointOfSaleComponent {
   private currentTransaction: StockItem[] = [];
   private searchItems: StockItem[] = [];
   private showSearchItems: boolean;
+  private omniCancelControl = new EventEmitter();
 
   constructor(public navCtrl: NavController,
               public modalCtrl: ModalController,
@@ -36,6 +37,11 @@ export class PointOfSaleComponent {
       const transactionList = document.getElementById('transaction-list');
       transactionList.scrollTop = transactionList.scrollHeight;
     });
+  }
+
+  addToTransaction($event): void {
+    this.addTransactionItem($event);
+    this.omniCancelControl.next();
   }
 
   setShowResults($event): void {

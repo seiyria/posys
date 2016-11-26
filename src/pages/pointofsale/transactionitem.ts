@@ -19,13 +19,13 @@ import { StockItem } from '../../models/stockitem';
             <ion-col no-padding>{{ item.description | truncate:50 }}</ion-col>
           </ion-row>
         </ion-col>
-        <ion-col width-20 no-padding>
+        <ion-col width-20 no-padding vertical-center>
           {{ item.sku }}
         </ion-col>
-        <ion-col width-10 no-padding>
+        <ion-col width-10 no-padding vertical-center>
           {{ item.quantity }}
         </ion-col>
-        <ion-col width-10 no-padding>
+        <ion-col width-10 no-padding vertical-center>
           <ion-item shrunk-item-checkbox no-border-bottom>
             <ion-label>{{ item.cost | currencyFromSettings }}</ion-label>
             <ion-checkbox color="primary" [(ngModel)]="item.taxable"></ion-checkbox>
