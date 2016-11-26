@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-
-import { NavController } from 'ionic-angular';
+import { ModalController } from 'ionic-angular';
 
 import { AboutComponent } from './about/about';
-import { ModalController } from 'ionic-angular';
 
 @Component({
   selector: 'my-page-settings',
@@ -11,7 +9,7 @@ import { ModalController } from 'ionic-angular';
 })
 export class SettingsPageComponent {
 
-  constructor(public navCtrl: NavController, public modalCtrl: ModalController) {
+  constructor(public modalCtrl: ModalController) {
 
   }
 

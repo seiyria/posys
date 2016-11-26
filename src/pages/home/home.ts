@@ -2,8 +2,11 @@ import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 
-import { PointOfSaleComponent } from '../pointofsale/pointofsale';
+import { PointOfSalePageComponent } from '../pointofsale/pointofsale';
+import { PromotionsPageComponent } from '../promotions/promotions';
 import { InventoryPageComponent } from '../inventory/inventory';
+import { ReportingPageComponent } from '../reporting/reporting';
+import { InvoicesPageComponent } from '../invoices/invoices';
 import { SettingsPageComponent } from '../settings/settings';
 
 @Component({
@@ -20,12 +23,24 @@ export class HomePageComponent {
     this.navCtrl.push(InventoryPageComponent);
   }
 
+  goToReporting() {
+    this.navCtrl.push(ReportingPageComponent);
+  }
+
+  goToInvoices() {
+    this.navCtrl.push(InvoicesPageComponent);
+  }
+
+  goToPromotions() {
+    this.navCtrl.push(PromotionsPageComponent);
+  }
+
   goToSettings() {
     this.navCtrl.push(SettingsPageComponent);
   }
 
   goToPointOfSale() {
-    this.navCtrl.push(PointOfSaleComponent);
+    this.navCtrl.push(PointOfSalePageComponent);
   }
 
 }

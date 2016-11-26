@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import { Component, EventEmitter } from '@angular/core';
 
-import { NavController, ModalController } from 'ionic-angular';
+import { ModalController } from 'ionic-angular';
 
 import { ApplicationSettingsService } from '../../services/settings.service';
 import { StockItem } from '../../models/stockitem';
@@ -12,15 +12,14 @@ import { StockItem } from '../../models/stockitem';
   templateUrl: 'pointofsale.html',
   providers: [ApplicationSettingsService]
 })
-export class PointOfSaleComponent {
+export class PointOfSalePageComponent {
 
   private currentTransaction: StockItem[] = [];
   private searchItems: StockItem[] = [];
   private showSearchItems: boolean;
   private omniCancelControl = new EventEmitter();
 
-  constructor(public navCtrl: NavController,
-              public modalCtrl: ModalController,
+  constructor(public modalCtrl: ModalController,
               public settings: ApplicationSettingsService) {
 
   }

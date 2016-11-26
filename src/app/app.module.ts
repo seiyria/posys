@@ -9,7 +9,10 @@ import { InventoryPageComponent } from '../pages/inventory/inventory';
 import { InventoryManagerComponent } from '../pages/inventory/management/inventory.management';
 import { AboutComponent } from '../pages/settings/about/about';
 import { SettingsPageComponent } from '../pages/settings/settings';
-import { PointOfSaleComponent } from '../pages/pointofsale/pointofsale';
+import { PointOfSalePageComponent } from '../pages/pointofsale/pointofsale';
+import { InvoicesPageComponent } from '../pages/invoices/invoices';
+import { PromotionsPageComponent } from '../pages/promotions/promotions';
+import { ReportingPageComponent } from '../pages/reporting/reporting';
 
 import { TopIconButtonComponent } from '../components/top-icon-button';
 import { OmnisearchComponent } from '../components/omni-search';
@@ -31,7 +34,10 @@ import { TruncatePipe } from '../pipes/truncate';
     InventoryManagerComponent,
     SettingsPageComponent,
     AboutComponent,
-    PointOfSaleComponent,
+    PointOfSalePageComponent,
+    InvoicesPageComponent,
+    PromotionsPageComponent,
+    ReportingPageComponent,
 
     TopIconButtonComponent,
     OmnisearchComponent,
@@ -52,7 +58,10 @@ import { TruncatePipe } from '../pipes/truncate';
     InventoryManagerComponent,
     SettingsPageComponent,
     AboutComponent,
-    PointOfSaleComponent
+    PointOfSalePageComponent,
+    InvoicesPageComponent,
+    PromotionsPageComponent,
+    ReportingPageComponent
   ],
   providers: [
     ApplicationSettingsService,
