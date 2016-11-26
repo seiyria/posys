@@ -13,6 +13,12 @@
       <button ion-fab>
         <ion-icon name="add" (click)="openNewModal()"></ion-icon>
       </button>
+      <button ion-fab color="danger">
+        <ion-icon name="cloud-upload" (click)="importData()"></ion-icon>
+      </button>
+      <button ion-fab color="danger">
+        <ion-icon name="cloud-download" (click)="exportData()"></ion-icon>
+      </button>
     </ion-fab-list>
   </ion-fab>
 </ion-content>

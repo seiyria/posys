@@ -22,4 +22,12 @@ export class InventoryPageComponent {
       modal.present();
   }
 
+  importData() {
+
+  }
+
+  exportData() {
+
+  }
+
 }
