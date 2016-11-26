@@ -31,7 +31,7 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
     this.globalListenKeypressRemover = this.renderer.listenGlobal('document', 'keypress', ($event) => {
       if($event.key === 'Enter') {
         this._itemSearch(this.searchQuery, true, (items) => {
-          if(items.length > 1) return;
+          if(items.length > 1) { return; }
           this.cancelSearch();
         });
       } else if($event.srcElement.type !== 'search') {
@@ -58,7 +58,7 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
     this.hasQuery.emit(this.showSearchResults());
     const items = this.itemService.search(query);
     this.searchResults.emit({ items, force });
-    if(callback) callback(items);
+    if(callback) { callback(items); }
   }
 
   cancelSearch() {
