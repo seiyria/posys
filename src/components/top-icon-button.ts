@@ -1,10 +1,10 @@
 
-import { Component, Input, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'top-icon-button',
   template: `
-    <button ion-button outline block round top-icon color="dark" [disabled]="disabled">
+    <button ion-button outline block round top-icon color="dark" [disabled]="disabled" (click)="subClick.next($event)">
       <ion-grid>
         <ion-row>
           <ion-col class="icon-{{size}}"><ion-icon name="{{ icon }}"></ion-icon></ion-col>
@@ -44,7 +44,7 @@ export class TopIconButtonComponent {
   @Input() icon: string = '';
   @Input() size: string = 'large';
   @Input() disabled: boolean = false;
-  @Input() click = new EventEmitter();
+  @Output() subClick = new EventEmitter();
 
   constructor() {}
 
