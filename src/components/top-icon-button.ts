@@ -1,10 +1,10 @@
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'top-icon-button',
   template: `
-    <button ion-button outline block round top-icon color="dark">
+    <button ion-button outline block round top-icon color="dark" [disabled]="disabled">
       <ion-grid>
         <ion-row>
           <ion-col class="icon-{{size}}"><ion-icon name="{{ icon }}"></ion-icon></ion-col>
@@ -43,6 +43,8 @@ export class TopIconButtonComponent {
   @Input() text: string = '';
   @Input() icon: string = '';
   @Input() size: string = 'large';
+  @Input() disabled: boolean = false;
+  @Input() click = new EventEmitter();
 
   constructor() {}
 

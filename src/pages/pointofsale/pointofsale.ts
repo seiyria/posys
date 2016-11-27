@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import { Component, EventEmitter } from '@angular/core';
 
-import { ModalController } from 'ionic-angular';
+import { ModalController, AlertController } from 'ionic-angular';
 
 import { ApplicationSettingsService } from '../../services/settings.service';
 import { StockItem } from '../../models/stockitem';
@@ -20,6 +20,7 @@ export class PointOfSalePageComponent {
   private omniCancelControl = new EventEmitter();
 
   constructor(public modalCtrl: ModalController,
+              public alertCtrl: AlertController,
               public settings: ApplicationSettingsService) {
 
   }
@@ -41,6 +42,25 @@ export class PointOfSalePageComponent {
   addToTransaction($event): void {
     this.addTransactionItem($event);
     this.omniCancelControl.next();
+  }
+
+  voidTransaction(): void {
+    const confirm = this.alertCtrl.create({
+      title: 'Void transaction?',
+      message: 'This is irreversible and unrecoverable. All items in the current transaction will be removed.',
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            this.currentTransaction = [];
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
   setShowResults($event): void {
