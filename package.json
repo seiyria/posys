@@ -17,10 +17,11 @@
     "pack:win": "npm run clear:win && electron-packager ./www/ --platform=win32 --arch=ia32,x64 --asar --out=platforms",
     "pack:nix": "npm run clear:nix && electron-packager ./www/ --platform=linux --arch=ia32,x64 --asar --out=platforms",
     "ionic:build": "ionic-app-scripts build",
-    "ionic:build:electron": "npm run ionic:build && cp electron.js www/electron.js && cp package.json www/package.json",
+    "ionic:build:electron": "npm run ionic:build && cp electron.js www/electron.js && cp package.json www/package.json && npm run server:build",
     "ionic:serve": "ionic-app-scripts serve",
     "start": "npm run ionic:serve",
-    "start:server": "nodemon --exec \"ts-node\" -- \"src/server/index.ts\""
+    "start:server": "nodemon --exec \"ts-node\" -- \"src/server/index.ts\"",
+    "server:build": "tsc -p src/server"
   },
   "main": "electron.js",
   "config": {
@@ -50,6 +51,7 @@
   "devDependencies": {
     "@ionic/app-scripts": "0.0.45",
     "@types/lodash": "^4.14.39",
+    "@types/node": "0.0.0",
     "codelyzer": "1.0.0-beta.3",
     "del": "2.2.0",
     "electron-packager": "^7.3.0",

@@ -29,6 +29,7 @@ function createWindow() {
 
     // and load the index.html of the app.
     win.loadURL(url);
+    require('./server/index').start();
 
     // Open the DevTools.
     // win.webContents.openDevTools();
