@@ -8,7 +8,7 @@
     "electron": "electron .",
     "test:lint": "tslint --force 'src/**/*.ts'",
     "test:lint:fail": "tslint 'src/**/*.ts'",
-    "test": "npm run test:lint:fail",
+    "test": "npm run test:lint:fail && npm run ionic:build",
     "clear:all": "rm -rf ./platforms/*-x64",
     "clear:osx": "rm -rf *-darwin-x64; rm -rf ./platforms/*-mas-x64",
     "clear:win": "rm -rf *-win32-ia32; rm -rf ./platforms/*-win32-x64",
@@ -22,6 +22,9 @@
     "start": "npm run ionic:serve"
   },
   "main": "electron.js",
+  "config": {
+    "ionic_src_dir": "src/client"
+  },
   "dependencies": {
     "@angular/common": "2.1.1",
     "@angular/compiler": "2.1.1",
@@ -36,7 +39,9 @@
     "ionic-angular": "2.0.0-rc.3",
     "ionic-native": "2.2.3",
     "ionicons": "3.0.0",
+    "knex": "^0.12.6",
     "lodash": "^4.17.2",
+    "pg": "^6.1.0",
     "rxjs": "5.0.0-beta.12",
     "zone.js": "0.6.26"
   },
@@ -48,7 +53,7 @@
     "electron-packager": "^7.3.0",
     "electron-prebuilt": "^1.2.6",
     "tslint": "^3.15.1",
-    "typescript": "^2.1.1"
+    "typescript": "2.0.6"
   },
   "cordovaPlugins": [
     "cordova-plugin-device",

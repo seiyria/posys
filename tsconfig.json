@@ -8,14 +8,15 @@
       "dom",
       "es2015"
     ],
-    "typeRoots": [
-      "node_modules/@types"
-    ],
     "module": "es2015",
     "moduleResolution": "node",
     "sourceMap": true,
     "target": "es5"
   },
   "compileOnSave": false,
-  "buildOnSave": false
+  "buildOnSave": false,
+  "exclude": [
+    "node_modules",
+    "src/client/app/main.prod.ts"
+  ]
 }

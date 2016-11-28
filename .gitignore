@@ -16,3 +16,7 @@ output
 www
 .tmp
 .idea
+*.metadata.json
+*.ngfactory.ts
+*.js.map
+src/**/*.js
