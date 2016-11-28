@@ -6,6 +6,6 @@ export class Logger {
   }
 
   static info(tag: string, msg: string): void {
-    console.info(`[${tag}] ${msg}`);
+    console.log(`[${tag}] ${msg}`);
   }
 }
