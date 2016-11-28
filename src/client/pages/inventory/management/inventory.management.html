@@ -51,18 +51,18 @@
             </ion-item>
 
             <ion-item>
-              <ion-label stacked>Cost</ion-label>
+              <ion-label stacked>Vendor Purchase Price</ion-label>
+              <ion-input type="number" [(ngModel)]="stockItem.vendorPurchasePrice"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label stacked>Consumer Cost</ion-label>
               <ion-input type="number" [(ngModel)]="stockItem.cost"></ion-input>
             </ion-item>
 
             <ion-item>
-              <ion-label stacked>Sale Price</ion-label>
-              <ion-input type="number" [(ngModel)]="stockItem.salePrice"></ion-input>
-            </ion-item>
-
-            <ion-item>
               <ion-label stacked>Quanity</ion-label>
-              <ion-input type="number" [(ngModel)]="stockItem.quanity"></ion-input>
+              <ion-input type="number" [(ngModel)]="stockItem.quantity"></ion-input>
             </ion-item>
 
             <ion-item>

@@ -18,8 +18,8 @@ import { StockItem } from '../models/stockitem';
 })
 export class OmnisearchComponent implements OnInit, OnDestroy {
   private searchItems: StockItem[] = [];
-  private searchQuery: string = '';
   private globalListenKeypressRemover: Function;
+  public searchQuery: string = '';
 
   @Output() searchResults = new EventEmitter();
   @Output() hasQuery = new EventEmitter();

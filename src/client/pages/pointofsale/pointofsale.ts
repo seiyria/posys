@@ -14,10 +14,10 @@ import { StockItem } from '../../models/stockitem';
 })
 export class PointOfSalePageComponent {
 
-  private currentTransaction: StockItem[] = [];
-  private searchItems: StockItem[] = [];
-  private showSearchItems: boolean;
-  private omniCancelControl = new EventEmitter();
+  public currentTransaction: StockItem[] = [];
+  public searchItems: StockItem[] = [];
+  public showSearchItems: boolean;
+  public omniCancelControl = new EventEmitter();
 
   constructor(public modalCtrl: ModalController,
               public alertCtrl: AlertController,
