@@ -28,9 +28,9 @@ if(isUndefined(config.server)) {
 }
 
 if(isUndefined(config.db.hostname)
-|| isUndefined(config.db.username)
-|| isUndefined(config.db.password)
-|| isUndefined(config.db.database)) {
+  || isUndefined(config.db.username)
+  || isUndefined(config.db.password)
+  || isUndefined(config.db.database)) {
   Logger.error('Init', '`db` object not complete. Please ensure these keys exist: hostname, username, password, database');
   kill();
 }
@@ -45,15 +45,14 @@ if(!config.db.hostname || !config.db.username || !config.db.database) {
   kill();
 }
 
-export const db = require('knex')({
-  client: 'pg',
-  connection: {
-    host: config.db.hostname,
-    user: config.db.username,
-    password: config.db.password,
-    database: config.db.database
-  }
-});
+const db = require('knex')(require('./knexfile'));
+
+export const bookshelf = require('bookshelf')(db);
+bookshelf.plugin('pagination');
+bookshelf.plugin(require('bookshelf-paranoia'));
+
+bookshelf.Model.extend({ tableName: 'stockitem', softDelete: true });
+bookshelf.Model.extend({ tableName: 'department', softDelete: true });
 
 export const start = () => {
   const express = require('express');

@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
-import { StockItem } from './stockitem';
+import { StockItem } from '../../models/stockitem';
 
-import { LoggerService } from '../services/logger.service';
+import { LoggerService } from './logger.service';
 
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';

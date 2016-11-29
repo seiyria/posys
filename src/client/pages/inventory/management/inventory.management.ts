@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ViewController, NavParams } from 'ionic-angular';
-import { StockItem } from '../../../models/stockitem';
+import { StockItem } from '../../../../models/stockitem';
 
 @Component({
   templateUrl: 'inventory.management.html'

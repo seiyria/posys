@@ -21,7 +21,7 @@ import { QueryItemComponent } from '../pages/pointofsale/queryitem';
 
 import { ApplicationSettingsService } from '../services/settings.service';
 import { LoggerService } from '../services/logger.service';
-import { StockItemService } from '../models/stockitem.service';
+import { StockItemService } from '../services/stockitem.service';
 
 import { CurrencyFromSettingsPipe } from '../pipes/currency-from-settings';
 import { TruncatePipe } from '../pipes/truncate';

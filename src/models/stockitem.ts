@@ -3,11 +3,11 @@ import _ from 'lodash';
 export class StockItem {
   id: number;
   sku: string;
-  stockId?: string;
+  stockCode?: string;
   name: string;
   photoUrl?: string;
   description?: string;
-  departmentId?: number;
+  organizationalUnitId?: number;
   taxable: boolean;
   cost: number;
   vendorPurchasePrice?: number;

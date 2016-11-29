@@ -1,8 +1,8 @@
 
 import { Component, Input, Output, EventEmitter, Renderer, OnInit, OnDestroy } from '@angular/core';
 
-import { StockItemService } from '../models/stockitem.service';
-import { StockItem } from '../models/stockitem';
+import { StockItemService } from '../services/stockitem.service';
+import { StockItem } from '../../models/stockitem';
 
 @Component({
   selector: 'omni-search',
