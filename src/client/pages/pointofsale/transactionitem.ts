@@ -1,7 +1,7 @@
 
 import { Component, Input } from '@angular/core';
 
-import { StockItem } from '../../../models/stockitem';
+import { StockItem } from '../../models/stockitem';
 
 @Component({
   selector: 'transaction-item',

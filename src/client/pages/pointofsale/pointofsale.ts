@@ -6,7 +6,7 @@ import { Component, EventEmitter } from '@angular/core';
 import { ModalController, AlertController } from 'ionic-angular';
 
 import { ApplicationSettingsService } from '../../services/settings.service';
-import { StockItem } from '../../../models/stockitem';
+import { StockItem } from '../../models/stockitem';
 
 @Component({
   selector: 'my-page-pointofsale',

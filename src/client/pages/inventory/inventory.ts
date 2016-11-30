@@ -5,7 +5,7 @@ import { InventoryManagerComponent } from './management/inventory.management';
 
 import { OrganizationalUnitService } from '../../services/organizationalunit.service';
 
-import { StockItem } from '../../../models/stockitem';
+import { StockItem } from '../../models/stockitem';
 
 @Component({
   selector: 'my-page-inventory',

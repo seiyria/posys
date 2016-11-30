@@ -2,7 +2,7 @@
 import { Component, Input, Output, EventEmitter, Renderer, OnInit, OnDestroy } from '@angular/core';
 
 import { StockItemService } from '../services/stockitem.service';
-import { StockItem } from '../../models/stockitem';
+import { StockItem } from '../models/stockitem';
 
 @Component({
   selector: 'omni-search',

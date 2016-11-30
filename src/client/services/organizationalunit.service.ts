@@ -1,7 +1,7 @@
 
 import * as _ from 'lodash';
 
-import { OrganizationalUnit } from '../../models/organizationalunit';
+import { OrganizationalUnit } from '../models/organizationalunit';
 
 import { LoggerService } from './logger.service';
 import { ApplicationSettingsService } from './settings.service';

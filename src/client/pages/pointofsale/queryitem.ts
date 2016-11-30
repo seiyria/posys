@@ -1,7 +1,7 @@
 
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { StockItem } from '../../../models/stockitem';
+import { StockItem } from '../../models/stockitem';
 
 @Component({
   selector: 'query-item',

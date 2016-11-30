@@ -1,7 +1,7 @@
 
 import * as _ from 'lodash';
 
-import { StockItem } from '../../models/stockitem';
+import { StockItem } from '../models/stockitem';
 
 import { LoggerService } from './logger.service';
 
