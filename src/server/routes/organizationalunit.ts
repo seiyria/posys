@@ -7,7 +7,7 @@ export default (app) => {
       .collection()
       .fetch()
       .then(collection => {
-        res.json(collection);
+        res.json(collection.toJSON());
       });
   });
 };

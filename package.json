@@ -45,6 +45,7 @@
     "body-parser": "^1.15.2",
     "bookshelf": "^0.10.2",
     "bookshelf-paranoia": "^0.9.0",
+    "cors": "^2.8.1",
     "express": "^4.14.0",
     "ionic-angular": "2.0.0-rc.3",
     "ionic-native": "2.2.3",
