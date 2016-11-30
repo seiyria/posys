@@ -3,6 +3,8 @@ import { ModalController } from 'ionic-angular';
 
 import { InventoryManagerComponent } from './management/inventory.management';
 
+import { OrganizationalUnitService } from '../../services/organizationalunit.service';
+
 import { StockItem } from '../../../models/stockitem';
 
 @Component({
@@ -11,8 +13,8 @@ import { StockItem } from '../../../models/stockitem';
 })
 export class InventoryPageComponent {
 
-  constructor(public modalCtrl: ModalController) {
-
+  constructor(public modalCtrl: ModalController, public ouService: OrganizationalUnitService) {
+    this.ouService.getAll().subscribe(data => console.log(data));
   }
 
   openNewModal() {

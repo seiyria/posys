@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 
 const defaultSettings = {
   currencyCode: 'USD',
-  taxRate: 5.00
+  taxRate: 5.00,
+  connectionUrl: 'http://localhost:8080'
 };
 
 @Injectable()
@@ -17,5 +18,14 @@ export class ApplicationSettingsService {
 
   get taxRate(): number {
     return this.settings.taxRate;
+  }
+
+  get connectionUrl(): string {
+    // TODO ensure no trailing slash
+    return this.settings.connectionUrl;
+  }
+
+  buildAPIURL(fragment: string) {
+    return `${this.settings.connectionUrl}/${fragment}`;
   }
 }

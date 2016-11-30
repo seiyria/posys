@@ -22,6 +22,7 @@ import { QueryItemComponent } from '../pages/pointofsale/queryitem';
 import { ApplicationSettingsService } from '../services/settings.service';
 import { LoggerService } from '../services/logger.service';
 import { StockItemService } from '../services/stockitem.service';
+import { OrganizationalUnitService } from '../services/organizationalunit.service';
 
 import { CurrencyFromSettingsPipe } from '../pipes/currency-from-settings';
 import { TruncatePipe } from '../pipes/truncate';
@@ -67,6 +68,7 @@ import { TruncatePipe } from '../pipes/truncate';
     ApplicationSettingsService,
     LoggerService,
     StockItemService,
+    OrganizationalUnitService,
     CurrencyPipe
   ]
 })

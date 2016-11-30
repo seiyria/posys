@@ -10,7 +10,7 @@ exports.up = (knex) => {
       table.string('stockCode');
       table.string('name');
       table.string('description');
-      table.integer('organizationalUnitId').unsigned().references('organizationalUnit.id');
+      table.integer('organizationalunitId').unsigned().references('organizationalunit.id');
       table.boolean('taxable');
       table.decimal('cost', TOTAL_DIGITS, CENT_DIGITS);
       table.decimal('vendorPurchasePrice', TOTAL_DIGITS, CENT_DIGITS);

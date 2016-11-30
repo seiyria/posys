@@ -1,4 +1,5 @@
-import _ from 'lodash';
+
+import * as _ from 'lodash';
 
 export class StockItem {
   id: number;
@@ -7,7 +8,7 @@ export class StockItem {
   name: string;
   photoUrl?: string;
   description?: string;
-  organizationalUnitId?: number;
+  organizationalunitId?: number;
   taxable: boolean;
   cost: number;
   vendorPurchasePrice?: number;

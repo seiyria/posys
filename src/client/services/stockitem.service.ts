@@ -1,4 +1,5 @@
-import _ from 'lodash';
+
+import * as _ from 'lodash';
 
 import { StockItem } from '../../models/stockitem';
 

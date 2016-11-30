@@ -1,5 +1,5 @@
 
-import { isUndefined } from 'lodash';
+import * as _ from 'lodash';
 import { Logger } from './logger';
 
 const fs = require('fs');
@@ -17,25 +17,25 @@ try {
 
 const config = require('./server.config.json');
 
-if(isUndefined(config.db)) {
+if(_.isUndefined(config.db)) {
   Logger.error('Init', 'No `db` key in config file. Please add one with these keys: hostname, username, password, database');
   kill();
 }
 
-if(isUndefined(config.server)) {
+if(_.isUndefined(config.server)) {
   Logger.error('Init', 'No `server` key in config file. Please add one with these keys: port');
   kill();
 }
 
-if(isUndefined(config.db.hostname)
-  || isUndefined(config.db.username)
-  || isUndefined(config.db.password)
-  || isUndefined(config.db.database)) {
+if(_.isUndefined(config.db.hostname)
+|| _.isUndefined(config.db.username)
+|| _.isUndefined(config.db.password)
+|| _.isUndefined(config.db.database)) {
   Logger.error('Init', '`db` object not complete. Please ensure these keys exist: hostname, username, password, database');
   kill();
 }
 
-if(isUndefined(config.server.port)) {
+if(_.isUndefined(config.server.port)) {
   Logger.error('Init', '`server` object not complete. Please ensure these keys exist: port');
   kill();
 }
@@ -50,9 +50,6 @@ const db = require('knex')(require('./knexfile'));
 export const bookshelf = require('bookshelf')(db);
 bookshelf.plugin('pagination');
 bookshelf.plugin(require('bookshelf-paranoia'));
-
-bookshelf.Model.extend({ tableName: 'stockitem', softDelete: true });
-bookshelf.Model.extend({ tableName: 'department', softDelete: true });
 
 export const start = () => {
   const express = require('express');
