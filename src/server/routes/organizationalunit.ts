@@ -11,7 +11,7 @@ export default (app) => {
         res.json(collection.toJSON());
       })
       .catch(e => {
-        res.status(500).json(Logger.browserError(Logger.error('Route:OrganizationalUnit', e)));
+        res.status(500).json(Logger.browserError(Logger.error('Route:OrganizationalUnit:GET', e)));
       });
   });
 };
