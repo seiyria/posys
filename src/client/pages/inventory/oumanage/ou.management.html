@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Manage Organizational Units
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span color="primary">Cancel</span>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col width-80>
+        <ion-list>
+          <ion-item list-header form-item>
+            <ion-label stacked>New Organizational Unit Name</ion-label>
+            <ion-input type="text" [(ngModel)]="ouName"></ion-input>
+          </ion-item>
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="name"></form-error>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col width-20 flex-right vertical-center>
+        <button ion-button icon-left (click)="addNewOU()">
+          <ion-icon name="add"></ion-icon>
+          Add
+        </button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-item *ngFor="let ou of allOU | async">
+            <ion-grid>
+              <ion-row>
+                <ion-col width-80 vertical-center>{{ ou.name }}</ion-col>
+                <ion-col width-20 flex-right vertical-center>
+                  <button ion-button icon-left color="danger">
+                    <ion-icon name="trash"></ion-icon>
+                    Remove
+                  </button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

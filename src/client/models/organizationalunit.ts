@@ -2,9 +2,9 @@
 import * as _ from 'lodash';
 
 export class OrganizationalUnit {
-  id: number;
+  id?: number;
   name: string;
-  description: string;
+  description?: string;
 
   constructor(initializer?: OrganizationalUnit) {
     _.assign(this, initializer);

@@ -22,6 +22,7 @@ export class LoggerService {
 
   observableError(e: Error|Response) {
     this.error(e);
-    return Observable.throw(e);
+    let returnedValue = e instanceof Response ? e.json() : e;
+    return Observable.throw(returnedValue);
   }
 }

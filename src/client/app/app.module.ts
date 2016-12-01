@@ -7,6 +7,7 @@ import { MyAppComponent } from './app.component';
 import { HomePageComponent } from '../pages/home/home';
 import { InventoryPageComponent } from '../pages/inventory/inventory';
 import { InventoryManagerComponent } from '../pages/inventory/management/inventory.management';
+import { OUManagerComponent } from '../pages/inventory/oumanage/ou.management';
 import { AboutComponent } from '../pages/settings/about/about';
 import { SettingsPageComponent } from '../pages/settings/settings';
 import { PointOfSalePageComponent } from '../pages/pointofsale/pointofsale';
@@ -14,6 +15,7 @@ import { InvoicesPageComponent } from '../pages/invoices/invoices';
 import { PromotionsPageComponent } from '../pages/promotions/promotions';
 import { ReportingPageComponent } from '../pages/reporting/reporting';
 
+import { FormErrorComponent } from '../components/form-error';
 import { TopIconButtonComponent } from '../components/top-icon-button';
 import { OmnisearchComponent } from '../components/omni-search';
 import { TransactionItemComponent } from '../pages/pointofsale/transactionitem';
@@ -33,6 +35,7 @@ import { TruncatePipe } from '../pipes/truncate';
     HomePageComponent,
     InventoryPageComponent,
     InventoryManagerComponent,
+    OUManagerComponent,
     SettingsPageComponent,
     AboutComponent,
     PointOfSalePageComponent,
@@ -40,6 +43,7 @@ import { TruncatePipe } from '../pipes/truncate';
     PromotionsPageComponent,
     ReportingPageComponent,
 
+    FormErrorComponent,
     TopIconButtonComponent,
     OmnisearchComponent,
     TransactionItemComponent,
@@ -57,6 +61,7 @@ import { TruncatePipe } from '../pipes/truncate';
     HomePageComponent,
     InventoryPageComponent,
     InventoryManagerComponent,
+    OUManagerComponent,
     SettingsPageComponent,
     AboutComponent,
     PointOfSalePageComponent,

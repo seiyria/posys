@@ -25,12 +25,10 @@ export class OrganizationalUnitService {
       .catch(e => this.logger.observableError(e));
   }
 
-  get(id: number) {
-
-  }
-
-  add(item: OrganizationalUnit) {
-
+  add(item: OrganizationalUnit): Observable<OrganizationalUnit> {
+    return this.http.put(this.settings.buildAPIURL(this.url), item)
+      .map((res: Response) => res.json())
+      .catch(e => this.logger.observableError(e));
   }
 
   update(item: OrganizationalUnit) {

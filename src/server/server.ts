@@ -49,6 +49,7 @@ const db = require('knex')(require('./knexfile'));
 
 export const bookshelf = require('bookshelf')(db);
 bookshelf.plugin('pagination');
+bookshelf.plugin(require('bookshelf-validate'), { validateOnSave: true, validator: require('validator') });
 bookshelf.plugin(require('bookshelf-paranoia'));
 
 export const start = () => {

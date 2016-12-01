@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 
 import { InventoryManagerComponent } from './management/inventory.management';
-
-import { OrganizationalUnitService } from '../../services/organizationalunit.service';
+import { OUManagerComponent } from './oumanage/ou.management';
 
 import { StockItem } from '../../models/stockitem';
 
@@ -13,8 +12,7 @@ import { StockItem } from '../../models/stockitem';
 })
 export class InventoryPageComponent {
 
-  constructor(public modalCtrl: ModalController, public ouService: OrganizationalUnitService) {
-    this.ouService.getAll().subscribe(data => console.log(data));
+  constructor(public modalCtrl: ModalController) {
   }
 
   openNewModal() {
@@ -24,10 +22,19 @@ export class InventoryPageComponent {
       modal.present();
   }
 
+  openOUModal() {
+    let modal = this.modalCtrl.create(OUManagerComponent, {
+      stockItem: new StockItem()
+    });
+    modal.present();
+  }
+
+  // TODO do in a web worker (probably)
   importData() {
 
   }
 
+  // TODO do in a web worker (probably)
   exportData() {
 
   }
