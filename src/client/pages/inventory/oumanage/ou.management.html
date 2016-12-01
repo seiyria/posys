@@ -11,8 +11,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-grid>
+<ion-content [attr.noScroll]="true" my-modal-ou-management>
+  <ion-grid scroll-grid>
     <ion-row>
       <ion-col width-80>
         <ion-list>
@@ -39,7 +39,7 @@
         </div>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row scroll-row>
       <ion-col>
         <ion-list>
           <ion-item *ngFor="let ou of allOU | async" no-margin>

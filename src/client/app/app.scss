@@ -106,3 +106,8 @@ ion-item[no-margin] .label {
     margin: 0;
   }
 }
+
+[noScroll] .scroll-content {
+  overflow: hidden;
+}
+
