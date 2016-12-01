@@ -29,7 +29,7 @@ export class OUManagerComponent implements OnInit {
 
   addNewOU() {
     this.ouService
-      .add(this.ou)
+      .create(this.ou)
       .subscribe(() => {
         this.allOU = this.ouService.getAll();
         this.resetOU();

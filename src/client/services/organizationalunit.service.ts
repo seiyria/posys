@@ -25,7 +25,7 @@ export class OrganizationalUnitService {
       .catch(e => this.logger.observableError(e));
   }
 
-  add(item: OrganizationalUnit): Observable<OrganizationalUnit> {
+  create(item: OrganizationalUnit): Observable<OrganizationalUnit> {
     return this.http.put(this.settings.buildAPIURL(this.url), item)
       .map((res: Response) => res.json())
       .catch(e => this.logger.observableError(e));

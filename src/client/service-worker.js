@@ -56,7 +56,7 @@ self.addEventListener('fetch', (event) => {
         // (see https://fetch.spec.whatwg.org/#dom-request-clone)
         return fetch(event.request.clone()).then((response) => {
 
-          // Optional: add in extra conditions here, e.g. response.type == 'basic' to only cache
+          // Optional: create in extra conditions here, e.g. response.type == 'basic' to only cache
           // responses from the same domain. See https://fetch.spec.whatwg.org/#concept-response-type
           if (response.status < 400 && response.type === 'basic') {
             // We need to call .clone() on the response object to save a copy of it to the cache.

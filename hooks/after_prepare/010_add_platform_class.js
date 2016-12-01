@@ -14,7 +14,7 @@ var path = require('path');
 var rootdir = process.argv[2];
 
 function addPlatformBodyTag(indexPath, platform) {
-  // add the platform class to the body tag
+  // create the platform class to the body tag
   try {
     var platformClass = 'platform-' + platform;
     var cordovaClass = 'platform-cordova platform-webview';
@@ -30,14 +30,14 @@ function addPlatformBodyTag(indexPath, platform) {
 
     var classAttr = findClassAttr(bodyTag);
     if(classAttr) {
-      // body tag has existing class attribute, add the classname
+      // body tag has existing class attribute, create the classname
       var endingQuote = classAttr.substring(classAttr.length-1);
       var newClassAttr = classAttr.substring(0, classAttr.length-1);
       newClassAttr += ' ' + platformClass + ' ' + cordovaClass + endingQuote;
       newBodyTag = bodyTag.replace(classAttr, newClassAttr);
 
     } else {
-      // add class attribute to the body tag
+      // create class attribute to the body tag
       newBodyTag = bodyTag.replace('>', ' class="' + platformClass + ' ' + cordovaClass + '">');
     }
 
@@ -45,21 +45,21 @@ function addPlatformBodyTag(indexPath, platform) {
 
     fs.writeFileSync(indexPath, html, 'utf8');
 
-    process.stdout.write('add to body class: ' + platformClass + '\n');
+    process.stdout.write('create to body class: ' + platformClass + '\n');
   } catch(e) {
     process.stdout.write(e);
   }
 }
 
 function findBodyTag(html) {
-  // get the body tag
+  // create the body tag
   try{
     return html.match(/<body(?=[\s>])(.*?)>/gi)[0];
   }catch(e){}
 }
 
 function findClassAttr(bodyTag) {
-  // get the body tag's class attribute
+  // create the body tag's class attribute
   try{
     return bodyTag.match(/ class=["|'](.*?)["|']/gi)[0];
   }catch(e){}

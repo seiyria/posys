@@ -18,12 +18,12 @@ try {
 const config = require('./server.config.json');
 
 if(_.isUndefined(config.db)) {
-  Logger.error('Init', 'No `db` key in config file. Please add one with these keys: hostname, username, password, database');
+  Logger.error('Init', 'No `db` key in config file. Please create one with these keys: hostname, username, password, database');
   kill();
 }
 
 if(_.isUndefined(config.server)) {
-  Logger.error('Init', 'No `server` key in config file. Please add one with these keys: port');
+  Logger.error('Init', 'No `server` key in config file. Please create one with these keys: port');
   kill();
 }
 
