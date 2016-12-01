@@ -27,6 +27,17 @@ export default (app) => {
       });
   });
 
+  app.patch('/organizationalunit/:id', (req, res) => {
+    new OrganizationalUnit({ id: req.params.id })
+      .save(req.body, { patch: true })
+      .then(item => {
+        res.json(item);
+      })
+      .catch(e => {
+        res.status(500).json({ formErrors: e.data || [] });
+      });
+  });
+
   app.delete('/organizationalunit/:id', (req, res) => {
     new OrganizationalUnit({ id: req.params.id })
       .destroy()
@@ -35,7 +46,9 @@ export default (app) => {
       })
       .catch(e => {
         console.error(e);
-        res.status(500).json(Logger.browserError(Logger.error('Route:StockItem:DELETE/:id', e)));
+        // TODO try deleting when attached to an item
+        // TODO if bad, send { flash: message }
+        res.status(500).json(Logger.browserError(Logger.error('Route:OrganizationalUnit:DELETE/:id', e)));
       });
   });
 };

@@ -31,8 +31,10 @@ export class OrganizationalUnitService {
       .catch(e => this.logger.observableError(e));
   }
 
-  update(item: OrganizationalUnit) {
-
+  update(item: OrganizationalUnit): Observable<OrganizationalUnit> {
+    return this.http.patch(this.settings.buildAPIURL(this.url, item.id), item)
+      .map((res: Response) => res.json())
+      .catch(e => this.logger.observableError(e));
   }
 
   remove(item: OrganizationalUnit) {

@@ -1,4 +1,5 @@
-import * as _ from 'lodash';
+
+// import * as _ from 'lodash';
 
 import { Component, OnInit } from '@angular/core';
 import { ViewController, AlertController } from 'ionic-angular';
@@ -13,7 +14,7 @@ import { OrganizationalUnitService } from '../../../services/organizationalunit.
 })
 export class OUManagerComponent implements OnInit {
 
-  public ouName: string;
+  public ou: OrganizationalUnit = new OrganizationalUnit();
   public allOU: Observable<OrganizationalUnit[]>;
   public _formErrors: BehaviorSubject<any> = new BehaviorSubject({});
   public formErrors: Observable<any> = this._formErrors.asObservable();
@@ -28,10 +29,10 @@ export class OUManagerComponent implements OnInit {
 
   addNewOU() {
     this.ouService
-      .add(new OrganizationalUnit({ name: this.ouName }))
+      .add(this.ou)
       .subscribe(() => {
         this.allOU = this.ouService.getAll();
-        this.ouName = '';
+        this.resetOU();
         this._formErrors.next({});
       }, e => this._formErrors.next(e.formErrors));
   }
@@ -39,7 +40,7 @@ export class OUManagerComponent implements OnInit {
   removeOU(ou: OrganizationalUnit) {
 
     const confirm = this.alertCtrl.create({
-      title: 'Remove Organizational Unit?',
+      title: `Remove Organizational Unit "${ou.name}"?`,
       message: 'Exercise caution when doing this. You may receive errors if you still have items assigned to this OU.',
       buttons: [
         {
@@ -58,6 +59,23 @@ export class OUManagerComponent implements OnInit {
       ]
     });
     confirm.present();
+  }
+
+  updateOU(ou: OrganizationalUnit) {
+    this.ouService
+      .update(ou)
+      .subscribe(() => {
+        this.allOU = this.ouService.getAll();
+        this.resetOU();
+      });
+  }
+
+  resetOU() {
+    this.ou = new OrganizationalUnit();
+  }
+
+  editOU(ou: OrganizationalUnit) {
+    this.ou = new OrganizationalUnit(ou);
   }
 
   dismiss() {
