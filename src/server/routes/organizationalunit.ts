@@ -26,4 +26,16 @@ export default (app) => {
         res.status(500).json({ formErrors: e.data || [] });
       });
   });
+
+  app.delete('/organizationalunit/:id', (req, res) => {
+    new OrganizationalUnit({ id: req.params.id })
+      .destroy()
+      .then(item => {
+        res.json(item);
+      })
+      .catch(e => {
+        console.error(e);
+        res.status(500).json(Logger.browserError(Logger.error('Route:StockItem:DELETE/:id', e)));
+      });
+  });
 };

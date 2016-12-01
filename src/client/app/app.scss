@@ -42,6 +42,10 @@ ion-grid[vertical-center] {
   margin-bottom: 0 !important;
 }
 
+ion-item[no-margin] .label {
+  margin: 0 !important;
+}
+
 [full-height] {
   height: 100%;
 }

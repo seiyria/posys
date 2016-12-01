@@ -36,6 +36,8 @@ export class OrganizationalUnitService {
   }
 
   remove(item: OrganizationalUnit) {
-
+    return this.http.delete(this.settings.buildAPIURL(this.url, item.id))
+      .map((res: Response) => res.json())
+      .catch(e => this.logger.observableError(e));
   }
 }

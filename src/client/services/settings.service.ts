@@ -25,7 +25,7 @@ export class ApplicationSettingsService {
     return this.settings.connectionUrl;
   }
 
-  buildAPIURL(fragment: string) {
-    return `${this.settings.connectionUrl}/${fragment}`;
+  buildAPIURL(fragment: string, id?: number) {
+    return `${this.settings.connectionUrl}/${fragment}${id ? '/' + id : ''}`;
   }
 }

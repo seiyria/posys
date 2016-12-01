@@ -3,8 +3,12 @@ import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
+import { ToastController } from 'ionic-angular';
+
 @Injectable()
 export class LoggerService {
+  constructor(public toastCtrl: ToastController) {}
+
   error(e: Error|Response): void {
 
     let errMsg: string;
@@ -23,6 +27,17 @@ export class LoggerService {
   observableError(e: Error|Response) {
     this.error(e);
     let returnedValue = e instanceof Response ? e.json() : e;
+
+    if(returnedValue.flash) {
+      this.toastCtrl.create({
+        message: returnedValue.flash,
+        duration: 3000,
+        position: 'top',
+        showCloseButton: true,
+        dismissOnPageChange: true
+      }).present();
+    }
+
     return Observable.throw(returnedValue);
   }
 }
