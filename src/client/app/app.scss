@@ -95,12 +95,18 @@ ion-item[no-margin] .label {
 }
 
 [form-item] {
-
+  &[required] .label::after {
+    content: ' *'
+  }
 }
 
 [small-item] {
   font-size: 1.2rem;
   min-height: 2.2rem;
+
+  .item-inner {
+    border-bottom: none !important;
+  }
 
   .label {
     margin: 0;
@@ -109,5 +115,19 @@ ion-item[no-margin] .label {
 
 [noScroll] .scroll-content {
   overflow: hidden;
+}
+
+[text-center] {
+  justify-content: center;
+}
+
+[text-right] {
+  justify-content: flex-end;
+}
+
+[column-headers] {
+  ion-col {
+    font-weight: bold;
+  }
 }
 

@@ -48,8 +48,12 @@ if(!config.db.hostname || !config.db.username || !config.db.database) {
 const db = require('knex')(require('./knexfile'));
 
 export const bookshelf = require('bookshelf')(db);
+
+const validator = require('validator');
+validator.isRequired = (x) => !!x;
+
 bookshelf.plugin('pagination');
-bookshelf.plugin(require('bookshelf-validate'), { validateOnSave: true, validator: require('validator') });
+bookshelf.plugin(require('bookshelf-validate'), { validateOnSave: true, validator });
 bookshelf.plugin(require('bookshelf-paranoia'));
 
 export const start = () => {

@@ -17,7 +17,8 @@ export default (app) => {
   });
 
   app.put('/organizationalunit', (req, res) => {
-    new OrganizationalUnit(req.body)
+    OrganizationalUnit
+      .forge(req.body)
       .save()
       .then(item => {
         res.json(item);
@@ -28,7 +29,8 @@ export default (app) => {
   });
 
   app.patch('/organizationalunit/:id', (req, res) => {
-    new OrganizationalUnit({ id: req.params.id })
+    OrganizationalUnit
+      .forge({ id: req.params.id })
       .save(req.body, { patch: true })
       .then(item => {
         res.json(item);
@@ -39,16 +41,15 @@ export default (app) => {
   });
 
   app.delete('/organizationalunit/:id', (req, res) => {
-    new OrganizationalUnit({ id: req.params.id })
+    OrganizationalUnit
+      .forge({ id: req.params.id })
       .destroy()
       .then(item => {
         res.json(item);
       })
       .catch(e => {
-        console.error(e);
-        // TODO try deleting when attached to an item
-        // TODO if bad, send { flash: message }
-        res.status(500).json(Logger.browserError(Logger.error('Route:OrganizationalUnit:DELETE/:id', e)));
+        const errorMessage = Logger.parseDatabaseError(e, 'OU');
+        res.status(500).json({ flash: errorMessage });
       });
   });
 };

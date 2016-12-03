@@ -1,56 +1,56 @@
 
 import * as _ from 'lodash';
 
+import { PagedItems } from '../models/pageditems';
 import { StockItem } from '../models/stockitem';
 
 import { LoggerService } from './logger.service';
+import { ApplicationSettingsService } from './settings.service';
 
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
+import { Http, Response, URLSearchParams } from '@angular/http';
+import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class StockItemService {
 
-  private db: StockItem[] = [
-    new StockItem({ id: 0, sku: 'ABC123', name: 'MTG Card Box',     taxable: true,  cost: 1.49, quantity: 3,
-                    description: 'It is a card box.' }),
-    new StockItem({ id: 1, sku: 'ABC124', name: 'MTG Card Box 2',   taxable: true,  cost: 2.49, quantity: 1,
-                    description: 'It is a card box. It is also number 2 in an exclusive collectors set.'  }),
-    new StockItem({ id: 2, sku: 'ABC125', name: 'MTG Card Box 3',   taxable: true,  cost: 2.99, quantity: 3,
-                    description: 'It is a card box. It also has a really long description for no apparent reason, ' +
-                    'but you know, there is nothing wrong with that.'  }),
-    new StockItem({ id: 3, sku: 'ABC126', name: 'Card Sleeves',     taxable: true,  cost: 0.99, quantity: 4,
-                    description: 'Penny sleeves.'  }),
-    new StockItem({ id: 4, sku: 'ABC127', name: 'Apple',            taxable: false, cost: 1.49, quantity: 5,
-                    description: 'A fruit.'  }),
-    new StockItem({ id: 5, sku: '724328149936', name: 'Tissues',    taxable: false, cost: 4.99, quantity: 1,
-                    description: 'You use them to blow your nose, probably.'  })
-  ];
+  private url = 'stockitem';
 
-  constructor(private http: Http, private logger: LoggerService) {
-
-  }
+  constructor(private http: Http,
+              private logger: LoggerService,
+              private settings: ApplicationSettingsService) {}
 
   search(query: string) {
-    return _.filter(this.db, item => _.includes(item.sku.toLowerCase(), query.toLowerCase())
-                                  || _.includes(item.description.toLowerCase(), query.toLowerCase())
-                                  || _.includes(item.name.toLowerCase(), query.toLowerCase()));
+    return [];
   }
 
-  get(sku: string) {
-    return _.find(this.db, { sku: sku });
+  getMany(args: any): Observable<PagedItems<StockItem>> {
+    return this.http.get(this.settings.buildAPIURL(this.url), { search: this.settings.buildSearchParams(args) })
+      .map((res: Response) => res.json())
+      .catch(e => this.logger.observableError(e));
   }
 
-  add(item: StockItem) {
-
+  get(item: StockItem): Observable<StockItem> {
+    return this.http.get(this.settings.buildAPIURL(this.url, item.id))
+      .map((res: Response) => res.json())
+      .catch(e => this.logger.observableError(e));
   }
 
-  update(item: StockItem) {
+  create(item: StockItem): Observable<StockItem> {
+    return this.http.put(this.settings.buildAPIURL(this.url), item)
+      .map((res: Response) => res.json())
+      .catch(e => this.logger.observableError(e));
+  }
 
+  update(item: StockItem): Observable<StockItem> {
+    return this.http.patch(this.settings.buildAPIURL(this.url, item.id), item)
+      .map((res: Response) => res.json())
+      .catch(e => this.logger.observableError(e));
   }
 
   remove(item: StockItem) {
-
+    return this.http.delete(this.settings.buildAPIURL(this.url, item.id))
+      .map((res: Response) => res.json())
+      .catch(e => this.logger.observableError(e));
   }
 }

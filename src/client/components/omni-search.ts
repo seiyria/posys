@@ -28,13 +28,14 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
   constructor(private itemService: StockItemService, private renderer: Renderer) {}
 
   ngOnInit() {
+    // TODO debounce this
     this.globalListenKeypressRemover = this.renderer.listenGlobal('document', 'keypress', ($event) => {
       if($event.key === 'Enter') {
         this._itemSearch(this.searchQuery, true, (items) => {
           if(items.length > 1) { return; }
           this.cancelSearch();
         });
-      } else if($event.srcElement.type !== 'search') {
+      } else if($event.srcElement.type !== 'search' && $event.srcElement.type !== 'text') {
         this.searchQuery += $event.key;
       }
     });

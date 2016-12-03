@@ -1,5 +1,5 @@
 
-// import * as _ from 'lodash';
+import * as _ from 'lodash';
 
 import { Component, OnInit } from '@angular/core';
 import { ViewController, AlertController } from 'ionic-angular';
@@ -15,7 +15,7 @@ import { OrganizationalUnitService } from '../../../services/organizationalunit.
 export class OUManagerComponent implements OnInit {
 
   public ou: OrganizationalUnit = new OrganizationalUnit();
-  public allOU: Observable<OrganizationalUnit[]>;
+  public allOU: OrganizationalUnit[] = [];
   public _formErrors: BehaviorSubject<any> = new BehaviorSubject({});
   public formErrors: Observable<any> = this._formErrors.asObservable();
 
@@ -24,14 +24,17 @@ export class OUManagerComponent implements OnInit {
               public ouService: OrganizationalUnitService) {}
 
   ngOnInit() {
-    this.allOU = this.ouService.getAll();
+    this.ouService.getAll().toPromise().then(data => {
+      this.allOU = data;
+    });
   }
 
   addNewOU() {
     this.ouService
       .create(this.ou)
-      .subscribe(() => {
-        this.allOU = this.ouService.getAll();
+      .subscribe((newOU) => {
+        this.allOU.push(newOU);
+        this.allOU = _.sortBy(this.allOU, 'name');
         this.resetOU();
         this._formErrors.next({});
       }, e => this._formErrors.next(e.formErrors));
@@ -52,7 +55,7 @@ export class OUManagerComponent implements OnInit {
             this.ouService
               .remove(ou)
               .subscribe(() => {
-                this.allOU = this.ouService.getAll();
+                this.allOU = _.reject(this.allOU, checkOU => checkOU.id === ou.id);
               });
           }
         }
@@ -65,7 +68,7 @@ export class OUManagerComponent implements OnInit {
     this.ouService
       .update(ou)
       .subscribe(() => {
-        this.allOU = this.ouService.getAll();
+        _.extend(_.find(this.allOU, { id: ou.id }), ou);
         this.resetOU();
       });
   }

@@ -30,43 +30,28 @@
         </ion-list>
       </ion-col>
       <ion-col width-33 flex-right vertical-center>
-        <button ion-button icon-left (click)="addNewOU()" *ngIf="!ou.id">
-          <ion-icon name="add"></ion-icon>
-          Add
-        </button>
-        <button ion-button icon-left (click)="resetOU()" *ngIf="ou.id" color="secondary">
-          <ion-icon name="undo"></ion-icon>
-          Reset
-        </button>
-        <button ion-button icon-left (click)="updateOU(ou)" *ngIf="ou.id">
-          <ion-icon name="create"></ion-icon>
-          Update
-        </button>
+        <add-button (click)="addNewOU()" *ngIf="!ou.id"></add-button>
+        <reset-button (click)="resetOU()" *ngIf="ou.id"></reset-button>
+        <update-button (click)="updateOU(ou)" *ngIf="ou.id"></update-button>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="(allOU | async)?.length === 0">
+    <ion-row *ngIf="allOU.length === 0">
       <ion-col>
         <div full-height true-center text-center big-text background-text>
-          You don't have any Organizational Units. You'll need to add some to add inventory.
+          You don't have any Organizational Units. You'll need to create some to add inventory.
         </div>
       </ion-col>
     </ion-row>
     <ion-row scroll-row>
       <ion-col>
         <ion-list>
-          <ion-item *ngFor="let ou of allOU | async" no-margin>
+          <ion-item *ngFor="let ou of allOU" no-margin>
             <ion-grid no-padding>
               <ion-row no-padding>
                 <ion-col width-67 vertical-center>{{ ou.name }}</ion-col>
                 <ion-col width-33 flex-right vertical-center>
-                  <button ion-button icon-left color="secondary" (click)="editOU(ou)">
-                    <ion-icon name="create"></ion-icon>
-                    Edit
-                  </button>
-                  <button ion-button icon-left color="danger" (click)="removeOU(ou)">
-                    <ion-icon name="trash"></ion-icon>
-                    Remove
-                  </button>
+                  <edit-button (click)="editOU(ou)"></edit-button>
+                  <remove-button (click)="removeOU(ou)"></remove-button>
                 </ion-col>
               </ion-row>
             </ion-grid>

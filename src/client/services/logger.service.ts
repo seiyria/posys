@@ -31,10 +31,9 @@ export class LoggerService {
     if(returnedValue.flash) {
       this.toastCtrl.create({
         message: returnedValue.flash,
-        duration: 3000,
+        duration: 5000,
         position: 'top',
-        showCloseButton: true,
-        dismissOnPageChange: true
+        showCloseButton: true
       }).present();
     }
 

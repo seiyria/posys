@@ -18,13 +18,23 @@ import { ReportingPageComponent } from '../pages/reporting/reporting';
 import { FormErrorComponent } from '../components/form-error';
 import { TopIconButtonComponent } from '../components/top-icon-button';
 import { OmnisearchComponent } from '../components/omni-search';
+
+import { AddButtonComponent } from '../components/add-button';
+import { EditButtonComponent } from '../components/edit-button';
+import { ResetButtonComponent } from '../components/reset-button';
+import { RemoveButtonComponent } from '../components/remove-button';
+import { UpdateButtonComponent } from '../components/update-button';
+
 import { TransactionItemComponent } from '../pages/pointofsale/transactionitem';
 import { QueryItemComponent } from '../pages/pointofsale/queryitem';
+import { InventoryItemComponent } from '../pages/inventory/inventoryitem';
 
 import { ApplicationSettingsService } from '../services/settings.service';
 import { LoggerService } from '../services/logger.service';
 import { StockItemService } from '../services/stockitem.service';
 import { OrganizationalUnitService } from '../services/organizationalunit.service';
+
+import { PaginationComponent } from 'ionic2-pagination';
 
 import { CurrencyFromSettingsPipe } from '../pipes/currency-from-settings';
 import { TruncatePipe } from '../pipes/truncate';
@@ -47,7 +57,16 @@ import { TruncatePipe } from '../pipes/truncate';
     TopIconButtonComponent,
     OmnisearchComponent,
     TransactionItemComponent,
+    InventoryItemComponent,
     QueryItemComponent,
+
+    AddButtonComponent,
+    EditButtonComponent,
+    ResetButtonComponent,
+    RemoveButtonComponent,
+    UpdateButtonComponent,
+
+    PaginationComponent,
 
     CurrencyFromSettingsPipe,
     TruncatePipe

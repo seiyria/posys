@@ -1,5 +1,15 @@
 
+import * as _ from 'lodash';
+
 export class Logger {
+
+  static parseDatabaseError(err: any, category: string): string {
+    if(_.includes(err.message, 'violates foreign key constraint')) {
+      return `Items that depend on that ${category} still exist. Removal aborted.`;
+    }
+
+    return 'Unknown error.';
+  }
 
   static browserError(err: string): any {
     return { message: err };

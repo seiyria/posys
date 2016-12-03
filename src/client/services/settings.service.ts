@@ -1,5 +1,8 @@
 
+import * as _ from 'lodash';
+
 import { Injectable } from '@angular/core';
+import { URLSearchParams } from '@angular/http';
 
 const defaultSettings = {
   currencyCode: 'USD',
@@ -25,7 +28,13 @@ export class ApplicationSettingsService {
     return this.settings.connectionUrl;
   }
 
-  buildAPIURL(fragment: string, id?: number) {
+  buildAPIURL(fragment: string, id?: number): string {
     return `${this.settings.connectionUrl}/${fragment}${id ? '/' + id : ''}`;
+  }
+
+  buildSearchParams(opts): URLSearchParams {
+    const retVal = new URLSearchParams();
+    _.each(opts, (v, k) => retVal.set(k, v));
+    return retVal;
   }
 }
