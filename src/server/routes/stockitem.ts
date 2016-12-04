@@ -33,7 +33,7 @@ export default (app) => {
         qb
           .where('sku', 'LIKE', req.body.query)
           .orWhere('description', 'LIKE', req.query.body)
-          .orWhere('name', 'LIKE', req.query.body)
+          .orWhere('name', 'LIKE', req.query.body);
       })
       .fetchPage({
         pageSize: Settings.search.pageSize
@@ -71,8 +71,8 @@ export default (app) => {
   });
 
   app.patch('/stockitem/:id', (req, res) => {
-    req.body.quantity = ''+req.body.quantity;
-    req.body.organizationalunitId = ''+req.body.organizationalunitId;
+    req.body.quantity = '' + req.body.quantity;
+    req.body.organizationalunitId = '' + req.body.organizationalunitId;
     delete req.body.organizationalunit;
 
     StockItem
