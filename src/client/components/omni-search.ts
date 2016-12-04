@@ -1,4 +1,6 @@
 
+import * as _ from 'lodash';
+
 import { Component, Input, Output, EventEmitter, Renderer, OnInit, OnDestroy } from '@angular/core';
 
 import { StockItemService } from '../services/stockitem.service';
@@ -35,7 +37,7 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
           if(items.length > 1) { return; }
           this.cancelSearch();
         });
-      } else if($event.srcElement.type !== 'search' && $event.srcElement.type !== 'text') {
+      } else if(!_.includes(['search', 'text', 'number'], $event.srcElement.type)) {
         this.searchQuery += $event.key;
       }
     });
@@ -57,9 +59,13 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
 
   _itemSearch(query: string, force = false, callback?: Function) {
     this.hasQuery.emit(this.showSearchResults());
-    const items = this.itemService.search(query);
-    this.searchResults.emit({ items, force });
-    if(callback) { callback(items); }
+    this.itemService
+      .search(query)
+      .toPromise()
+      .then(items => {
+        this.searchResults.emit({ items, force });
+        if(callback) { callback(items); }
+      });
   }
 
   cancelSearch() {

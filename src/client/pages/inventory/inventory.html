@@ -27,12 +27,18 @@
 
   <ion-grid scroll-grid>
     <ion-row>
-      <ion-col>
-        <omni-search></omni-search>
+      <ion-col width-50>
+        <omni-search (hasQuery)="toggleSearchResults($event)" (searchResults)="changeSearchResults($event)"></omni-search>
+      </ion-col>
+      <ion-col width-20 vertical-center>
+        <ion-item shrunk-item-checkbox no-border-bottom>
+          <ion-label>Hide Out of Stock Items</ion-label>
+          <ion-checkbox color="primary" [(ngModel)]="hideOutOfStock" (ionChange)="toggleOOS()"></ion-checkbox>
+        </ion-item>
       </ion-col>
     </ion-row>
 
-    <ion-row>
+    <ion-row *ngIf="!hasSearchResults || hasSearchResults && searchResults.length > 0">
       <ion-col>
         <ion-list no-margin-bottom>
           <ion-item>
@@ -52,7 +58,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-row scroll-row>
+    <ion-row scroll-row *ngIf="!hasSearchResults">
       <ion-col>
         <ion-list>
           <ion-item *ngFor="let item of currentInventoryItems">
@@ -62,7 +68,25 @@
       </ion-col>
     </ion-row>
 
-    <ion-row *ngIf="paginationInfo">
+    <ion-row scroll-row *ngIf="hasSearchResults && searchResults.length > 0">
+      <ion-col>
+        <ion-list>
+          <ng-container *ngFor="let item of searchResults">
+            <ion-item *ngIf="hideOutOfStock && item.quantity > 0 || !hideOutOfStock">
+              <inventory-item [item]="item" (edit)="openItemModal(item)"></inventory-item>
+            </ion-item>
+          </ng-container>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row scroll-row *ngIf="hasSearchResults && searchResults.length === 0">
+      <ion-col full-height true-center big-text background-text>
+        No items match your search query.
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="paginationInfo && !hasSearchResults && searchResults.length > 0">
       <ion-col width-50 offset-25>
         <pagination
           color="light"

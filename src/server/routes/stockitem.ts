@@ -16,6 +16,8 @@ export default (app) => {
     StockItem
       .forge()
       .orderBy('name')
+      .orderBy('sku')
+      .where('quantity', '>', +req.query.hideOutOfStock ? '0' : '-1')
       .fetchPage(pageOpts)
       .then(collection => {
         res.json({ items: collection.toJSON(), pagination: collection.pagination });
@@ -25,18 +27,22 @@ export default (app) => {
       });
   });
 
-  app.post('/stockitem/search', (req, res) => {
+  app.get('/stockitem/search', (req, res) => {
+    const query = `%${req.query.query}%`;
     StockItem
-      .collection()
-      .orderBy('name', 'ASC')
+      .forge()
+      .orderBy('name')
+      .orderBy('sku')
       .query(qb => {
         qb
-          .where('sku', 'LIKE', req.body.query)
-          .orWhere('description', 'LIKE', req.query.body)
-          .orWhere('name', 'LIKE', req.query.body);
+          .where('sku', 'ILIKE', query)
+          .orWhere('description', 'ILIKE', query)
+          .orWhere('name', 'ILIKE', query);
       })
       .fetchPage({
-        pageSize: Settings.search.pageSize
+        pageSize: Settings.search.pageSize,
+        page: 1,
+        withRelated: ['organizationalunit']
       })
       .then(collection => {
         res.json(collection.toJSON());
@@ -73,6 +79,8 @@ export default (app) => {
   app.patch('/stockitem/:id', (req, res) => {
     req.body.quantity = '' + req.body.quantity;
     req.body.organizationalunitId = '' + req.body.organizationalunitId;
+    req.body.reorderThreshold = '' + req.body.reorderThreshold;
+    req.body.reorderUpToAmount = '' + req.body.reorderUpToAmount;
     delete req.body.organizationalunit;
 
     StockItem

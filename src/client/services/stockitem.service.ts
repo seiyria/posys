@@ -20,8 +20,10 @@ export class StockItemService {
               private logger: LoggerService,
               private settings: ApplicationSettingsService) {}
 
-  search(query: string) {
-    return [];
+  search(query: string): Observable<StockItem[]> {
+    return this.http.get(this.settings.buildAPIURL(`${this.url}/search`), { search: this.settings.buildSearchParams({ query }) })
+      .map((res: Response) => res.json())
+      .catch(e => this.logger.observableError(e));
   }
 
   getMany(args: any): Observable<PagedItems<StockItem>> {

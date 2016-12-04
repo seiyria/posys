@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 
 import { IonicApp, IonicModule } from 'ionic-angular';
+import { Ng2Webstorage } from 'ng2-webstorage';
 
 import { MyAppComponent } from './app.component';
 import { HomePageComponent } from '../pages/home/home';
@@ -72,6 +73,7 @@ import { TruncatePipe } from '../pipes/truncate';
     TruncatePipe
   ],
   imports: [
+    Ng2Webstorage,
     IonicModule.forRoot(MyAppComponent)
   ],
   bootstrap: [IonicApp],

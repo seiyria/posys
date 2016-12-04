@@ -11,6 +11,8 @@ import { StockItemService } from '../../services/stockitem.service';
 import { StockItem } from '../../models/stockitem';
 import { Pagination } from 'ionic2-pagination';
 
+import { LocalStorage } from 'ng2-webstorage';
+
 @Component({
   selector: 'my-page-inventory',
   templateUrl: 'inventory.html'
@@ -20,15 +22,26 @@ export class InventoryPageComponent implements OnInit {
   public currentInventoryItems: StockItem[] = [];
   public paginationInfo: Pagination;
 
+  public hasSearchResults: boolean = false;
+  public searchResults: StockItem[] = [];
+
+  @LocalStorage()
+  public hideOutOfStock: boolean;
+
   constructor(public modalCtrl: ModalController, public siService: StockItemService) {}
 
   ngOnInit() {
     this.changePage(1);
   }
 
+  toggleOOS() {
+    if(!this.paginationInfo) return;
+    this.changePage(this.paginationInfo.page);
+  }
+
   changePage(newPage) {
     this.siService
-      .getMany({ page: newPage, pageSize: 25 })
+      .getMany({ page: newPage, pageSize: 25, hideOutOfStock: ~~this.hideOutOfStock })
       .toPromise()
       .then(({ items, pagination }) => {
         this.currentInventoryItems = items;
@@ -40,7 +53,7 @@ export class InventoryPageComponent implements OnInit {
       let modal = this.modalCtrl.create(InventoryManagerComponent, {
           stockItem: _.cloneDeep(item) || new StockItem()
       });
-      modal.onDidDismiss(data => {
+      modal.onDidDismiss(() => {
         this.changePage(this.paginationInfo.page);
       });
       modal.present();
@@ -49,6 +62,14 @@ export class InventoryPageComponent implements OnInit {
   openOUModal() {
     let modal = this.modalCtrl.create(OUManagerComponent);
     modal.present();
+  }
+
+  toggleSearchResults(hasResults: boolean) {
+    this.hasSearchResults = hasResults;
+  }
+
+  changeSearchResults(results: any) {
+    this.searchResults = results.items;
   }
 
   // TODO do in a web worker (probably)
