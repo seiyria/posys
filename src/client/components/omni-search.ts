@@ -25,6 +25,7 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
 
   @Output() searchResults = new EventEmitter();
   @Output() hasQuery = new EventEmitter();
+  @Input() preventEnterClear: boolean;
   @Input() cancelWatcher: EventEmitter<any>;
 
   constructor(private itemService: StockItemService, private renderer: Renderer) {}
@@ -35,7 +36,10 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
       if($event.key === 'Enter') {
         this._itemSearch(this.searchQuery, true, (items) => {
           if(items.length > 1) { return; }
-          this.cancelSearch();
+
+          if(!this.preventEnterClear) {
+            this.cancelSearch();
+          }
         });
       } else if(!_.includes(['search', 'text', 'number', 'textarea'], $event.srcElement.type)) {
         this.searchQuery += $event.key;

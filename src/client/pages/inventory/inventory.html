@@ -28,7 +28,10 @@
   <ion-grid scroll-grid>
     <ion-row>
       <ion-col width-50>
-        <omni-search (hasQuery)="toggleSearchResults($event)" (searchResults)="changeSearchResults($event)"></omni-search>
+        <omni-search
+          preventEnterClear="true"
+          (hasQuery)="toggleSearchResults($event)"
+          (searchResults)="changeSearchResults($event)"></omni-search>
       </ion-col>
       <ion-col width-20 vertical-center>
         <ion-item shrunk-item-checkbox no-border-bottom>

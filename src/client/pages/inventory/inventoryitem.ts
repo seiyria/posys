@@ -17,7 +17,7 @@ import { StockItem } from '../../models/stockitem';
           </ion-row>
         </ion-col>
         <ion-col width-10 no-padding vertical-center>
-          {{ item.organizationalunit.name | truncate:50 }}
+          {{ item.organizationalunit.name | truncate:15 }}
         </ion-col>
         <ion-col width-10 no-padding vertical-center>
           {{ item.sku }}
