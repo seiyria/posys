@@ -74,6 +74,8 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
       if(!this.preventEnterClear) {
         this.cancelSearch();
       }
+
+      // TODO if items.length === 0, prompt to add an item
     });
   }
 
