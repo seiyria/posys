@@ -22,7 +22,7 @@
     "start": "npm run ionic:serve",
     "start:server": "nodemon --exec \"ts-node\" -- \"src/server/index.ts\"",
     "server:build": "tsc -p src/server",
-    "migrate:latest": "knex migrate:latest --knexfile src/server/knexfilwe.ts",
+    "migrate:latest": "knex migrate:latest --knexfile src/server/knexfile.ts",
     "migrate:rollback": "knex migrate:rollback --knexfile src/server/knexfile.ts",
     "migrate:reset": "npm run migrate:rollback && npm run migrate:latest",
     "seed:run": "knex seed:run --knexfile src/server/knexfile.ts"
