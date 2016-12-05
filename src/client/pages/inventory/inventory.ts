@@ -54,7 +54,7 @@ export class InventoryPageComponent implements OnInit {
   openItemModal(item?: StockItem) {
       let modal = this.modalCtrl.create(InventoryManagerComponent, {
           stockItem: _.cloneDeep(item) || new StockItem()
-      });
+      }, { enableBackdropDismiss: false });
       modal.onDidDismiss(() => {
         this.changePage(this.paginationInfo.page);
       });
@@ -62,12 +62,12 @@ export class InventoryPageComponent implements OnInit {
   }
 
   openOUModal() {
-    let modal = this.modalCtrl.create(OUManagerComponent);
+    let modal = this.modalCtrl.create(OUManagerComponent, null, { enableBackdropDismiss: false });
     modal.present();
   }
 
   openQuickModal() {
-    let modal = this.modalCtrl.create(QuickComponent);
+    let modal = this.modalCtrl.create(QuickComponent, null, { enableBackdropDismiss: false });
     modal.present();
   }
 
