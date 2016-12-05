@@ -25,6 +25,7 @@ import { OmnisearchComponent } from '../components/omni-search';
 import { AddButtonComponent } from '../components/add-button';
 import { EditButtonComponent } from '../components/edit-button';
 import { ResetButtonComponent } from '../components/reset-button';
+import { ImportButtonComponent } from '../components/import-button';
 import { RemoveButtonComponent } from '../components/remove-button';
 import { UpdateButtonComponent } from '../components/update-button';
 
@@ -68,6 +69,7 @@ import { TruncatePipe } from '../pipes/truncate';
     AddButtonComponent,
     EditButtonComponent,
     ResetButtonComponent,
+    ImportButtonComponent,
     RemoveButtonComponent,
     UpdateButtonComponent,
 

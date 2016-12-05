@@ -45,9 +45,9 @@ if(!config.db.hostname || !config.db.username || !config.db.database) {
   kill();
 }
 
-const db = require('knex')(require('./knexfile'));
+export const knex = require('knex')(require('./knexfile'));
 
-export const bookshelf = require('bookshelf')(db);
+export const bookshelf = require('bookshelf')(knex);
 
 const validator = require('validator');
 validator.isRequired = (x) => !!x;

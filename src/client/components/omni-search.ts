@@ -69,7 +69,7 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
       });
 
       /* don't hijack other inputs that might be visible */
-    } else if(!_.includes(['text', 'number', 'textarea'], $event.srcElement.type)) {
+    } else if($event.srcElement && !_.includes(['text', 'number', 'textarea'], $event.srcElement.type)) {
       this.searchQuery += $event.key;
 
       // don't bubble up to the global event if it's already been processed
@@ -85,10 +85,6 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.globalListenKeypressRemover();
-  }
-
-  itemSearch($event): void {
-    this._itemSearch($event.target.value);
   }
 
   _itemSearch(query: string, force = false, callback?: Function): void {

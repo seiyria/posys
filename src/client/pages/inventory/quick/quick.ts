@@ -31,7 +31,17 @@ export class QuickComponent {
   }
 
   removeItem(item: StockItem) {
-    console.log('remove', item);
+    this.scanItems = _.reject(this.scanItems, i => i === item);
+  }
+
+  importItems() {
+    this.siService
+      .importMany(this.scanItems)
+      .toPromise()
+      .then(data => {
+        console.log(data);
+        this.dismiss();
+      });
   }
 
   dismiss() {

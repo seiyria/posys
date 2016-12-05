@@ -1,4 +1,8 @@
 
+import * as _ from 'lodash';
+
+import { bookshelf, knex } from '../server';
+
 import { StockItem } from '../orm/stockitem';
 
 import { Logger } from '../logger';
@@ -52,12 +56,31 @@ export default (app) => {
       });
   });
 
+  app.post('/stockitem/import', (req, res) => {
+    let numItems = 0;
+
+    Promise.all(_.map(req.body, (v: number, k: string) => {
+      numItems += v;
+
+      return knex('stockitem')
+        .where('sku', '=', k)
+        .increment('quantity', v);
+    }))
+      .then(() => {
+        res.json({ flash: `Updated quantities for ${_.keys(req.body).length} stock items (${numItems} total imported)` });
+      })
+      .catch(e => {
+        res.status(500).json(Logger.browserError(Logger.error('Route:StockItem/import:POST', e)));
+      });
+  });
+
   app.put('/stockitem', (req, res) => {
     StockItem
       .forge(req.body)
       .save()
       .then(item => {
-        res.json(item);
+        item = item.toJSON();
+        res.json({ flash: `Created new item "${item.name}"`, data: item });
       })
       .catch(e => {
         res.status(500).json({ formErrors: e.data || [] });
@@ -72,7 +95,7 @@ export default (app) => {
         res.json(item);
       })
       .catch(e => {
-        res.status(500).json(Logger.browserError(Logger.error('Route:StockItem:GET/:id', e)));
+        res.status(500).json(Logger.browserError(Logger.error('Route:StockItem/:id:GET', e)));
       });
   });
 
@@ -87,7 +110,8 @@ export default (app) => {
       .forge({ id: req.params.id })
       .save(req.body, { patch: true })
       .then(item => {
-        res.json(item);
+        item = item.toJSON();
+        res.json({ flash: `Updated item "${item.name}"`, data: item });
       })
       .catch(e => {
         res.status(500).json({ formErrors: e.data || [] });
@@ -99,7 +123,8 @@ export default (app) => {
       .forge({ id: req.params.id })
       .destroy()
       .then(item => {
-        res.json(item);
+        item = item.toJSON();
+        res.json({ flash: `Removed item "${item.name}"`, data: item });
       })
       .catch(e => {
         const errorMessage = Logger.parseDatabaseError(e, 'Item');

@@ -29,14 +29,27 @@ export class LoggerService {
     let returnedValue = e instanceof Response ? e.json() : e;
 
     if(returnedValue.flash) {
-      this.toastCtrl.create({
-        message: returnedValue.flash,
-        duration: 5000,
-        position: 'top',
-        showCloseButton: true
-      }).present();
+      this.doFlash(returnedValue.flash);
     }
 
     return Observable.throw(returnedValue);
+  }
+
+  observableUnwrap(e: any) {
+    if(e.flash) {
+      this.doFlash(e.flash);
+      return e.data;
+    }
+
+    return e;
+  }
+
+  doFlash(message: string) {
+    this.toastCtrl.create({
+      message: message,
+      duration: 5000,
+      position: 'top',
+      showCloseButton: true
+    }).present();
   }
 }

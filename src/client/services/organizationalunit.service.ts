@@ -21,25 +21,25 @@ export class OrganizationalUnitService {
 
   getAll(): Observable<OrganizationalUnit[]> {
     return this.http.get(this.settings.buildAPIURL(this.url))
-      .map((res: Response) => res.json())
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }
 
   create(item: OrganizationalUnit): Observable<OrganizationalUnit> {
     return this.http.put(this.settings.buildAPIURL(this.url), item)
-      .map((res: Response) => res.json())
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }
 
   update(item: OrganizationalUnit): Observable<OrganizationalUnit> {
     return this.http.patch(this.settings.buildAPIURL(this.url, item.id), item)
-      .map((res: Response) => res.json())
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }
 
   remove(item: OrganizationalUnit) {
     return this.http.delete(this.settings.buildAPIURL(this.url, item.id))
-      .map((res: Response) => res.json())
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }
 }

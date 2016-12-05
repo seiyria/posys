@@ -83,21 +83,21 @@ export const StockItem = bookshelf.Model.extend({
       {
         method: 'isInt',
         args: { min: 0 },
-        error: 'You must specify a quantity greater than or equal to 0.'
+        error: 'You must specify a quantity >= 0.'
       }
     ],
     reorderThreshold: [
       {
         method: 'isInt',
         args: { min: 0 },
-        error: 'You must specify a threshold greater than or equal to 0.'
+        error: 'You must specify a threshold >= 0.'
       }
     ],
     reorderUpToAmount: [
       {
         method: 'isInt',
         args: { min: 0 },
-        error: 'You must specify an amount greater than or equal to 0.'
+        error: 'You must specify an amount >= 0.'
       }
     ]
   }

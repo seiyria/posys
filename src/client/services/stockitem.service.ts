@@ -22,37 +22,48 @@ export class StockItemService {
 
   search(query: string): Observable<StockItem[]> {
     return this.http.get(this.settings.buildAPIURL(`${this.url}/search`), { search: this.settings.buildSearchParams({ query }) })
-      .map((res: Response) => res.json())
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }
 
   getMany(args: any): Observable<PagedItems<StockItem>> {
     return this.http.get(this.settings.buildAPIURL(this.url), { search: this.settings.buildSearchParams(args) })
-      .map((res: Response) => res.json())
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }
 
   get(item: StockItem): Observable<StockItem> {
     return this.http.get(this.settings.buildAPIURL(this.url, item.id))
-      .map((res: Response) => res.json())
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }
 
   create(item: StockItem): Observable<StockItem> {
     return this.http.put(this.settings.buildAPIURL(this.url), item)
-      .map((res: Response) => res.json())
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }
 
   update(item: StockItem): Observable<StockItem> {
     return this.http.patch(this.settings.buildAPIURL(this.url, item.id), item)
-      .map((res: Response) => res.json())
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }
 
-  remove(item: StockItem) {
+  remove(item: StockItem): Observable<StockItem> {
     return this.http.delete(this.settings.buildAPIURL(this.url, item.id))
-      .map((res: Response) => res.json())
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
+      .catch(e => this.logger.observableError(e));
+  }
+
+  importMany(items: StockItem[]): Observable<any> {
+    const data = _.reduce(items, (prev: any, cur: StockItem) => {
+      prev[cur.sku] = prev[cur.sku] || 0;
+      prev[cur.sku]++;
+      return prev;
+    }, {});
+    return this.http.post(this.settings.buildAPIURL(`${this.url}/import`), data)
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }
 }

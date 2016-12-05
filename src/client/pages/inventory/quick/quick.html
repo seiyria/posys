@@ -4,6 +4,7 @@
       Quick Scan Inventory
     </ion-title>
     <ion-buttons start>
+      <import-button (click)="importItems()" [disabled]="scanItems.length === 0"></import-button>
       <button ion-button (click)="dismiss()">
         <span color="primary">Cancel</span>
       </button>
@@ -18,21 +19,32 @@
         <omni-search (searchResults)="handleSearchResults($event)" autofocus="true"></omni-search>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="scanItems.length === 0">
-      <ion-col>
+    <ion-row full-height *ngIf="scanItems.length === 0">
+      <ion-col full-height>
         <div full-height true-center text-center big-text background-text>
           You don't have any items scanned.
         </div>
       </ion-col>
     </ion-row>
-    <ion-row scroll-row>
+    <ion-row scroll-row id="scan-list">
       <ion-col>
         <ion-list>
-          <ion-item *ngFor="let item of scanItems" no-margin id="scan-list">
+          <ion-item *ngFor="let item of scanItems, let i = index" no-margin>
             <ion-grid no-padding>
               <ion-row no-padding>
-                <ion-col width-67 vertical-center>{{ item.name }}</ion-col>
-                <ion-col width-33 flex-right vertical-center>
+                <ion-col width-10 vertical-center>
+                  #{{ i + 1 }}
+                </ion-col>
+                <ion-col>
+                  <ion-row>
+                    <ion-col no-padding>{{ item.name | truncate:25 }}</ion-col>
+                  </ion-row>
+                  <ion-row background-text>
+                    <ion-col no-padding>{{ item.description | truncate:25 }}</ion-col>
+                  </ion-row>
+                </ion-col>
+                <ion-col vertical-center>{{ item.sku }}</ion-col>
+                <ion-col width-20 text-right vertical-center>
                   <remove-button (click)="removeItem(item)"></remove-button>
                 </ion-col>
               </ion-row>
