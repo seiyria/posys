@@ -10,13 +10,16 @@ import { StockItem } from '../models/stockitem';
   selector: 'omni-search',
   providers: [StockItemService],
   template: `
-    <ion-searchbar [(ngModel)]="searchQuery"
-                   [showCancelButton]="true"
-                   placeholder="Search items"
-                   animated="true"
-                   debounce="400"
-                   (ionCancel)="cancelSearch()"
-                   (ngModelChange)="handleQuery($event)"></ion-searchbar>
+    <form (submit)="doSearch()">
+      <ion-searchbar [(ngModel)]="searchQuery"
+                     [ngModelOptions]="{standalone: true}"
+                     [showCancelButton]="true"
+                     placeholder="Search items"
+                     animated="true"
+                     debounce="0"
+                     (ionCancel)="cancelSearch()"
+                     (ionInput)="handleIonChange($event)"></ion-searchbar>
+    </form>
 `,
 })
 export class OmnisearchComponent implements OnInit, OnDestroy {
@@ -48,6 +51,12 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
         return;
       }
 
+      // don't hijack other inputs that might be visible
+      if($event.srcElement && _.includes(['text', 'number', 'textarea', 'search'], $event.srcElement.type)) {
+        return;
+      }
+
+      $event.global = true;
       this.handleQuery($event);
     });
 
@@ -58,23 +67,38 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
     }
   }
 
+  doSearch() {
+    this._itemSearch(this.searchQuery, true, (items) => {
+      if(items.length > 1) { return; }
+
+      if(!this.preventEnterClear) {
+        this.cancelSearch();
+      }
+    });
+  }
+
+  handleIonChange($event: any) {
+    this.handleQuery($event);
+  }
+
   handleQuery($event: any) {
-    if($event.key === 'Enter') {
-      this._itemSearch(this.searchQuery, true, (items) => {
-        if(items.length > 1) { return; }
+    if(_.isString($event)) {
+      this.searchQuery = $event;
 
-        if(!this.preventEnterClear) {
-          this.cancelSearch();
-        }
-      });
-
-      /* don't hijack other inputs that might be visible */
-    } else if($event.srcElement && !_.includes(['text', 'number', 'textarea'], $event.srcElement.type)) {
+    // prevent multi-character keys from being added
+    } else if($event.global && $event.key.length === 1) {
       this.searchQuery += $event.key;
 
       // don't bubble up to the global event if it's already been processed
       $event.stopPropagation();
       $event.preventDefault();
+
+    } else if($event.key === 'Enter') {
+      this.doSearch();
+
+    } else if($event.key === 'Escape' || this.searchQuery === '') {
+      this.cancelSearch();
+
     }
   }
 
@@ -102,7 +126,7 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
     this.searchQuery = '';
     this.inputElement.value = '';
     this.searchItems = [];
-    this.hasQuery.emit(this.showSearchResults());
+    this.hasQuery.emit(false);
     this.searchResults.emit({ items: [] });
   }
 

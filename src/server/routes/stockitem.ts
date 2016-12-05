@@ -1,7 +1,7 @@
 
 import * as _ from 'lodash';
 
-import { bookshelf, knex } from '../server';
+import { knex } from '../server';
 
 import { StockItem } from '../orm/stockitem';
 
