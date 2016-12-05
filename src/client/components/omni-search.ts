@@ -14,6 +14,7 @@ import { StockItem } from '../models/stockitem';
                    [showCancelButton]="true"
                    placeholder="Search items"
                    animated="true"
+                   debounce="400"
                    (ionCancel)="cancelSearch()"
                    (ionInput)="itemSearch($event)"></ion-searchbar>
 `,
@@ -31,7 +32,6 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
   constructor(private itemService: StockItemService, private renderer: Renderer) {}
 
   ngOnInit() {
-    // TODO debounce this
     this.globalListenKeypressRemover = this.renderer.listenGlobal('document', 'keypress', ($event) => {
       if($event.key === 'Enter') {
         this._itemSearch(this.searchQuery, true, (items) => {
