@@ -35,13 +35,13 @@ export class InventoryPageComponent implements OnInit {
   }
 
   toggleOOS() {
-    if(!this.paginationInfo) return;
+    if(!this.paginationInfo) { return; }
     this.changePage(this.paginationInfo.page);
   }
 
   changePage(newPage) {
     this.siService
-      .getMany({ page: newPage, pageSize: 25, hideOutOfStock: ~~this.hideOutOfStock })
+      .getMany({ page: newPage, pageSize: 25, hideOutOfStock: +this.hideOutOfStock })
       .toPromise()
       .then(({ items, pagination }) => {
         this.currentInventoryItems = items;
@@ -49,7 +49,7 @@ export class InventoryPageComponent implements OnInit {
       });
   }
 
-  openItemModal(item: StockItem|null) {
+  openItemModal(item?: StockItem) {
       let modal = this.modalCtrl.create(InventoryManagerComponent, {
           stockItem: _.cloneDeep(item) || new StockItem()
       });

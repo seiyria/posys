@@ -26,7 +26,7 @@ export class InventoryManagerComponent {
     this.allOU = this.ouService.getAll();
   }
 
-  dismiss(item: StockItem|null) {
+  dismiss(item?: StockItem) {
     this.viewCtrl.dismiss(item);
   }
 

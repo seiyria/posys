@@ -50,7 +50,7 @@
     "express": "^4.14.0",
     "ionic-angular": "2.0.0-rc.3",
     "ionic-native": "2.2.3",
-    "ionic2-pagination": "0.0.4",
+    "ionic2-pagination": "^0.1.0",
     "ionicons": "3.0.0",
     "knex": "^0.12.6",
     "lodash": "^4.17.2",

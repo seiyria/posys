@@ -88,13 +88,13 @@
 
     <ion-row *ngIf="paginationInfo && !hasSearchResults && searchResults.length > 0">
       <ion-col width-50 offset-25>
-        <pagination
+        <ionc-pagination
           color="light"
           (clickBeginning)="changePage(1)"
           (clickPrevious)="changePage(paginationInfo.page - 1)"
           (clickNext)="changePage(paginationInfo.page + 1)"
           (clickEnd)="changePage(paginationInfo.pageCount)"
-          [pagination]="paginationInfo"></pagination>
+          [pagination]="paginationInfo"></ionc-pagination>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -1,6 +1,8 @@
 
 import * as _ from 'lodash';
 
+import { OrganizationalUnit } from './organizationalunit';
+
 export class StockItem {
   id: number;
   sku: string;
@@ -9,6 +11,7 @@ export class StockItem {
   photoUrl?: string;
   description?: string;
   organizationalunitId?: number;
+  organizationalunit?: OrganizationalUnit;
   taxable: boolean;
   cost: number;
   vendorPurchasePrice?: number;
