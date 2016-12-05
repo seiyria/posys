@@ -5,6 +5,7 @@ import { ModalController } from 'ionic-angular';
 
 import { InventoryManagerComponent } from './management/inventory.management';
 import { OUManagerComponent } from './oumanage/ou.management';
+import { QuickComponent } from './quick/quick';
 
 import { StockItemService } from '../../services/stockitem.service';
 
@@ -61,6 +62,11 @@ export class InventoryPageComponent implements OnInit {
 
   openOUModal() {
     let modal = this.modalCtrl.create(OUManagerComponent);
+    modal.present();
+  }
+
+  openQuickModal() {
+    let modal = this.modalCtrl.create(QuickComponent);
     modal.present();
   }
 

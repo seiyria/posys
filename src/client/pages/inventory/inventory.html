@@ -16,6 +16,9 @@
       <button ion-fab (click)="openOUModal()">
         <ion-icon name="filing"></ion-icon>
       </button>
+      <button ion-fab (click)="openQuickModal()">
+        <ion-icon name="barcode"></ion-icon>
+      </button>
       <button ion-fab color="danger" (click)="importData()">
         <ion-icon name="cloud-upload"></ion-icon>
       </button>
@@ -30,6 +33,7 @@
       <ion-col width-50>
         <omni-search
           preventEnterClear="true"
+          ignoreModalInput="true"
           (hasQuery)="toggleSearchResults($event)"
           (searchResults)="changeSearchResults($event)"></omni-search>
       </ion-col>

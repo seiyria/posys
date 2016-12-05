@@ -9,6 +9,8 @@ import { HomePageComponent } from '../pages/home/home';
 import { InventoryPageComponent } from '../pages/inventory/inventory';
 import { InventoryManagerComponent } from '../pages/inventory/management/inventory.management';
 import { OUManagerComponent } from '../pages/inventory/oumanage/ou.management';
+import { QuickComponent } from '../pages/inventory/quick/quick';
+
 import { AboutComponent } from '../pages/settings/about/about';
 import { SettingsPageComponent } from '../pages/settings/settings';
 import { PointOfSalePageComponent } from '../pages/pointofsale/pointofsale';
@@ -47,6 +49,8 @@ import { TruncatePipe } from '../pipes/truncate';
     InventoryPageComponent,
     InventoryManagerComponent,
     OUManagerComponent,
+    QuickComponent,
+
     SettingsPageComponent,
     AboutComponent,
     PointOfSalePageComponent,
@@ -83,6 +87,7 @@ import { TruncatePipe } from '../pipes/truncate';
     InventoryPageComponent,
     InventoryManagerComponent,
     OUManagerComponent,
+    QuickComponent,
     SettingsPageComponent,
     AboutComponent,
     PointOfSalePageComponent,

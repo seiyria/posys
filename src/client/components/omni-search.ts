@@ -1,7 +1,7 @@
 
 import * as _ from 'lodash';
 
-import { Component, Input, Output, EventEmitter, Renderer, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer, OnInit, OnDestroy, ElementRef } from '@angular/core';
 
 import { StockItemService } from '../services/stockitem.service';
 import { StockItem } from '../models/stockitem';
@@ -16,34 +16,39 @@ import { StockItem } from '../models/stockitem';
                    animated="true"
                    debounce="400"
                    (ionCancel)="cancelSearch()"
-                   (ionInput)="itemSearch($event)"></ion-searchbar>
+                   (ngModelChange)="handleQuery($event)"></ion-searchbar>
 `,
 })
 export class OmnisearchComponent implements OnInit, OnDestroy {
   private searchItems: StockItem[] = [];
   private globalListenKeypressRemover: Function;
+  private inputElement: any;
   public searchQuery: string = '';
 
   @Output() searchResults = new EventEmitter();
   @Output() hasQuery = new EventEmitter();
+  @Input() autofocus: boolean;
+  @Input() ignoreModalInput: boolean;
   @Input() preventEnterClear: boolean;
   @Input() cancelWatcher: EventEmitter<any>;
 
-  constructor(private itemService: StockItemService, private renderer: Renderer) {}
+  constructor(private itemService: StockItemService,
+              private element: ElementRef,
+              private renderer: Renderer) {}
 
   ngOnInit() {
-    this.globalListenKeypressRemover = this.renderer.listenGlobal('document', 'keypress', ($event) => {
-      if($event.key === 'Enter') {
-        this._itemSearch(this.searchQuery, true, (items) => {
-          if(items.length > 1) { return; }
+    this.inputElement = this.element.nativeElement.querySelector('ion-searchbar input');
 
-          if(!this.preventEnterClear) {
-            this.cancelSearch();
-          }
-        });
-      } else if(!_.includes(['search', 'text', 'number', 'textarea'], $event.srcElement.type)) {
-        this.searchQuery += $event.key;
+    if(this.autofocus) {
+      this.inputElement.focus();
+    }
+
+    this.globalListenKeypressRemover = this.renderer.listenGlobal('document', 'keypress', ($event) => {
+      if(this.ignoreModalInput && this.checkIfModalOnPage()) {
+        return;
       }
+
+      this.handleQuery($event);
     });
 
     if(this.cancelWatcher) {
@@ -53,15 +58,40 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
     }
   }
 
+  handleQuery($event: any) {
+    if($event.key === 'Enter') {
+      this._itemSearch(this.searchQuery, true, (items) => {
+        if(items.length > 1) { return; }
+
+        if(!this.preventEnterClear) {
+          this.cancelSearch();
+        }
+      });
+
+      /* don't hijack other inputs that might be visible */
+    } else if(!_.includes(['text', 'number', 'textarea'], $event.srcElement.type)) {
+      this.searchQuery += $event.key;
+
+      // don't bubble up to the global event if it's already been processed
+      $event.stopPropagation();
+      $event.preventDefault();
+    }
+  }
+
+  checkIfModalOnPage(): boolean {
+    const nodes = document.getElementsByTagName('ion-modal');
+    return nodes.length > 0;
+  }
+
   ngOnDestroy() {
     this.globalListenKeypressRemover();
   }
 
-  itemSearch($event) {
+  itemSearch($event): void {
     this._itemSearch($event.target.value);
   }
 
-  _itemSearch(query: string, force = false, callback?: Function) {
+  _itemSearch(query: string, force = false, callback?: Function): void {
     this.hasQuery.emit(this.showSearchResults());
     this.itemService
       .search(query)
@@ -72,14 +102,15 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
       });
   }
 
-  cancelSearch() {
+  cancelSearch(): void {
     this.searchQuery = '';
+    this.inputElement.value = '';
     this.searchItems = [];
     this.hasQuery.emit(this.showSearchResults());
     this.searchResults.emit({ items: [] });
   }
 
-  showSearchResults() {
-    return this.searchQuery.trim();
+  showSearchResults(): boolean {
+    return !!this.searchQuery.trim();
   }
 }
