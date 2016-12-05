@@ -37,7 +37,7 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
           if(items.length > 1) { return; }
           this.cancelSearch();
         });
-      } else if(!_.includes(['search', 'text', 'number'], $event.srcElement.type)) {
+      } else if(!_.includes(['search', 'text', 'number', 'textarea'], $event.srcElement.type)) {
         this.searchQuery += $event.key;
       }
     });
