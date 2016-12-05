@@ -76,6 +76,7 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
       }
 
       // TODO if items.length === 0, prompt to add an item
+      // TODO also allow for an option to add a "general item" which is temporary for the transaction
     });
   }
 
