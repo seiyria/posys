@@ -1,4 +1,4 @@
-# Posys
+# Posys [![Build Status](https://travis-ci.org/seiyria/posys.svg?branch=master)](https://travis-ci.org/seiyria/posys)
 
 A PoS System.
 
