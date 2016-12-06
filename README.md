@@ -26,5 +26,8 @@ A PoS System.
     "database": "posys"
   }
 }
-
 ```
+
+## Hardware Recommendations
+
+* A barcode scanner (this application makes heavy use of an "omni search" input which allows for text entry even when not focused, to facilitate quick lookup of items - a barcode scanner is used in testing and makes the interface significantly easier to use)
