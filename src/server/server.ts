@@ -49,8 +49,7 @@ export const knex = require('knex')(require('./knexfile'));
 
 export const bookshelf = require('bookshelf')(knex);
 
-const validator = require('validator');
-validator.isRequired = (x) => !!x;
+const validator = require('./validator').default;
 
 bookshelf.plugin('pagination');
 bookshelf.plugin(require('bookshelf-validate'), { validateOnSave: true, validator });

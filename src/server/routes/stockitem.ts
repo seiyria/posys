@@ -9,14 +9,9 @@ import { Logger } from '../logger';
 import Settings from './_settings';
 
 const cleanItem = (item) => {
-  item.quantity = '' + item.quantity;
-  item.organizationalunitId = '' + item.organizationalunitId;
-  if(item.reorderThreshold) {
-    item.reorderThreshold = '' + item.reorderThreshold;
-  }
-  if(item.reorderUpToAmount) {
-    item.reorderUpToAmount = '' + item.reorderUpToAmount;
-  }
+  item.cost = +item.cost;
+  if(!item.reorderThreshold) item.reorderThreshold = undefined;
+  if(!item.reorderUpToAmount) item.reorderUpToAmount = undefined;
   delete item.organizationalunit;
 };
 
@@ -136,6 +131,7 @@ export default (app) => {
         res.json({ flash: `Updated item "${item.name}"`, data: item });
       })
       .catch(e => {
+        console.error(e);
         res.status(500).json({ formErrors: e.data || [] });
       });
   });

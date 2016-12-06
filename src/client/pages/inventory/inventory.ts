@@ -52,22 +52,35 @@ export class InventoryPageComponent implements OnInit {
 
   // TODO get item by id and use that instead of using the possibly more stale item passed in
   openItemModal(item?: StockItem) {
-    let modal = this.modalCtrl.create(InventoryManagerComponent, {
-        stockItem: _.cloneDeep(item) || new StockItem()
+
+    const openModal = (stockItem: StockItem) => {
+      const modal = this.modalCtrl.create(InventoryManagerComponent, {
+        stockItem: stockItem
       }, { enableBackdropDismiss: false });
       modal.onDidDismiss(() => {
         this.changePage(this.paginationInfo.page);
       });
-    modal.present();
+      modal.present();
+    };
+
+    if(!item) return openModal(new StockItem());
+
+    this.siService
+      .get(item)
+      .toPromise()
+      .then(stockItem => {
+        console.log(stockItem);
+        openModal(stockItem);
+      });
   }
 
   openOUModal() {
-    let modal = this.modalCtrl.create(OUManagerComponent, {}, { enableBackdropDismiss: false });
+    const modal = this.modalCtrl.create(OUManagerComponent, {}, { enableBackdropDismiss: false });
     modal.present();
   }
 
   openQuickModal() {
-    let modal = this.modalCtrl.create(QuickComponent, {}, { enableBackdropDismiss: false });
+    const modal = this.modalCtrl.create(QuickComponent, {}, { enableBackdropDismiss: false });
     modal.present();
   }
 
