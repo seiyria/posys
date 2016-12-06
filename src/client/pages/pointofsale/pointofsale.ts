@@ -20,11 +20,30 @@ export class PointOfSalePageComponent {
   public showSearchItems: boolean;
   public omniCancelControl = new EventEmitter();
 
+  public transactionItemButtons = [
+    { text: 'Remove', callback: (item) => {
+      const confirm = this.alertCtrl.create({
+        title: `Remove "${item.name}"?`,
+        message: 'This item will be removed from the current transaction.',
+        buttons: [
+          {
+            text: 'Cancel'
+          },
+          {
+            text: 'Confirm',
+            handler: () => {
+              this.currentTransaction = _.reject(this.currentTransaction, i => i === item);
+            }
+          }
+        ]
+      });
+      confirm.present();
+    } }
+  ];
+
   constructor(public modalCtrl: ModalController,
               public alertCtrl: AlertController,
-              public settings: ApplicationSettingsService) {
-
-  }
+              public settings: ApplicationSettingsService) {}
 
   addTransactionItem(item: StockItem): void {
 

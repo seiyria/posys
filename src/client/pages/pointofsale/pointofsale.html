@@ -57,7 +57,7 @@
 
           <ion-list has-header can-scroll *ngIf="!showSearchItems && currentTransaction.length !== 0" no-margin-bottom id="transaction-list">
             <ion-item *ngFor="let item of currentTransaction; let i = index">
-              <transaction-item [item]="item" [index]="i+1"></transaction-item>
+              <transaction-item [item]="item" [index]="i+1" [buttons]="transactionItemButtons"></transaction-item>
             </ion-item>
           </ion-list>
 

@@ -29,7 +29,7 @@ import { ImportButtonComponent } from '../components/import-button';
 import { RemoveButtonComponent } from '../components/remove-button';
 import { UpdateButtonComponent } from '../components/update-button';
 
-import { TransactionItemComponent } from '../pages/pointofsale/transactionitem';
+import { TransactionItemComponent, TransactionItemPopoverComponent } from '../pages/pointofsale/transactionitem';
 import { QueryItemComponent } from '../pages/pointofsale/queryitem';
 import { InventoryItemComponent } from '../pages/inventory/inventoryitem';
 
@@ -63,6 +63,7 @@ import { TruncatePipe } from '../pipes/truncate';
     TopIconButtonComponent,
     OmnisearchComponent,
     TransactionItemComponent,
+    TransactionItemPopoverComponent,
     InventoryItemComponent,
     QueryItemComponent,
 
@@ -95,7 +96,9 @@ import { TruncatePipe } from '../pipes/truncate';
     PointOfSalePageComponent,
     InvoicesPageComponent,
     PromotionsPageComponent,
-    ReportingPageComponent
+    ReportingPageComponent,
+
+    TransactionItemPopoverComponent
   ],
   providers: [
     ApplicationSettingsService,
