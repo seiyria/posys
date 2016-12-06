@@ -2,7 +2,7 @@
 import * as _ from 'lodash';
 
 import { Component } from '@angular/core';
-import { ViewController, AlertController } from 'ionic-angular';
+import { ViewController } from 'ionic-angular';
 
 import { StockItem } from '../../../models/stockitem';
 
@@ -16,7 +16,6 @@ export class QuickComponent {
   public scanItems: StockItem[] = [];
 
   constructor(public viewCtrl: ViewController,
-              public alertCtrl: AlertController,
               public siService: StockItemService) {}
 
   handleSearchResults(result: any) {
@@ -38,8 +37,7 @@ export class QuickComponent {
     this.siService
       .importMany(this.scanItems)
       .toPromise()
-      .then(data => {
-        console.log(data);
+      .then(() => {
         this.dismiss();
       });
   }

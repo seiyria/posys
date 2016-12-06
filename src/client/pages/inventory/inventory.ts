@@ -62,12 +62,12 @@ export class InventoryPageComponent implements OnInit {
   }
 
   openOUModal() {
-    let modal = this.modalCtrl.create(OUManagerComponent, null, { enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(OUManagerComponent, {}, { enableBackdropDismiss: false });
     modal.present();
   }
 
   openQuickModal() {
-    let modal = this.modalCtrl.create(QuickComponent, null, { enableBackdropDismiss: false });
+    let modal = this.modalCtrl.create(QuickComponent, {}, { enableBackdropDismiss: false });
     modal.present();
   }
 
