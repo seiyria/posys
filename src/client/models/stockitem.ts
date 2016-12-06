@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { OrganizationalUnit } from './organizationalunit';
 
 export class StockItem {
-  id: number;
+  id?: number;
   sku: string;
   stockCode?: string;
   name: string;
@@ -18,6 +18,7 @@ export class StockItem {
   quantity: number;
   reorderThreshold?: number;
   reorderUpToAmount?: number;
+  temporary?: boolean;
 
   constructor(initializer?: StockItem) {
     _.assign(this, initializer);

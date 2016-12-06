@@ -52,13 +52,13 @@ export class InventoryPageComponent implements OnInit {
 
   // TODO get item by id and use that instead of using the possibly more stale item passed in
   openItemModal(item?: StockItem) {
-      let modal = this.modalCtrl.create(InventoryManagerComponent, {
-          stockItem: _.cloneDeep(item) || new StockItem()
+    let modal = this.modalCtrl.create(InventoryManagerComponent, {
+        stockItem: _.cloneDeep(item) || new StockItem()
       }, { enableBackdropDismiss: false });
       modal.onDidDismiss(() => {
         this.changePage(this.paginationInfo.page);
       });
-      modal.present();
+    modal.present();
   }
 
   openOUModal() {

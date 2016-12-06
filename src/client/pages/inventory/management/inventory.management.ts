@@ -31,6 +31,10 @@ export class InventoryManagerComponent {
   }
 
   create() {
+    if(this.stockItem.temporary) {
+      return this.dismiss(this.stockItem);
+    }
+
     this.siService
       .create(this.stockItem)
       .subscribe(item => {

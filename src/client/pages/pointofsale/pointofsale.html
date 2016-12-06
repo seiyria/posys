@@ -12,6 +12,8 @@
         <ion-row search-area>
           <ion-col>
             <omni-search
+              offerToAdd="true"
+              allowTemporaryAdd="true"
               [cancelWatcher]="omniCancelControl"
               (hasQuery)="setShowResults($event)"
               (searchResults)="setSearchResults($event)"></omni-search>

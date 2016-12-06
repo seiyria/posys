@@ -2,6 +2,9 @@
 import * as _ from 'lodash';
 
 import { Component, Input, Output, EventEmitter, Renderer, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { ModalController, AlertController } from 'ionic-angular';
+
+import { InventoryManagerComponent } from '../pages/inventory/management/inventory.management';
 
 import { StockItemService } from '../services/stockitem.service';
 import { StockItem } from '../models/stockitem';
@@ -31,11 +34,15 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
   @Output() searchResults = new EventEmitter();
   @Output() hasQuery = new EventEmitter();
   @Input() autofocus: boolean;
+  @Input() offerToAdd: boolean;
+  @Input() allowTemporaryAdd: boolean;
   @Input() ignoreModalInput: boolean;
   @Input() preventEnterClear: boolean;
   @Input() cancelWatcher: EventEmitter<any>;
 
   constructor(private itemService: StockItemService,
+              private modalCtrl: ModalController,
+              private alertCtrl: AlertController,
               private element: ElementRef,
               private renderer: Renderer) {}
 
@@ -69,14 +76,80 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
 
   doSearch() {
     this._itemSearch(this.searchQuery, true, (items) => {
-      if(items.length > 1) { return; }
+      return new Promise(resolve => {
+        if(items.length > 1) { return resolve(items); }
+        if(items.length === 0 && this.offerToAdd) {
+          this.offerToAddItem(this.searchQuery)
+            .then(item => {
+              if(!item) {
+                this.cancelSearch();
+                return resolve([]);
+              }
+              resolve([item]);
+            });
+        } else {
+          resolve(items);
+        }
 
-      if(!this.preventEnterClear) {
-        this.cancelSearch();
+        if(!this.preventEnterClear) {
+          this.cancelSearch();
+        }
+      });
+    });
+  }
+
+  offerToAddItem(query: string): Promise<StockItem> {
+    return new Promise(resolve => {
+      const buttons = [
+        {
+          text: 'Yes',
+          handler: () => {
+            let modal = this.modalCtrl.create(InventoryManagerComponent, {
+              stockItem: new StockItem({ name: '', sku: query, taxable: false, cost: 0.00, quantity: 1 })
+            }, { enableBackdropDismiss: false });
+            modal.onDidDismiss(item => {
+              resolve(item);
+            });
+            modal.present();
+          }
+        }
+      ];
+
+      if(this.allowTemporaryAdd) {
+        buttons.push({
+          text: 'Yes (Temporary)',
+          handler: () => {
+            let modal = this.modalCtrl.create(InventoryManagerComponent, {
+              stockItem: new StockItem({
+                name: '',
+                sku: query,
+                taxable: false,
+                cost: 0.00,
+                quantity: 1,
+                organizationalunitId: 1,
+                temporary: true
+              })
+            }, { enableBackdropDismiss: false });
+            modal.onDidDismiss(item => {
+              resolve(item);
+            });
+            modal.present();
+          }
+        });
       }
 
-      // TODO if items.length === 0, prompt to add an item
-      // TODO also allow for an option to add a "general item" which is temporary for the transaction
+      buttons.push({
+        text: 'No',
+        handler: () => resolve()
+      });
+
+      const confirm = this.alertCtrl.create({
+        title: 'Item not found. Add item?',
+        message: 'This item does not exist in your inventory, would you like to add it now?',
+        buttons
+      });
+
+      confirm.present();
     });
   }
 
@@ -120,8 +193,11 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
       .search(query)
       .toPromise()
       .then(items => {
+        if(callback) { return callback(items); }
+        return items;
+      })
+      .then(items => {
         this.searchResults.emit({ items, force });
-        if(callback) { callback(items); }
       });
   }
 
