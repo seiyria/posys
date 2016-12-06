@@ -10,8 +10,8 @@ import Settings from './_settings';
 
 const cleanItem = (item) => {
   item.cost = +item.cost;
-  if(!item.reorderThreshold) item.reorderThreshold = undefined;
-  if(!item.reorderUpToAmount) item.reorderUpToAmount = undefined;
+  if(!item.reorderThreshold) { item.reorderThreshold = undefined; }
+  if(!item.reorderUpToAmount) { item.reorderUpToAmount = undefined; }
   delete item.organizationalunit;
 };
 

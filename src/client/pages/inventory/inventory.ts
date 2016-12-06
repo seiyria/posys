@@ -63,7 +63,7 @@ export class InventoryPageComponent implements OnInit {
       modal.present();
     };
 
-    if(!item) return openModal(new StockItem());
+    if(!item) { return openModal(new StockItem()); }
 
     this.siService
       .get(item)
