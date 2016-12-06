@@ -104,7 +104,7 @@ export default (app) => {
           })
           .catch(e => {
             res.status(500).json({ formErrors: e.data || [] });
-          })
+          });
       })
       .catch(e => {
         res.status(500).json({ formErrors: e.data || [] });
