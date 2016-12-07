@@ -53,7 +53,7 @@ export class PromotionsManagerComponent implements OnInit {
 
     const newPromoItem = new PromoItem(_.cloneDeep(result.items[0]));
 
-    // if(_.find(this.promotion.promoItems, { sku: newPromoItem.sku })) { return; }
+    if(_.find(this.promotion.promoItems, { sku: newPromoItem.sku })) { return; }
     this.promotion.promoItems.push(newPromoItem);
 
     setTimeout(() => {
