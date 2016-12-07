@@ -6,6 +6,7 @@ import { Ng2Webstorage } from 'ng2-webstorage';
 
 import { MyAppComponent } from './app.component';
 import { HomePageComponent } from '../pages/home/home';
+
 import { InventoryPageComponent } from '../pages/inventory/inventory';
 import { InventoryManagerComponent } from '../pages/inventory/management/inventory.management';
 import { OUManagerComponent } from '../pages/inventory/oumanage/ou.management';
@@ -13,9 +14,14 @@ import { QuickComponent } from '../pages/inventory/quick/quick';
 
 import { AboutComponent } from '../pages/settings/about/about';
 import { SettingsPageComponent } from '../pages/settings/settings';
+
 import { PointOfSalePageComponent } from '../pages/pointofsale/pointofsale';
+
 import { InvoicesPageComponent } from '../pages/invoices/invoices';
+
 import { PromotionsPageComponent } from '../pages/promotions/promotions';
+import { PromotionsManagerComponent } from '../pages/promotions/management/promotions.management';
+
 import { ReportingPageComponent } from '../pages/reporting/reporting';
 
 import { FormErrorComponent } from '../components/form-error';
@@ -35,6 +41,7 @@ import { InventoryItemComponent } from '../pages/inventory/inventoryitem';
 
 import { ApplicationSettingsService } from '../services/settings.service';
 import { LoggerService } from '../services/logger.service';
+import { PromotionService } from '../services/promotion.service';
 import { StockItemService } from '../services/stockitem.service';
 import { OrganizationalUnitService } from '../services/organizationalunit.service';
 
@@ -57,6 +64,7 @@ import { TruncatePipe } from '../pipes/truncate';
     PointOfSalePageComponent,
     InvoicesPageComponent,
     PromotionsPageComponent,
+    PromotionsManagerComponent,
     ReportingPageComponent,
 
     FormErrorComponent,
@@ -96,6 +104,7 @@ import { TruncatePipe } from '../pipes/truncate';
     PointOfSalePageComponent,
     InvoicesPageComponent,
     PromotionsPageComponent,
+    PromotionsManagerComponent,
     ReportingPageComponent,
 
     TransactionItemPopoverComponent
@@ -104,6 +113,7 @@ import { TruncatePipe } from '../pipes/truncate';
     ApplicationSettingsService,
     LoggerService,
     StockItemService,
+    PromotionService,
     OrganizationalUnitService,
     CurrencyPipe
   ]

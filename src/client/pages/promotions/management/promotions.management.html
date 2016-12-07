@@ -1,0 +1,190 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      {{ promotion.id ? 'Update' : 'Add' }} Promotion
+    </ion-title>
+    <ion-buttons start>
+      <add-button (click)="create()" *ngIf="!promotion.id"></add-button>
+      <update-button (click)="update()" *ngIf="promotion.id"></update-button>
+      <button ion-button (click)="dismiss()">
+        <span color="danger">Cancel</span>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content my-modal-promotion-management>
+  <ion-grid>
+    <ion-row>
+      <ion-col width-50>
+        <ion-list>
+
+          <ion-item form-item required>
+            <ion-label stacked>Name</ion-label>
+            <ion-input type="text" [(ngModel)]="promotion.name" maxlength="50"></ion-input>
+          </ion-item>
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="name"></form-error>
+          </ion-item>
+
+          <ion-item form-item>
+            <ion-label stacked>Description</ion-label>
+            <ion-textarea [(ngModel)]="promotion.description" maxlength="500"></ion-textarea>
+          </ion-item>
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="description"></form-error>
+          </ion-item>
+
+          <ion-item form-item required>
+            <ion-label stacked>Start Date</ion-label>
+            <ion-datetime displayFormat="MM/DD/YYYY HH:mm" [(ngModel)]="promotion.startDate" [min]="today" [max]="futureToday"></ion-datetime>
+          </ion-item>
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="startDate"></form-error>
+          </ion-item>
+
+          <ion-item form-item required>
+            <ion-label stacked>End Date</ion-label>
+            <ion-datetime displayFormat="MM/DD/YYYY HH:mm" [(ngModel)]="promotion.endDate" [min]="today" [max]="futureToday"></ion-datetime>
+          </ion-item>
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="endDate"></form-error>
+          </ion-item>
+
+          <ion-row>
+            <ion-col no-padding>
+              <ion-item no-border-bottom small-item small-form-item-header form-item required>
+                <ion-label stacked background-text>Promotion Type</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row form-item radio-group [(ngModel)]="promotion.itemReductionType">
+            <ion-col no-padding>
+              <ion-item>
+                <ion-label>All</ion-label>
+                <ion-radio value="All"></ion-radio>
+              </ion-item>
+            </ion-col>
+            <ion-col no-padding>
+              <ion-item>
+                <ion-label>BXGN</ion-label>
+                <ion-radio value="BuyXGetNext"></ion-radio>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="itemReductionType"></form-error>
+          </ion-item>
+
+        </ion-list>
+      </ion-col>
+      <ion-col width-50>
+        <ion-list no-margin-bottom>
+
+          <ion-row>
+            <ion-col no-padding>
+              <ion-item no-border-bottom small-item small-form-item-header form-item required>
+                <ion-label stacked background-text>Discount Type</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row form-item radio-group [(ngModel)]="promotion.discountType" (ionChange)="changeDiscount()">
+            <ion-col no-padding>
+              <ion-item>
+                <ion-label>${{ promotion.discountType === 'Dollar' ? promotion.discountValue : '' }}</ion-label>
+                <ion-radio value="Dollar"></ion-radio>
+              </ion-item>
+            </ion-col>
+            <ion-col no-padding>
+              <ion-item>
+                <ion-label>{{ promotion.discountType === 'Percent' ? promotion.discountValue : '' }}%</ion-label>
+                <ion-radio value="Percent"></ion-radio>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-item form-item required *ngIf="promotion.discountType === 'Dollar'">
+            <ion-label stacked>Dollar Discount</ion-label>
+            <ion-input type="number" [(ngModel)]="promotion.discountValue"></ion-input>
+          </ion-item>
+
+          <ion-item form-item required *ngIf="promotion.discountType === 'Percent'">
+            <ion-label stacked background-text>Percent Discount</ion-label>
+            <ion-range min="0" max="100" [(ngModel)]="promotion.discountValue" pin="true">
+              <ion-label range-left>0</ion-label>
+              <ion-label range-right>100</ion-label>
+            </ion-range>
+          </ion-item>
+
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="discountValue"></form-error>
+          </ion-item>
+
+          <ion-row>
+            <ion-col no-padding>
+              <ion-item no-border-bottom small-item small-form-item-header form-item required>
+                <ion-label stacked background-text>Discount Items</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row form-item radio-group [(ngModel)]="discountItems">
+            <ion-col no-padding>
+              <ion-item>
+                <ion-label>By OU</ion-label>
+                <ion-radio value="OU"></ion-radio>
+              </ion-item>
+            </ion-col>
+            <ion-col no-padding>
+              <ion-item>
+                <ion-label>By SKU</ion-label>
+                <ion-radio value="SKU"></ion-radio>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-item form-item required *ngIf="discountItems === 'OU'">
+            <ion-label stacked>Organizational Unit</ion-label>
+            <ion-select [(ngModel)]="promotion.organizationalunitId">
+              <ion-option *ngFor="let ou of allOU | async" value="{{ou.id}}">{{ou.name}}</ion-option>
+            </ion-select>
+          </ion-item>
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="organizationalunitId"></form-error>
+          </ion-item>
+
+        </ion-list>
+
+        <omni-search *ngIf="discountItems === 'SKU'" (searchResults)="handleSearchResults($event)"></omni-search>
+
+        <ion-grid scroll-grid>
+
+          <ion-row scroll-row>
+            <ion-col>
+              <ion-list *ngIf="discountItems === 'SKU'" id="promoitems-list">
+                <ion-item *ngFor="let item of promotion.promoItems" no-margin>
+                  <ion-row no-padding>
+                    <ion-col no-padding vertical-center>{{ item.name | truncate:15 }}</ion-col>
+                    <ion-col no-padding text-right><remove-button></remove-button></ion-col>
+                  </ion-row>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+
+          <ion-row scroll-row *ngIf="promotion.promoItems?.length === 0">
+            <ion-col full-height true-center big-text background-text>
+              No items added.
+            </ion-col>
+          </ion-row>
+
+        </ion-grid>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

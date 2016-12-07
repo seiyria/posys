@@ -2,7 +2,7 @@
 import * as _ from 'lodash';
 
 import { PagedItems } from '../models/pageditems';
-import { StockItem } from '../models/stockitem';
+import { Promotion } from '../models/promotion';
 
 import { LoggerService } from './logger.service';
 import { ApplicationSettingsService } from './settings.service';
@@ -12,57 +12,46 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 @Injectable()
-export class StockItemService {
+export class PromotionService {
 
-  private url = 'stockitem';
+  private url = 'promotion';
 
   constructor(private http: Http,
               private logger: LoggerService,
               private settings: ApplicationSettingsService) {}
 
-  search(query: string): Observable<StockItem[]> {
+  search(query: string): Observable<Promotion[]> {
     return this.http.get(this.settings.buildAPIURL(`${this.url}/search`), { search: this.settings.buildSearchParams({ query }) })
       .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }
 
-  getMany(args: any): Observable<PagedItems<StockItem>> {
+  getMany(args: any): Observable<PagedItems<Promotion>> {
     return this.http.get(this.settings.buildAPIURL(this.url), { search: this.settings.buildSearchParams(args) })
       .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }
 
-  get(item: StockItem): Observable<StockItem> {
+  get(item: Promotion): Observable<Promotion> {
     return this.http.get(this.settings.buildAPIURL(this.url, item.id))
       .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }
 
-  create(item: StockItem): Observable<StockItem> {
+  create(item: Promotion): Observable<Promotion> {
     return this.http.put(this.settings.buildAPIURL(this.url), item)
       .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }
 
-  update(item: StockItem): Observable<StockItem> {
+  update(item: Promotion): Observable<Promotion> {
     return this.http.patch(this.settings.buildAPIURL(this.url, item.id), item)
       .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }
 
-  remove(item: StockItem): Observable<StockItem> {
+  remove(item: Promotion): Observable<Promotion> {
     return this.http.delete(this.settings.buildAPIURL(this.url, item.id))
-      .map((res: Response) => this.logger.observableUnwrap(res.json()))
-      .catch(e => this.logger.observableError(e));
-  }
-
-  importMany(items: StockItem[]): Observable<any> {
-    const data = _.reduce(items, (prev: any, cur: StockItem) => {
-      prev[cur.sku] = prev[cur.sku] || 0;
-      prev[cur.sku]++;
-      return prev;
-    }, {});
-    return this.http.post(this.settings.buildAPIURL(`${this.url}/import`), data)
       .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }

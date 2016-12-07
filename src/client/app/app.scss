@@ -70,7 +70,7 @@ ion-item[no-margin] .label {
 }
 
 [background-text] {
-  color: #c5c5c5;
+  color: #999;
 }
 
 [list-header] {
@@ -95,7 +95,7 @@ ion-item[no-margin] .label {
 }
 
 [form-item] {
-  &[required] .label::after {
+  &[required] > .item-inner > .input-wrapper > .label::after {
     content: ' *'
   }
 }
@@ -108,7 +108,7 @@ ion-item[no-margin] .label {
     border-bottom: none !important;
   }
 
-  .label {
+  &:not([small-form-item-header]) .label {
     margin: 0;
   }
 }
@@ -131,3 +131,11 @@ ion-item[no-margin] .label {
   }
 }
 
+[scroll-grid] {
+  height: 100%;
+
+  [scroll-row] {
+    overflow: scroll;
+    flex: 1;
+  }
+}

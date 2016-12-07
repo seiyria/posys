@@ -42,7 +42,7 @@ export class InventoryPageComponent implements OnInit {
 
   changePage(newPage) {
     this.siService
-      .getMany({ page: newPage, pageSize: 25, hideOutOfStock: +this.hideOutOfStock })
+      .getMany({ page: newPage, hideOutOfStock: +this.hideOutOfStock })
       .toPromise()
       .then(({ items, pagination }) => {
         this.currentInventoryItems = items;
@@ -68,7 +68,6 @@ export class InventoryPageComponent implements OnInit {
       .get(item)
       .toPromise()
       .then(stockItem => {
-        console.log(stockItem);
         openModal(stockItem);
       });
   }
