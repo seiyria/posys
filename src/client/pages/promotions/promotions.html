@@ -15,4 +15,47 @@
       </button>
     </ion-fab-list>
   </ion-fab>
+
+  <ion-grid scroll-grid>
+
+    <ion-row>
+      <ion-col>
+        <ion-list no-margin-bottom>
+          <ion-item>
+            <ion-grid no-padding>
+              <ion-row column-headers>
+                <ion-col width-20 no-padding>Name</ion-col>
+                <ion-col width-20 no-padding>Start</ion-col>
+                <ion-col width-20 no-padding>End</ion-col>
+                <ion-col width-20 no-padding>Affected</ion-col>
+                <ion-col no-padding text-right></ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row scroll-row>
+      <ion-col>
+        <ion-list>
+          <ion-item *ngFor="let item of currentPromotions">
+            <promotion-display [item]="item" (edit)="openPromoModal(item)"></promotion-display>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="paginationInfo">
+      <ion-col width-50 offset-25>
+        <ionc-pagination
+          color="light"
+          (clickBeginning)="changePage(1)"
+          (clickPrevious)="changePage(paginationInfo.page - 1)"
+          (clickNext)="changePage(paginationInfo.page + 1)"
+          (clickEnd)="changePage(paginationInfo.pageCount)"
+          [pagination]="paginationInfo"></ionc-pagination>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

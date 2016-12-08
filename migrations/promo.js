@@ -3,10 +3,11 @@ exports.up = (knex) => {
   return knex.schema
     .createTable('promo', (table) => {
       table.increments('id').primary();
-      table.string('name');
-      table.string('description');
-      table.string('discountType'); // 'dollars' or 'percent'
-      table.string('itemReductionType'); // 'bogn' (buy one get next) or 'all' (all items in transaction grouping receive this discount)
+      table.string('name', 50);
+      table.string('description', 500);
+      table.string('discountType', 10); // 'Dollar' or 'Percent'
+      table.string('itemReductionType', 10); // 'BXGN' (buy X get next) or 'All' (all items in transaction grouping receive this discount)
+      table.string('discountGrouping', 10); // 'SKU' or 'OU'
       table.integer('organizationalunitId').unsigned().references('organizationalunit.id');
       table.integer('discountValue');
       table.integer('numItemsRequired').unsigned();
@@ -16,9 +17,9 @@ exports.up = (knex) => {
     })
     .createTable('promoitem', (table) => {
       table.increments('id').primary();
-      table.string('name');
-      table.string('description');
-      table.string('sku');
+      table.string('name', 50);
+      table.string('description', 500);
+      table.string('sku', 50);
       table.integer('stockitemId').unsigned().references('stockitem.id');
       table.integer('promoId').unsigned().references('promo.id');
       table.timestamps();

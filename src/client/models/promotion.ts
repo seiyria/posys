@@ -10,12 +10,16 @@ export type DiscountType =
 export type ItemReductionType =
   'BuyXGetNext' | 'All';
 
+export type DiscountGrouping =
+  'SKU' | 'OU'
+
 export class Promotion {
   id?: number;
   name: string;
   description?: string;
   discountType: DiscountType;
   itemReductionType: ItemReductionType;
+  discountGrouping: DiscountGrouping;
 
   discountValue: number;
   numItemsRequired: number;

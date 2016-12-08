@@ -24,5 +24,8 @@ export default {
     if(max && test > max)           { return false; }
     if(!_.includes('' + test, '.')) { return false; }
     return true;
+  },
+  isIn:       (x, { arr } = { arr: [] }) => {
+    return _.includes(arr, x);
   }
 };

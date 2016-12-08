@@ -6,10 +6,10 @@ exports.up = (knex) => {
   return knex.schema
     .createTable('stockitem', (table) => {
       table.increments('id').primary();
-      table.string('sku').unique();
-      table.string('stockCode');
-      table.string('name');
-      table.string('description');
+      table.string('sku', 50).unique();
+      table.string('stockCode', 50);
+      table.string('name', 50);
+      table.string('description', 500);
       table.integer('organizationalunitId').unsigned().references('organizationalunit.id');
       table.boolean('taxable');
       table.decimal('cost', TOTAL_DIGITS, CENT_DIGITS);

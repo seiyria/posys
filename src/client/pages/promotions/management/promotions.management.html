@@ -115,6 +115,10 @@
             </ion-col>
           </ion-row>
 
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="discountType"></form-error>
+          </ion-item>
+
           <ion-item form-item required *ngIf="promotion.discountType === 'Dollar'">
             <ion-label stacked>Dollar Discount</ion-label>
             <ion-input type="number" [(ngModel)]="promotion.discountValue"></ion-input>
@@ -135,12 +139,12 @@
           <ion-row>
             <ion-col no-padding>
               <ion-item no-border-bottom small-item small-form-item-header form-item required>
-                <ion-label stacked background-text>Discount Items</ion-label>
+                <ion-label stacked background-text>Discount Item Grouping</ion-label>
               </ion-item>
             </ion-col>
           </ion-row>
 
-          <ion-row form-item radio-group [(ngModel)]="discountItems">
+          <ion-row form-item radio-group [(ngModel)]="promotion.discountGrouping" (ionChange)="changeGrouping()">
             <ion-col no-padding>
               <ion-item>
                 <ion-label>By OU</ion-label>
@@ -155,7 +159,11 @@
             </ion-col>
           </ion-row>
 
-          <ion-item form-item required *ngIf="discountItems === 'OU'">
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="discountGrouping"></form-error>
+          </ion-item>
+
+          <ion-item form-item required *ngIf="promotion.discountGrouping === 'OU'">
             <ion-label stacked>Organizational Unit</ion-label>
             <ion-select [(ngModel)]="promotion.organizationalunitId">
               <ion-option *ngFor="let ou of allOU | async" value="{{ou.id}}">{{ou.name}}</ion-option>
@@ -167,13 +175,13 @@
 
         </ion-list>
 
-        <omni-search *ngIf="discountItems === 'SKU'" (searchResults)="handleSearchResults($event)"></omni-search>
+        <omni-search *ngIf="promotion.discountGrouping === 'SKU'" (searchResults)="handleSearchResults($event)"></omni-search>
 
         <ion-grid scroll-grid>
 
           <ion-row scroll-row>
             <ion-col>
-              <ion-list *ngIf="discountItems === 'SKU'" id="promoitems-list">
+              <ion-list *ngIf="promotion.discountGrouping === 'SKU'" id="promoitems-list">
                 <ion-item *ngFor="let item of promotion.promoItems" no-margin>
                   <ion-row no-padding>
                     <ion-col no-padding vertical-center>{{ item.name | truncate:15 }}</ion-col>

@@ -54,6 +54,7 @@ export class PromotionsManagerComponent implements OnInit {
     const newPromoItem = new PromoItem(_.cloneDeep(result.items[0]));
 
     if(_.find(this.promotion.promoItems, { sku: newPromoItem.sku })) { return; }
+    delete newPromoItem.id;
     this.promotion.promoItems.push(newPromoItem);
 
     setTimeout(() => {
@@ -64,6 +65,14 @@ export class PromotionsManagerComponent implements OnInit {
 
   changeDiscount() {
     this.promotion.discountValue = 0;
+  }
+
+  changeGrouping() {
+    if(this.promotion.discountGrouping === 'SKU') {
+      delete this.promotion.organizationalunitId;
+    } else {
+      delete this.promotion.promoItems;
+    }
   }
 
   dismiss(item?: Promotion) {

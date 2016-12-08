@@ -38,6 +38,7 @@ import { UpdateButtonComponent } from '../components/update-button';
 import { TransactionItemComponent, TransactionItemPopoverComponent } from '../pages/pointofsale/transactionitem';
 import { QueryItemComponent } from '../pages/pointofsale/queryitem';
 import { InventoryItemComponent } from '../pages/inventory/inventoryitem';
+import { PromotionDisplayComponent } from '../pages/promotions/promotiondisplay';
 
 import { ApplicationSettingsService } from '../services/settings.service';
 import { LoggerService } from '../services/logger.service';
@@ -73,6 +74,7 @@ import { TruncatePipe } from '../pipes/truncate';
     TransactionItemComponent,
     TransactionItemPopoverComponent,
     InventoryItemComponent,
+    PromotionDisplayComponent,
     QueryItemComponent,
 
     AddButtonComponent,

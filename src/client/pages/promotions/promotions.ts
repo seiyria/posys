@@ -20,7 +20,7 @@ export class PromotionsPageComponent implements OnInit {
   constructor(public modalCtrl: ModalController, public prService: PromotionService) {}
 
   ngOnInit() {
-    // this.changePage(1);
+    this.changePage(1);
   }
 
   changePage(newPage) {
@@ -47,12 +47,17 @@ export class PromotionsPageComponent implements OnInit {
 
     if(!promo) { return openModal(new Promotion()); }
 
+    return openModal(promo);
+
+    /*
     this.prService
       .get(promo)
       .toPromise()
       .then(promotion => {
         openModal(promotion);
       });
+
+      */
   }
 
 }
