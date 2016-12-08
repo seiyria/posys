@@ -64,7 +64,7 @@ export class PromotionsManagerComponent implements OnInit {
   }
 
   changeDiscount() {
-    this.promotion.discountValue = 0;
+    // this.promotion.discountValue = 0;
   }
 
   changeGrouping() {
