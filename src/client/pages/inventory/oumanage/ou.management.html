@@ -18,11 +18,11 @@
         <ion-list>
           <ion-item form-item *ngIf="!ou.id">
             <ion-label stacked>New Organizational Unit Name</ion-label>
-            <ion-input type="text" [(ngModel)]="ou.name" maxlength="40" (keyup.enter)="addNewOU()"></ion-input>
+            <ion-input type="text" [(ngModel)]="ou.name" maxlength="50" (keyup.enter)="addNewOU()"></ion-input>
           </ion-item>
           <ion-item form-item *ngIf="ou.id">
             <ion-label stacked>Organizational Unit Name</ion-label>
-            <ion-input type="text" [(ngModel)]="ou.name" maxlength="40" (keyup.enter)="updateOU(ou)"></ion-input>
+            <ion-input type="text" [(ngModel)]="ou.name" maxlength="50" (keyup.enter)="updateOU(ou)"></ion-input>
           </ion-item>
           <ion-item small-item>
             <form-error [errorObj]="formErrors | async" key="name"></form-error>

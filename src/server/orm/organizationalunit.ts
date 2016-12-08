@@ -10,8 +10,8 @@ export const OrganizationalUnit = bookshelf.Model.extend({
     name: [
       {
         method: 'isLength',
-        args: { min: 1, max: 40 },
-        error: 'Your OU name must be between 1 and 40 characters.'
+        args: { min: 1, max: 50 },
+        error: 'Your OU name must be between 1 and 50 characters.'
       }
     ]
   }
