@@ -9,6 +9,7 @@ exports.up = (knex) => {
       table.string('itemReductionType'); // 'bogn' (buy one get next) or 'all' (all items in transaction grouping receive this discount)
       table.integer('organizationalunitId').unsigned().references('organizationalunit.id');
       table.integer('discountValue');
+      table.integer('numItemsRequired').unsigned();
       table.dateTime('startDate');
       table.dateTime('endDate');
       table.timestamps();

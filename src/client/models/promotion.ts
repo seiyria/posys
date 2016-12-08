@@ -18,6 +18,7 @@ export class Promotion {
   itemReductionType: ItemReductionType;
 
   discountValue: number;
+  numItemsRequired: number;
 
   startDate?: string;
   endDate?: string;

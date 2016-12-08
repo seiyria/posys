@@ -78,6 +78,15 @@
             <form-error [errorObj]="formErrors | async" key="itemReductionType"></form-error>
           </ion-item>
 
+          <ion-item form-item required>
+            <ion-label stacked>Items Required for Discount</ion-label>
+            <ion-input type="number" [(ngModel)]="promotion.numItemsRequired"></ion-input>
+          </ion-item>
+
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="numItemsRequired"></form-error>
+          </ion-item>
+
         </ion-list>
       </ion-col>
       <ion-col width-50>
