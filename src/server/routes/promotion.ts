@@ -60,12 +60,10 @@ export default (app) => {
   });
 
   app.get('/promotion/:id', (req, res) => {
-
-    /*
-    StockItem
+    Promotion
       .forge({ id: req.params.id })
       .fetch({
-        withRelated: ['organizationalunit']
+        withRelated: ['organizationalunit', 'promoItems']
       })
       .then(item => {
         res.json(item);
@@ -73,7 +71,6 @@ export default (app) => {
       .catch(e => {
         res.status(500).json(Logger.browserError(Logger.error('Route:StockItem/:id:GET', e)));
       });
-      */
   });
 
   app.patch('/promotion/:id', (req, res) => {

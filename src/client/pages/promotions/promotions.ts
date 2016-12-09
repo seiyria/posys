@@ -47,17 +47,12 @@ export class PromotionsPageComponent implements OnInit {
 
     if(!promo) { return openModal(new Promotion()); }
 
-    return openModal(promo);
-
-    /*
     this.prService
       .get(promo)
       .toPromise()
       .then(promotion => {
         openModal(promotion);
       });
-
-      */
   }
 
 }
