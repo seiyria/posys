@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { Component, OnInit } from '@angular/core';
 import { ViewController, NavParams } from 'ionic-angular';
 
-import { Promotion } from '../../../models/promotion';
+import { Promotion, DiscountType } from '../../../models/promotion';
 import { PromoItem } from '../../../models/promoitem';
 import { OrganizationalUnit } from '../../../models/organizationalunit';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
@@ -64,7 +64,9 @@ export class PromotionsManagerComponent implements OnInit {
   }
 
   changeDiscount() {
-    // this.promotion.discountValue = 0;
+    if(this.promotion.discountValue > 100 && this.promotion.discountType === 'Percent') {
+      this.promotion.discountValue = 100;
+    }
   }
 
   changeGrouping() {
