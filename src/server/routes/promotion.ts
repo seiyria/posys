@@ -25,7 +25,6 @@ export default (app) => {
       .orderBy('name')
       .fetchPage(pageOpts)
       .then(collection => {
-        console.log(collection.toJSON());
         res.json({ items: collection.toJSON(), pagination: collection.pagination });
       })
       .catch(e => {
