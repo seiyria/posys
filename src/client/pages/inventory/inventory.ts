@@ -90,12 +90,10 @@ export class InventoryPageComponent implements OnInit {
     this.searchResults = results.items;
   }
 
-  // TODO do in a web worker (probably)
   importData() {
 
   }
 
-  // TODO do in a web worker (probably)
   exportData() {
 
   }

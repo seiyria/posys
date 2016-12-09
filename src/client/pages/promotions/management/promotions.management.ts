@@ -46,7 +46,6 @@ export class PromotionsManagerComponent implements OnInit {
   }
 
   handleSearchResults(result: any) {
-    // TODO custom search support instead of requiring a scanner (maybe make this into a popup)
     if(result.items.length !== 1) { return; }
 
     if(!this.promotion.promoItems) { this.promotion.promoItems = []; }

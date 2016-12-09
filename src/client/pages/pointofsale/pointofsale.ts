@@ -87,7 +87,6 @@ export class PointOfSalePageComponent {
     this.showSearchItems = $event;
   }
 
-  // TODO no results flickers screen
   setSearchResults($event): void {
     // 1 result + force = scanner input (or, they hit enter)
     if($event.items.length === 1 && $event.force) {

@@ -18,13 +18,7 @@ export class QuickComponent {
   constructor(public viewCtrl: ViewController,
               public siService: StockItemService) {}
 
-  // TODO modify quantity per item
-  // TODO show price as well
-
-  // TODO keep track of quantity per location, set location in settings
-
   handleSearchResults(result: any) {
-    // TODO custom search support instead of requiring a scanner (maybe make this into a popup)
     if(result.items.length !== 1) { return; }
     this.scanItems.push(_.cloneDeep(result.items[0]));
 

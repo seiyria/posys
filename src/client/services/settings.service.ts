@@ -24,7 +24,6 @@ export class ApplicationSettingsService {
   }
 
   get connectionUrl(): string {
-    // TODO ensure no trailing slash
     return this.settings.connectionUrl;
   }
 
