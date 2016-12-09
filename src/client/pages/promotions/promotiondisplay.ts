@@ -52,6 +52,9 @@ export class PromotionDisplayComponent {
   }
 
   reductionType() {
-    return this.item.itemReductionType === 'All' ? 'All' : `B${this.item.numItemsRequired}GN`;
+    if(this.item.itemReductionType === 'All' && this.item.numItemsRequired === 1) {
+      return 'All';
+    }
+    return this.item.itemReductionType === 'All' ? `After ${this.item.numItemsRequired}, ` : `B${this.item.numItemsRequired}GN`;
   }
 }
