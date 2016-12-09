@@ -38,7 +38,7 @@ export const PromoItem = bookshelf.Model.extend({
     ],
     stockitemId: [
       {
-        method: 'isInt',
+        method: 'isNum',
         error: 'You must specify a valid item.'
       }
     ]

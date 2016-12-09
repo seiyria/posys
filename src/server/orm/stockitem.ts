@@ -53,7 +53,7 @@ export const StockItem = bookshelf.Model.extend({
         error: 'OU is required.'
       },
       {
-        method: 'isInt',
+        method: 'isNum',
         error: 'You must specify a valid OU.'
       }
     ],
@@ -63,14 +63,14 @@ export const StockItem = bookshelf.Model.extend({
         error: 'Cost is required.'
       },
       {
-        method: 'isFloat',
+        method: 'isNum',
         args: { min: 0 },
         error: 'You must specify a positive cost.'
       }
     ],
     vendorPurchasePrice: [
       {
-        method: 'isFloat',
+        method: 'isNum',
         args: { min: 0 },
         error: 'You must specify a positive vendor purchase price.'
       }
@@ -81,21 +81,21 @@ export const StockItem = bookshelf.Model.extend({
         error: 'Quantity is required.'
       },
       {
-        method: 'isInt',
+        method: 'isNum',
         args: { min: 0 },
         error: 'You must specify a quantity >= 0.'
       }
     ],
     reorderThreshold: [
       {
-        method: 'isInt',
+        method: 'isNum',
         args: { min: 0 },
         error: 'You must specify a threshold >= 0.'
       }
     ],
     reorderUpToAmount: [
       {
-        method: 'isInt',
+        method: 'isNum',
         args: { min: 0 },
         error: 'You must specify an amount >= 0.'
       }

@@ -68,7 +68,7 @@ export const Promotion = bookshelf.Model.extend({
     ],
     discountValue: [
       {
-        method: 'isInt',
+        method: 'isNum',
         args: { min: 0 },
         error: 'You must specify a value > 0.'
       }
@@ -79,14 +79,14 @@ export const Promotion = bookshelf.Model.extend({
         error: 'Item count is required.'
       },
       {
-        method: 'isInt',
+        method: 'isNum',
         args: { min: 1 },
         error: 'You must specify a value >= 1.'
       }
     ],
     organizationalunitId: [
       {
-        method: 'isInt',
+        method: 'isNum',
         error: 'You must specify a valid OU.'
       }
     ],
