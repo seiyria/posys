@@ -22,6 +22,9 @@ import { Promotion } from '../../models/promotion';
         <ion-col width-20 no-padding vertical-center>
           {{ item.endDate | date:'short' }}
         </ion-col>
+        <ion-col width-10 no-padding vertical-center>
+          {{ item.discountType === 'Dollar' ? '$' : '' }}{{ item.discountValue }}{{ item.discountType === 'Percent' ? '%' : '' }}
+        </ion-col>
         <ion-col width-20 no-padding vertical-center>
           {{ affected() | truncate:15 }}
         </ion-col>
