@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ModalController } from 'ionic-angular';
+import { ModalController, AlertController } from 'ionic-angular';
 
 import { Pagination } from 'ionic2-pagination';
 
@@ -17,7 +17,9 @@ export class PromotionsPageComponent implements OnInit {
   public currentPromotions: Promotion[] = [];
   public paginationInfo: Pagination;
 
-  constructor(public modalCtrl: ModalController, public prService: PromotionService) {}
+  constructor(public modalCtrl: ModalController,
+              public alertCtrl: AlertController,
+              public prService: PromotionService) {}
 
   ngOnInit() {
     this.changePage(1);
@@ -53,6 +55,30 @@ export class PromotionsPageComponent implements OnInit {
       .then(promotion => {
         openModal(promotion);
       });
+  }
+
+  removePromo(item) {
+    const confirm = this.alertCtrl.create({
+      title: `Remove Promotion "${item.name}"?`,
+      message: 'This is irreversible and unrecoverable. This promotion will be removed.',
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            this.prService
+              .remove(item)
+              .toPromise()
+              .then(() => {
+                this.changePage(this.paginationInfo.page);
+              });
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
 }

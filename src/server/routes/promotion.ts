@@ -50,7 +50,7 @@ export default (app) => {
             }))
             .then(t.commit, t.rollback)
             .then(() => {
-              res.json(item);
+              res.json({ flash: `Created new promotion "${item.name}"`, data: item });
             });
         })
         .catch(e => {
@@ -75,34 +75,67 @@ export default (app) => {
 
   app.patch('/promotion/:id', (req, res) => {
 
-    /*
-    StockItem
-      .forge({ id: req.params.id })
-      .save(req.body, { patch: true })
-      .then(item => {
-        item = item.toJSON();
-        res.json({ flash: `Updated item "${item.name}"`, data: item });
-      })
-      .catch(e => {
-        console.error(e);
-        res.status(500).json({ formErrors: e.data || [] });
-      });
-      */
+    const promo = req.body;
+    const items = promo.promoItems;
+    delete promo.promoItems;
+
+    bookshelf.transaction(t => {
+      PromoItem
+        .query(qb => {
+          qb
+            .where({ promoId: req.params.id });
+        })
+        .destroy({ transacting: t })
+        .then(() => {
+          return Promotion
+            .forge()
+            .save(promo, { transacting: t, patch: true })
+            .then(item => {
+              return Promise
+                .all(_.map(items, (i: any) => {
+                  i.promoId = item.id;
+                  delete i.id;
+                  return PromoItem.forge().save(i, { transacting: t });
+                }))
+                .then(t.commit, t.rollback)
+                .then(() => {
+                  res.json({ flash: `Updated promotion "${promo.name}"`, data: item });
+                });
+            })
+            .catch(e => {
+              console.log(e);
+              res.status(500).json({ formErrors: e.data || [] });
+            });
+        })
+        .catch(e => {
+          const errorMessage = Logger.parseDatabaseError(e, 'Item');
+          res.status(500).json({ flash: errorMessage });
+        });
+    });
   });
 
   app.delete('/promotion/:id', (req, res) => {
-    /*
-    StockItem
-      .forge({ id: req.params.id })
-      .destroy()
-      .then(item => {
-        item = item.toJSON();
-        res.json({ flash: `Removed item "${item.name}"`, data: item });
-      })
-      .catch(e => {
-        const errorMessage = Logger.parseDatabaseError(e, 'Item');
-        res.status(500).json({ flash: errorMessage });
-      });
-      */
+
+    bookshelf.transaction(t => {
+      PromoItem
+        .query(qb => {
+          qb
+            .where({ promoId: req.params.id });
+        })
+        .destroy({ transacting: t })
+        .then(() => {
+          return Promotion
+            .forge({ id: req.params.id })
+            .destroy({ transacting: t })
+              .then(t.commit, t.rollback)
+              .then(() => {
+                res.json({ flash: `Removed promotion successfully.` });
+            });
+        })
+        .catch(e => {
+          const errorMessage = Logger.parseDatabaseError(e, 'Item');
+          res.status(500).json({ flash: errorMessage });
+        });
+    });
   });
 };

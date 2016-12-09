@@ -103,4 +103,8 @@ export class PromotionsManagerComponent implements OnInit {
       }, e => this._formErrors.next(e.formErrors));
   }
 
+  removePromoItem(item: PromoItem) {
+    this.promotion.promoItems = _.reject(this.promotion.promoItems, checkItem => checkItem === item);
+  }
+
 }

@@ -185,7 +185,9 @@
                 <ion-item *ngFor="let item of promotion.promoItems" no-margin>
                   <ion-row no-padding>
                     <ion-col no-padding vertical-center>{{ item.name | truncate:15 }}</ion-col>
-                    <ion-col no-padding text-right><remove-button></remove-button></ion-col>
+                    <ion-col no-padding text-right>
+                      <remove-button (click)="removePromoItem(item)"></remove-button>
+                    </ion-col>
                   </ion-row>
                 </ion-item>
               </ion-list>

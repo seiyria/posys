@@ -142,7 +142,7 @@ export default (app) => {
       .destroy()
       .then(item => {
         item = item.toJSON();
-        res.json({ flash: `Removed item "${item.name}"`, data: item });
+        res.json({ flash: `Removed item successfully.`, data: item });
       })
       .catch(e => {
         const errorMessage = Logger.parseDatabaseError(e, 'Item');

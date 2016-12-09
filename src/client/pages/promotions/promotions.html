@@ -41,7 +41,7 @@
       <ion-col>
         <ion-list>
           <ion-item *ngFor="let item of currentPromotions">
-            <promotion-display [item]="item" (edit)="openPromoModal(item)"></promotion-display>
+            <promotion-display [item]="item" (edit)="openPromoModal(item)" (remove)="removePromo(item)"></promotion-display>
           </ion-item>
         </ion-list>
       </ion-col>
