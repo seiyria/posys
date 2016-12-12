@@ -5,10 +5,15 @@ import { StockItem } from './stockitem';
 
 export class InvoiceItem {
   id?: number;
+  invoiceId?: number;
   stockitemId?: number;
   stockitemData?: StockItem;
 
   constructor(initializer?: InvoiceItem) {
-    _.extend(this, initializer);
+    if(!initializer) return;
+    this.id = initializer.id;
+    this.invoiceId = initializer.invoiceId;
+    this.stockitemId = initializer.stockitemId;
+    this.stockitemData = initializer.stockitemData;
   }
 }

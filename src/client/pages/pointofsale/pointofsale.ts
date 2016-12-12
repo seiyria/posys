@@ -5,8 +5,12 @@ import { Component, EventEmitter } from '@angular/core';
 
 import { ModalController, AlertController } from 'ionic-angular';
 
+import { InvoiceService } from '../../services/invoice.service';
+
 import { ApplicationSettingsService } from '../../services/settings.service';
 import { StockItem } from '../../models/stockitem';
+import { Promotion } from '../../models/promotion';
+import { PurchaseMethod, Invoice } from '../../models/invoice';
 
 @Component({
   selector: 'my-page-pointofsale',
@@ -16,11 +20,14 @@ import { StockItem } from '../../models/stockitem';
 export class PointOfSalePageComponent {
 
   public currentTransaction: StockItem[] = [];
+  public currentPromotions: Promotion[] = [];
   public searchItems: StockItem[] = [];
   public showSearchItems: boolean;
   public omniCancelControl = new EventEmitter();
 
   public transactionItemButtons = [
+    { text: 'Discount', callback: (item) => {
+    } },
     { text: 'Remove', callback: (item) => {
       const confirm = this.alertCtrl.create({
         title: `Remove "${item.name}"?`,
@@ -43,6 +50,7 @@ export class PointOfSalePageComponent {
 
   constructor(public modalCtrl: ModalController,
               public alertCtrl: AlertController,
+              public ivService: InvoiceService,
               public settings: ApplicationSettingsService) {}
 
   addTransactionItem(item: StockItem): void {
@@ -64,6 +72,11 @@ export class PointOfSalePageComponent {
     this.omniCancelControl.next();
   }
 
+  private clearTransaction() {
+    this.currentTransaction = [];
+    this.currentPromotions = [];
+  }
+
   voidTransaction(): void {
     const confirm = this.alertCtrl.create({
       title: 'Void transaction?',
@@ -75,7 +88,7 @@ export class PointOfSalePageComponent {
         {
           text: 'Confirm',
           handler: () => {
-            this.currentTransaction = [];
+            this.clearTransaction();
           }
         }
       ]
@@ -97,6 +110,41 @@ export class PointOfSalePageComponent {
     this.searchItems = $event.items;
   }
 
+  finalize(purchaseMethod: PurchaseMethod) {
+    const confirm = this.alertCtrl.create({
+      title: 'Complete Transaction?',
+      message: `You are doing a ${purchaseMethod} transaction with a value of $${this.total} across 
+                ${this.currentTransaction.length} items with ${this.currentPromotions.length} promotions.`,
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            const invoice = new Invoice({
+              purchaseTime: new Date(),
+              purchaseMethod,
+              purchasePrice: this.total,
+              stockitems: this.currentTransaction,
+              promotions: this.currentPromotions
+            });
+
+            this.ivService
+              .create(invoice)
+              .toPromise()
+              .then(newInvoice => {
+                console.log(newInvoice);
+
+                this.clearTransaction();
+              });
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
   get subtotal(): number {
     return _.reduce(this.currentTransaction, (prev, cur) => prev + (cur.cost * cur.quantity), 0);
   }
@@ -110,6 +158,6 @@ export class PointOfSalePageComponent {
   }
 
   get total(): number {
-    return this.subtotal + this.tax;
+    return +(this.subtotal + this.tax).toFixed(2);
   }
 }

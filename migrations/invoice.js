@@ -15,12 +15,14 @@ exports.up = (knex) => {
     })
     .createTable('invoicepromo', (table) => {
       table.increments('id').primary();
+      table.integer('invoiceId').unsigned().references('invoice.id');
       table.integer('promoId').unsigned().references('promo.id');
       table.jsonb('promoData');
       table.timestamps();
     })
     .createTable('invoiceitem', (table) => {
       table.increments('id').primary();
+      table.integer('invoiceId').unsigned().references('invoice.id');
       table.integer('stockitemId').unsigned().references('stockitem.id');
       table.jsonb('stockitemData');
       table.timestamps();

@@ -44,6 +44,7 @@ import { ApplicationSettingsService } from '../services/settings.service';
 import { LoggerService } from '../services/logger.service';
 import { PromotionService } from '../services/promotion.service';
 import { StockItemService } from '../services/stockitem.service';
+import { InvoiceService } from '../services/invoice.service';
 import { OrganizationalUnitService } from '../services/organizationalunit.service';
 
 import { PaginationComponent } from 'ionic2-pagination';
@@ -116,6 +117,7 @@ import { TruncatePipe } from '../pipes/truncate';
     LoggerService,
     StockItemService,
     PromotionService,
+    InvoiceService,
     OrganizationalUnitService,
     CurrencyPipe
   ]
