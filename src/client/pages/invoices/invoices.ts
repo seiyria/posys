@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 import { Pagination } from 'ionic2-pagination';
 
+import { InvoiceViewComponent } from './view/invoice.view';
+
 import { InvoiceService } from '../../services/invoice.service';
 import { Invoice } from '../../models/invoice';
 
@@ -33,9 +35,8 @@ export class InvoicesPageComponent implements OnInit {
 
   openItemModal(item?: Invoice) {
 
-    /*
     const openModal = (invoice: Invoice) => {
-      const modal = this.modalCtrl.create(InventoryManagerComponent, {
+      const modal = this.modalCtrl.create(InvoiceViewComponent, {
         invoice: invoice
       }, { enableBackdropDismiss: false });
       modal.onDidDismiss(() => {
@@ -45,7 +46,6 @@ export class InvoicesPageComponent implements OnInit {
     };
 
     openModal(item);
-    */
   }
 
 }

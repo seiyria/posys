@@ -9,6 +9,8 @@ export class InvoicePromo {
   promoId?: number;
   promoData?: Promotion;
 
+  realData?: any;
+
   constructor(initializer?: InvoicePromo) {
     if(!initializer) return;
     this.id = initializer.id;

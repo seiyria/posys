@@ -1,0 +1,91 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Invoice #{{ invoice.id }}
+    </ion-title>
+    <ion-buttons start>
+      <!-- TODO VOID/UNVOID -->
+      <button ion-button (click)="dismiss()">
+        <span color="danger">Close</span>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content my-modal-invoice-view>
+  <ion-grid scroll-grid>
+    <ion-row top-row>
+      <ion-col>
+        <ion-list>
+          <ion-item>
+            <ion-icon name="calendar" item-left></ion-icon>
+            Purchase Date
+            <ion-note item-right>{{ invoice.purchaseTime | date:'medium' }}</ion-note>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon name="pricetag" item-left></ion-icon>
+            Total Sale
+            <ion-note item-right>{{ invoice.purchasePrice | currencyFromSettings }}</ion-note>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon name="card" item-left></ion-icon>
+            Purchase Method
+            <ion-note item-right>{{ invoice.purchaseMethod }}</ion-note>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row bottom-row>
+      <ion-col width-50 scroll-grid>
+
+        <ion-grid scroll-grid>
+          <ion-row>
+            <ion-col>
+              <ion-list no-margin-bottom>
+                <ion-list-header>Items Purchased ({{invoice.stockitems.length}})</ion-list-header>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+          <ion-row scroll-row>
+            <ion-col>
+              <ion-list>
+                <ion-item *ngFor="let item of invoice.stockitems">
+                  {{ item.realData.name }}
+                  <ion-note item-right>{{ item.realData.cost | currencyFromSettings }} <span *ngIf="item.taxable">(+{{ taxForItem(item.realData) | currencyFromSettings }} Tax)</span></ion-note>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+      </ion-col>
+      <ion-col width-50>
+
+        <ion-grid scroll-grid>
+          <ion-row>
+            <ion-col>
+              <ion-list no-margin-bottom>
+                <ion-list-header>Promotions Used ({{invoice.promotions.length}})</ion-list-header>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+          <ion-row scroll-row>
+            <ion-col>
+              <ion-list>
+                <ion-item *ngIf="invoice.promotions.length === 0">None</ion-item>
+                <ion-item *ngFor="let item of invoice.promotions">
+                  {{ item.realData.name }}
+                </ion-item>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

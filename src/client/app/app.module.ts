@@ -18,6 +18,7 @@ import { SettingsPageComponent } from '../pages/settings/settings';
 import { PointOfSalePageComponent } from '../pages/pointofsale/pointofsale';
 
 import { InvoicesPageComponent } from '../pages/invoices/invoices';
+import { InvoiceViewComponent } from '../pages/invoices/view/invoice.view';
 
 import { PromotionsPageComponent } from '../pages/promotions/promotions';
 import { PromotionsManagerComponent } from '../pages/promotions/management/promotions.management';
@@ -67,6 +68,7 @@ import { TruncatePipe } from '../pipes/truncate';
     AboutComponent,
     PointOfSalePageComponent,
     InvoicesPageComponent,
+    InvoiceViewComponent,
     PromotionsPageComponent,
     PromotionsManagerComponent,
     ReportingPageComponent,
@@ -110,6 +112,7 @@ import { TruncatePipe } from '../pipes/truncate';
     AboutComponent,
     PointOfSalePageComponent,
     InvoicesPageComponent,
+    InvoiceViewComponent,
     PromotionsPageComponent,
     PromotionsManagerComponent,
     ReportingPageComponent,

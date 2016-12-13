@@ -1,8 +1,8 @@
 
 import * as _ from 'lodash';
 
-import { StockItem } from './stockitem';
-import { Promotion } from './promotion';
+import { InvoiceItem } from './invoiceitem';
+import { InvoicePromo } from './invoicepromo';
 
 export type PurchaseMethod =
   'Cash' | 'Check' | 'Debit' | 'Credit';
@@ -15,8 +15,8 @@ export class Invoice {
   cashGiven?: number;
   isVoided?: boolean;
 
-  stockitems?: StockItem[];
-  promotions?: Promotion[];
+  stockitems?: InvoiceItem[];
+  promotions?: InvoicePromo[];
 
   constructor(initializer?: Invoice) {
     _.extend(this, initializer);

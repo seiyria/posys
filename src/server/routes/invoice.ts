@@ -19,7 +19,6 @@ export default (app) => {
 
   app.put('/invoice', (req, res) => {
 
-    console.log(req.body);
     const invoice = req.body;
     const items = invoice.stockitems;
     const promos = invoice.promotions;
@@ -78,7 +77,7 @@ export default (app) => {
     const pageOpts = {
       pageSize: +req.query.pageSize || Settings.pagination.pageSize,
       page: +req.query.page || 1,
-      withRelated: ['stockitems', 'promotions']
+      withRelated: ['stockitems', 'promotions', 'stockitems._stockitemData', 'promotions._promoData']
     };
 
     Invoice
@@ -94,20 +93,6 @@ export default (app) => {
   });
 
   /*
-
-  app.get('/promotion/:id', (req, res) => {
-    Promotion
-      .forge({ id: req.params.id })
-      .fetch({
-        withRelated: ['organizationalunit', 'promoItems']
-      })
-      .then(item => {
-        res.json(item);
-      })
-      .catch(e => {
-        res.status(500).json(Logger.browserError(Logger.error('Route:StockItem/:id:GET', e)));
-      });
-  });
 
   app.patch('/promotion/:id', (req, res) => {
 

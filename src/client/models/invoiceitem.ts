@@ -9,11 +9,16 @@ export class InvoiceItem {
   stockitemId?: number;
   stockitemData?: StockItem;
 
+  taxable?: boolean;
+
+  realData?: any;
+
   constructor(initializer?: InvoiceItem) {
     if(!initializer) return;
     this.id = initializer.id;
     this.invoiceId = initializer.invoiceId;
     this.stockitemId = initializer.stockitemId;
     this.stockitemData = initializer.stockitemData;
+    this.taxable = initializer.taxable;
   }
 }
