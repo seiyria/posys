@@ -34,11 +34,13 @@ import { ResetButtonComponent } from '../components/reset-button';
 import { ImportButtonComponent } from '../components/import-button';
 import { RemoveButtonComponent } from '../components/remove-button';
 import { UpdateButtonComponent } from '../components/update-button';
+import { ViewButtonComponent } from '../components/view-button';
 
 import { TransactionItemComponent, TransactionItemPopoverComponent } from '../pages/pointofsale/transactionitem';
 import { QueryItemComponent } from '../pages/pointofsale/queryitem';
 import { InventoryItemComponent } from '../pages/inventory/inventoryitem';
 import { PromotionDisplayComponent } from '../pages/promotions/promotiondisplay';
+import { InvoiceItemComponent } from '../pages/invoices/invoiceitem';
 
 import { ApplicationSettingsService } from '../services/settings.service';
 import { LoggerService } from '../services/logger.service';
@@ -77,6 +79,7 @@ import { TruncatePipe } from '../pipes/truncate';
     InventoryItemComponent,
     PromotionDisplayComponent,
     QueryItemComponent,
+    InvoiceItemComponent,
 
     AddButtonComponent,
     EditButtonComponent,
@@ -84,6 +87,7 @@ import { TruncatePipe } from '../pipes/truncate';
     ImportButtonComponent,
     RemoveButtonComponent,
     UpdateButtonComponent,
+    ViewButtonComponent,
 
     PaginationComponent,
 

@@ -2,10 +2,19 @@
 
 import { bookshelf } from '../server';
 
+import { InvoiceItem } from './invoiceitem';
+import { InvoicePromo } from './invoicepromo';
+
 export const Invoice = bookshelf.Model.extend({
   tableName: 'invoice',
   hasTimestamps: true,
   softDelete: false,
+  stockitems: function() {
+    return this.hasMany(InvoiceItem, 'invoiceId');
+  },
+  promotions: function() {
+    return this.hasMany(InvoicePromo, 'invoiceId');
+  },
   validations: {
     purchaseTime: [
       {
