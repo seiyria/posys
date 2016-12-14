@@ -4,7 +4,7 @@
       Cash Pay
     </ion-title>
     <ion-buttons start>
-      <confirm-button (click)="dismiss(cashPaid)" [disabled]="!canPay()"></confirm-button>
+      <confirm-button (click)="dismiss(true)" [disabled]="!canPay()"></confirm-button>
       <button ion-button (click)="dismiss()">
         <span color="danger">Cancel</span>
       </button>

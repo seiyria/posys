@@ -37,7 +37,7 @@ export class CashPayComponent {
     return +this.cashPaid >= this.cashExpected;
   }
 
-  dismiss(useValue: boolean) {
+  dismiss(useValue?: boolean) {
 
     const cashPaid = +this.cashPaid;
     const diff = Math.abs(cashPaid - this.cashExpected);
