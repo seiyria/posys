@@ -24,7 +24,11 @@ export class ApplicationSettingsService {
   }
 
   get connectionUrl(): string {
-    return this.settings.connectionUrl;
+    let str = this.settings.connectionUrl;
+    if(_.endsWith(str, '/')) {
+      str = _.trimEnd(str, '/');
+    }
+    return str;
   }
 
   buildAPIURL(fragment: string, id?: number): string {
