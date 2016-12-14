@@ -28,7 +28,7 @@ import { StockItem } from '../../models/stockitem';
           {{ item.sku }}
         </ion-col>
         <ion-col width-10 no-padding vertical-center>
-          {{ item.quantity }}
+          <update-quantity-button [quantity]="item.quantity" (quantityChange)="updateQuantity($event, item)"></update-quantity-button>
         </ion-col>
         <ion-col width-10 no-padding vertical-center>
           <ion-item shrunk-item-checkbox no-border-bottom>
@@ -51,6 +51,10 @@ export class TransactionItemComponent {
   @Input() index: number;
 
   constructor(public popoverCtrl: PopoverController) {}
+
+  updateQuantity(quantity, item) {
+    item.quantity = quantity;
+  }
 
   moreOptions($event) {
     const popover = this.popoverCtrl.create(TransactionItemPopoverComponent, { buttons: this.buttons, item: this.item });

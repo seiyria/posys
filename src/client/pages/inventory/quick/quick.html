@@ -43,7 +43,9 @@
                     <ion-col no-padding>{{ item.description | truncate:25 }}</ion-col>
                   </ion-row>
                 </ion-col>
-                <ion-col vertical-center>{{ item.sku }}</ion-col>
+                <ion-col vertical-center>
+                  <update-quantity-button [quantity]="item.quantity" (quantityChange)="updateQuantity($event, item)"></update-quantity-button>x
+                  {{ item.cost | currencyFromSettings }}</ion-col>
                 <ion-col width-20 text-right vertical-center>
                   <remove-button (click)="removeItem(item)"></remove-button>
                 </ion-col>

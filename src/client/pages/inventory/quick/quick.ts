@@ -20,7 +20,9 @@ export class QuickComponent {
 
   handleSearchResults(result: any) {
     if(result.items.length !== 1) { return; }
-    this.scanItems.push(_.cloneDeep(result.items[0]));
+    const newItem = _.cloneDeep(result.items[0]);
+    newItem.quantity = 1;
+    this.scanItems.push(newItem);
 
     setTimeout(() => {
       const transactionList = document.getElementById('scan-list');
@@ -39,6 +41,10 @@ export class QuickComponent {
       .then(() => {
         this.dismiss();
       });
+  }
+
+  updateQuantity(newQuantity, item) {
+    item.quantity = newQuantity;
   }
 
   dismiss() {

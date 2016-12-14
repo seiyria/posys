@@ -59,7 +59,7 @@ export class StockItemService {
   importMany(items: StockItem[]): Observable<any> {
     const data = _.reduce(items, (prev: any, cur: StockItem) => {
       prev[cur.sku] = prev[cur.sku] || 0;
-      prev[cur.sku]++;
+      prev[cur.sku] += cur.quantity;
       return prev;
     }, {});
     return this.http.post(this.settings.buildAPIURL(`${this.url}/import`), data)
