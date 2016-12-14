@@ -34,6 +34,12 @@
             Purchase Method
             <ion-note item-right>{{ invoice.purchaseMethod }}</ion-note>
           </ion-item>
+
+          <ion-item *ngIf="invoice.purchaseMethod === 'Cash'">
+            <ion-icon name="cash" item-left></ion-icon>
+            Cash Given
+            <ion-note item-right>{{ invoice.cashGiven | currencyFromSettings }}</ion-note>
+          </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>
@@ -45,7 +51,7 @@
           <ion-row>
             <ion-col>
               <ion-list no-margin-bottom>
-                <ion-list-header>Items Purchased ({{invoice.stockitems.length}})</ion-list-header>
+                <ion-list-header no-margin-bottom>Items Purchased ({{ totalItems() }})</ion-list-header>
               </ion-list>
             </ion-col>
           </ion-row>
@@ -53,8 +59,9 @@
             <ion-col>
               <ion-list>
                 <ion-item *ngFor="let item of invoice.stockitems">
-                  {{ item.realData.name }}
-                  <ion-note item-right>{{ item.realData.cost | currencyFromSettings }} <span *ngIf="item.taxable">(+{{ taxForItem(item.realData) | currencyFromSettings }} Tax)</span></ion-note>
+                  <h3>{{ item.realData.name }} ({{ item.quantity }})</h3>
+                  <p>{{ item.realData.cost | currencyFromSettings }} ea <span *ngIf="item.taxable"> + Tax</span></p>
+                  <ion-note item-right>{{ totalCostForItem(item) | currencyFromSettings }}</ion-note>
                 </ion-item>
               </ion-list>
             </ion-col>
@@ -68,7 +75,7 @@
           <ion-row>
             <ion-col>
               <ion-list no-margin-bottom>
-                <ion-list-header>Promotions Used ({{invoice.promotions.length}})</ion-list-header>
+                <ion-list-header no-margin-bottom>Promotions Used ({{invoice.promotions.length}})</ion-list-header>
               </ion-list>
             </ion-col>
           </ion-row>

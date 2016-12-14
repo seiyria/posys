@@ -33,12 +33,20 @@ export class InvoiceViewComponent {
     return item._promoData || item.promoData;
   }
 
+  totalItems() {
+    return _.reduce(this.invoice.stockitems, (prev, cur) => prev + cur.quantity, 0);
+  }
+
   dismiss(item?: Invoice) {
     this.viewCtrl.dismiss(item);
   }
 
   taxForItem(item): number {
-    return (this.settings.taxRate / 100) * item.cost;
+    return (this.settings.taxRate / 100) * item.realData.cost * item.quantity;
+  }
+
+  totalCostForItem(item): number {
+    return (item.realData.cost * item.quantity) + (item.taxable ? this.taxForItem(item) : 0);
   }
 
   toggleVoid() {
