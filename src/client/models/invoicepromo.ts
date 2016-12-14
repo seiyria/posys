@@ -12,7 +12,7 @@ export class InvoicePromo {
   realData?: any;
 
   constructor(initializer?: InvoicePromo) {
-    if(!initializer) return;
+    if(!initializer) { return; }
     this.id = initializer.id;
     this.invoiceId = initializer.invoiceId;
     this.promoId = initializer.promoId;

@@ -15,7 +15,7 @@ export class InvoiceItem {
   realData?: any;
 
   constructor(initializer?: InvoiceItem) {
-    if(!initializer) return;
+    if(!initializer) { return; }
     this.id = initializer.id;
     this.invoiceId = initializer.invoiceId;
     this.stockitemId = initializer.stockitemId;

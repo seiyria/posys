@@ -18,7 +18,7 @@ import Settings from './_settings';
 const incrementItems = (items, transaction?) => {
   return _.map(items, (v: number, k: string) => {
     let base = knex('stockitem');
-    if(transaction) base = base.transacting(transaction);
+    if(transaction) { base = base.transacting(transaction); }
     return base
       .where('sku', '=', k)
       .increment('quantity', v);
@@ -28,7 +28,7 @@ const incrementItems = (items, transaction?) => {
 const decrementItems = (items, transaction?) => {
   return _.map(items, (v: number, k: string) => {
     let base = knex('stockitem');
-    if(transaction) base = base.transacting(transaction);
+    if(transaction) { base = base.transacting(transaction); }
     return base
       .where('sku', '=', k)
       .decrement('quantity', v);
@@ -135,9 +135,9 @@ export default (app) => {
         const unwrappedItem = item.toJSON();
         unwrappedItem.isVoided = !unwrappedItem.isVoided;
 
-        const items = _.map(unwrappedItem.stockitems, (item: any) => {
-          const itemData = item.stockitemData || item._stockitemData;
-          itemData.quantity = item.quantity;
+        const items = _.map(unwrappedItem.stockitems, (innerItem: any) => {
+          const itemData = innerItem.stockitemData || innerItem._stockitemData;
+          itemData.quantity = innerItem.quantity;
           return itemData;
         });
 

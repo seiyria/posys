@@ -117,7 +117,7 @@ export class PointOfSalePageComponent {
       cashExpected: this.total
     }, { enableBackdropDismiss: false });
     modal.onDidDismiss((cashGiven) => {
-      if(!cashGiven) return;
+      if(!cashGiven) { return; }
       this.finalize('Cash', cashGiven);
     });
     modal.present();

@@ -42,11 +42,12 @@ export class CashPayComponent {
     const cashPaid = +this.cashPaid;
     const diff = Math.abs(cashPaid - this.cashExpected);
 
-    let message = `The customer has given ${this.currencyPipe.transform(cashPaid)} on a transaction worth ${this.currencyPipe.transform(this.cashExpected)}. `;
+    let message = `The customer has given ${this.currencyPipe.transform(cashPaid)} 
+                   on a transaction worth ${this.currencyPipe.transform(this.cashExpected)}. `;
     if(diff === 0) {
       message += 'There is no change to be given.';
     } else {
-      message += `There is ${this.currencyPipe.transform(diff)} due in change.`
+      message += `There is ${this.currencyPipe.transform(diff)} due in change.`;
     }
 
     const confirm = this.alertCtrl.create({

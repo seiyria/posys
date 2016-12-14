@@ -13,7 +13,7 @@ export class PromoItem {
   temporary?: boolean;
 
   constructor(initializer?: PromoItem|StockItem|any) {
-    if(!initializer) return;
+    if(!initializer) { return; }
     this.id = initializer.id;
     this.sku = initializer.sku;
     this.name = initializer.name;
