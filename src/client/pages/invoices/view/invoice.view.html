@@ -59,7 +59,7 @@
             <ion-col>
               <ion-list>
                 <ion-item *ngFor="let item of invoice.stockitems">
-                  <h3>{{ item.realData.name }} ({{ item.quantity }})</h3>
+                  <h2>{{ item.realData.name }} ({{ item.quantity }})</h2>
                   <p>{{ item.realData.cost | currencyFromSettings }} ea <span *ngIf="item.taxable"> + Tax</span></p>
                   <ion-note item-right>{{ totalCostForItem(item) | currencyFromSettings }}</ion-note>
                 </ion-item>
