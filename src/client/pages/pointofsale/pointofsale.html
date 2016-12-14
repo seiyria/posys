@@ -96,18 +96,18 @@
             <ion-col>
               <ion-row>
                 <ion-col main-button>
-                  <top-icon-button text="Cash" icon="calculator" size="medium"></top-icon-button>
+                  <top-icon-button text="Cash" icon="calculator" size="medium" (subClick)="getCashValue()" [disabled]="currentTransaction.length === 0"></top-icon-button>
                 </ion-col>
                 <ion-col main-button>
-                  <top-icon-button text="Check" icon="cash" size="medium" (click)="finalize('Check')" [disabled]="currentTransaction.length === 0"></top-icon-button>
+                  <top-icon-button text="Check" icon="cash" size="medium" (subClick)="finalize('Check')" [disabled]="currentTransaction.length === 0"></top-icon-button>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col main-button>
-                  <top-icon-button text="Credit" icon="card" size="medium" (click)="finalize('Credit')" [disabled]="currentTransaction.length === 0"></top-icon-button>
+                  <top-icon-button text="Credit" icon="card" size="medium" (subClick)="finalize('Credit')" [disabled]="currentTransaction.length === 0"></top-icon-button>
                 </ion-col>
                 <ion-col main-button>
-                  <top-icon-button text="Debit" icon="card" size="medium" (click)="finalize('Debit')" [disabled]="currentTransaction.length === 0"></top-icon-button>
+                  <top-icon-button text="Debit" icon="card" size="medium" (subClick)="finalize('Debit')" [disabled]="currentTransaction.length === 0"></top-icon-button>
                 </ion-col>
               </ion-row>
             </ion-col>

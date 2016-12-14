@@ -16,6 +16,7 @@ import { AboutComponent } from '../pages/settings/about/about';
 import { SettingsPageComponent } from '../pages/settings/settings';
 
 import { PointOfSalePageComponent } from '../pages/pointofsale/pointofsale';
+import { CashPayComponent } from '../pages/pointofsale/cashpay/pointofsale.cashpay';
 
 import { InvoicesPageComponent } from '../pages/invoices/invoices';
 import { InvoiceViewComponent } from '../pages/invoices/view/invoice.view';
@@ -30,6 +31,7 @@ import { TopIconButtonComponent } from '../components/top-icon-button';
 import { OmnisearchComponent } from '../components/omni-search';
 
 import { AddButtonComponent } from '../components/add-button';
+import { ConfirmButtonComponent } from '../components/confirm-button';
 import { EditButtonComponent } from '../components/edit-button';
 import { ResetButtonComponent } from '../components/reset-button';
 import { ImportButtonComponent } from '../components/import-button';
@@ -68,6 +70,7 @@ import { TruncatePipe } from '../pipes/truncate';
     SettingsPageComponent,
     AboutComponent,
     PointOfSalePageComponent,
+    CashPayComponent,
     InvoicesPageComponent,
     InvoiceViewComponent,
     PromotionsPageComponent,
@@ -85,6 +88,7 @@ import { TruncatePipe } from '../pipes/truncate';
     InvoiceItemComponent,
 
     AddButtonComponent,
+    ConfirmButtonComponent,
     EditButtonComponent,
     ResetButtonComponent,
     ImportButtonComponent,
@@ -113,6 +117,7 @@ import { TruncatePipe } from '../pipes/truncate';
     SettingsPageComponent,
     AboutComponent,
     PointOfSalePageComponent,
+    CashPayComponent,
     InvoicesPageComponent,
     InvoiceViewComponent,
     PromotionsPageComponent,

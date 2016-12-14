@@ -1,0 +1,19 @@
+[my-modal-pointofsale-cashpay] {
+  ion-grid {
+    height: 100%;
+
+    ion-row:nth-child(2) {
+      height: 100%;
+      padding: 2rem;
+
+      ion-col {
+        height: 25%;
+
+        button {
+          height: 100%;
+          font-size: 250%;
+        }
+      }
+    }
+  }
+}

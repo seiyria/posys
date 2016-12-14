@@ -7,6 +7,8 @@ import { ModalController, AlertController } from 'ionic-angular';
 
 import { InvoiceService } from '../../services/invoice.service';
 
+import { CashPayComponent } from './cashpay/pointofsale.cashpay';
+
 import { ApplicationSettingsService } from '../../services/settings.service';
 import { StockItem } from '../../models/stockitem';
 import { Promotion } from '../../models/promotion';
@@ -110,7 +112,18 @@ export class PointOfSalePageComponent {
     this.searchItems = $event.items;
   }
 
-  finalize(purchaseMethod: PurchaseMethod) {
+  getCashValue() {
+    const modal = this.modalCtrl.create(CashPayComponent, {
+      cashExpected: this.total
+    }, { enableBackdropDismiss: false });
+    modal.onDidDismiss((cashGiven) => {
+      if(!cashGiven) return;
+      this.finalize('Cash', cashGiven);
+    });
+    modal.present();
+  }
+
+  finalize(purchaseMethod: PurchaseMethod, cashGiven?: number) {
     const confirm = this.alertCtrl.create({
       title: 'Complete Transaction?',
       message: `You are doing a ${purchaseMethod} transaction with a value of $${this.total} across 
@@ -125,6 +138,7 @@ export class PointOfSalePageComponent {
             const invoice = new Invoice({
               purchaseTime: new Date(),
               purchaseMethod,
+              cashGiven,
               purchasePrice: this.total,
               stockitems: this.currentTransaction,
               promotions: this.currentPromotions
@@ -134,8 +148,6 @@ export class PointOfSalePageComponent {
               .create(invoice)
               .toPromise()
               .then(newInvoice => {
-                console.log(newInvoice);
-
                 this.clearTransaction();
               });
           }
@@ -158,6 +170,6 @@ export class PointOfSalePageComponent {
   }
 
   get total(): number {
-    return +(this.subtotal + this.tax).toFixed(2);
+    return +((this.subtotal + this.tax).toFixed(2));
   }
 }
