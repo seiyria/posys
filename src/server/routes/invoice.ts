@@ -1,7 +1,7 @@
 
 import * as _ from 'lodash';
 
-import { bookshelf } from '../server';
+import { bookshelf, knex } from '../server';
 
 import { Invoice } from '../orm/invoice';
 import { InvoiceItem } from '../orm/invoiceitem';
@@ -14,6 +14,34 @@ import { InvoicePromo as InvoicePromoModel } from '../../client/models/invoicepr
 
 import { Logger } from '../logger';
 import Settings from './_settings';
+
+const incrementItems = (items, transaction?) => {
+  return _.map(items, (v: number, k: string) => {
+    let base = knex('stockitem');
+    if(transaction) base = base.transacting(transaction);
+    return base
+      .where('sku', '=', k)
+      .increment('quantity', v);
+  });
+};
+
+const decrementItems = (items, transaction?) => {
+  return _.map(items, (v: number, k: string) => {
+    let base = knex('stockitem');
+    if(transaction) base = base.transacting(transaction);
+    return base
+      .where('sku', '=', k)
+      .decrement('quantity', v);
+  });
+};
+
+const itemsFromInvoiceToStockable = (items) => {
+  return _.reduce(items, (prev, cur: StockItemModel) => {
+    prev[cur.sku] = prev[cur.sku] || 0;
+    prev[cur.sku] += cur.quantity;
+    return prev;
+  }, {});
+};
 
 export default (app) => {
 
@@ -31,6 +59,8 @@ export default (app) => {
     };
 
     bookshelf.transaction(t => {
+
+      const countMap = itemsFromInvoiceToStockable(items);
 
       const itemPromises = (newInvoice) => _.map(items, (i: any) => {
         i.invoiceId = newInvoice.id;
@@ -56,12 +86,14 @@ export default (app) => {
         return InvoicePromo.forge().save(new InvoicePromoModel(i), { transacting: t }).catch(errorHandler);
       });
 
+      const decrementPromises = decrementItems(countMap, t);
+
       Invoice
         .forge()
         .save(invoice, { transacting: t })
         .then(item => {
           return Promise
-            .all(itemPromises(item).concat(promoPromises(item)))
+            .all(itemPromises(item).concat(promoPromises(item)).concat(decrementPromises))
             .then(t.commit, t.rollback)
             .then(() => {
               res.json({ flash: `Transaction completed successfully.`, data: item });
@@ -92,72 +124,51 @@ export default (app) => {
       });
   });
 
-  /*
+  app.post('/invoice/void/:id', (req, res) => {
 
-  app.patch('/promotion/:id', (req, res) => {
+     Invoice
+      .forge({ id: req.params.id })
+      .fetch({
+        withRelated: ['stockitems', 'promotions', 'stockitems._stockitemData', 'promotions._promoData']
+      })
+      .then(item => {
+        const unwrappedItem = item.toJSON();
+        unwrappedItem.isVoided = !unwrappedItem.isVoided;
 
-    const promo = req.body;
-    const items = promo.promoItems;
-    delete promo.promoItems;
-
-    bookshelf.transaction(t => {
-      PromoItem
-        .query(qb => {
-          qb
-            .where({ promoId: req.params.id });
-        })
-        .destroy({ transacting: t })
-        .then(() => {
-          return Promotion
-            .forge()
-            .save(promo, { transacting: t, patch: true })
-            .then(item => {
-              return Promise
-                .all(_.map(items, (i: any) => {
-                  i.promoId = item.id;
-                  delete i.id;
-                  return PromoItem.forge().save(i, { transacting: t });
-                }))
-                .then(t.commit, t.rollback)
-                .then(() => {
-                  res.json({ flash: `Updated promotion "${promo.name}"`, data: item });
-                });
-            })
-            .catch(e => {
-              console.log(e);
-              res.status(500).json({ formErrors: e.data || [] });
-            });
-        })
-        .catch(e => {
-          const errorMessage = Logger.parseDatabaseError(e, 'Item');
-          res.status(500).json({ flash: errorMessage });
+        const items = _.map(unwrappedItem.stockitems, (item: any) => {
+          const itemData = item.stockitemData || item._stockitemData;
+          itemData.quantity = item.quantity;
+          return itemData;
         });
-    });
+
+        const inventoryHash = itemsFromInvoiceToStockable(items);
+        let inventoryPromises = [];
+
+        if(unwrappedItem.isVoided) {
+          inventoryPromises = incrementItems(inventoryHash);
+        } else {
+          inventoryPromises = decrementItems(inventoryHash);
+        }
+
+        delete unwrappedItem.stockitems;
+        delete unwrappedItem.promotions;
+
+        const savePromise = Invoice
+          .forge({ id: req.params.id })
+          .save(unwrappedItem, { patch: true })
+          .catch(e => {
+            res.status(500).json(Logger.browserError(Logger.error('Route:Invoice/:id/void:POST', e)));
+          });
+
+        Promise.all([savePromise].concat(inventoryPromises))
+          .then(resolvedPromises => {
+            // [0] is the saved item
+            res.json(resolvedPromises[0]);
+          });
+      })
+      .catch(e => {
+        res.status(500).json(Logger.browserError(Logger.error('Route:Invoice/:id/void:POST', e)));
+      });
   });
 
-  app.delete('/promotion/:id', (req, res) => {
-
-    bookshelf.transaction(t => {
-      PromoItem
-        .query(qb => {
-          qb
-            .where({ promoId: req.params.id });
-        })
-        .destroy({ transacting: t })
-        .then(() => {
-          return Promotion
-            .forge({ id: req.params.id })
-            .destroy({ transacting: t })
-              .then(t.commit, t.rollback)
-              .then(() => {
-                res.json({ flash: `Removed promotion successfully.` });
-            });
-        })
-        .catch(e => {
-          const errorMessage = Logger.parseDatabaseError(e, 'Item');
-          res.status(500).json({ flash: errorMessage });
-        });
-    });
-  });
-   */
 };

@@ -55,4 +55,10 @@ export class InvoiceService {
       .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }
+
+  toggleVoid(item: Invoice): Observable<Invoice> {
+    return this.http.post(this.settings.buildAPIURL(`${this.url}/void`, item.id), item)
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
+      .catch(e => this.logger.observableError(e));
+  }
 }

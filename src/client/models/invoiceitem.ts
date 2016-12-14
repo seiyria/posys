@@ -10,6 +10,7 @@ export class InvoiceItem {
   stockitemData?: StockItem;
 
   taxable?: boolean;
+  quantity?: number;
 
   realData?: any;
 
@@ -20,5 +21,6 @@ export class InvoiceItem {
     this.stockitemId = initializer.stockitemId;
     this.stockitemData = initializer.stockitemData;
     this.taxable = initializer.taxable;
+    this.quantity = initializer.quantity;
   }
 }

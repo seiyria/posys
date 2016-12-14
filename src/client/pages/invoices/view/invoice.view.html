@@ -4,7 +4,7 @@
       Invoice #{{ invoice.id }}
     </ion-title>
     <ion-buttons start>
-      <!-- TODO VOID/UNVOID -->
+      <void-button (click)="toggleVoid()" [item]="invoice"></void-button>
       <button ion-button (click)="dismiss()">
         <span color="danger">Close</span>
       </button>

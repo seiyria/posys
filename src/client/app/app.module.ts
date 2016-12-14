@@ -36,6 +36,7 @@ import { ImportButtonComponent } from '../components/import-button';
 import { RemoveButtonComponent } from '../components/remove-button';
 import { UpdateButtonComponent } from '../components/update-button';
 import { ViewButtonComponent } from '../components/view-button';
+import { VoidButtonComponent } from '../components/void-button';
 
 import { TransactionItemComponent, TransactionItemPopoverComponent } from '../pages/pointofsale/transactionitem';
 import { QueryItemComponent } from '../pages/pointofsale/queryitem';
@@ -90,6 +91,7 @@ import { TruncatePipe } from '../pipes/truncate';
     RemoveButtonComponent,
     UpdateButtonComponent,
     ViewButtonComponent,
+    VoidButtonComponent,
 
     PaginationComponent,
 
