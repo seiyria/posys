@@ -23,8 +23,6 @@ export class InvoiceViewComponent {
     this.invoice = params.get('invoice');
     _.each(this.invoice.stockitems, item => item.realData = this.invoiceItemData(item));
     _.each(this.invoice.promotions, item => item.realData = this.invoicePromoData(item));
-
-    // TODO fold invoice items into item-quantity to take up less vertical space and make more sense
   }
 
   invoiceItemData(item) {
