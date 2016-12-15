@@ -18,6 +18,10 @@ export class QuickComponent {
   constructor(public viewCtrl: ViewController,
               public siService: StockItemService) {}
 
+  handleSingleSearchResult(result: any) {
+    this.handleSearchResults({ items: [result] });
+  }
+
   handleSearchResults(result: any) {
     if(result.items.length !== 1) { return; }
     const newItem = _.cloneDeep(result.items[0]);

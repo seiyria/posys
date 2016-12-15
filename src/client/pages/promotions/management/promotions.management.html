@@ -175,7 +175,10 @@
 
         </ion-list>
 
-        <omni-search *ngIf="promotion.discountGrouping === 'SKU'" (searchResults)="handleSearchResults($event)"></omni-search>
+        <omni-search *ngIf="promotion.discountGrouping === 'SKU'"
+                     useSearchWindow="true"
+                     (singleSearchItemResult)="handleSingleSearchResult($event)"
+                     (searchResults)="handleSearchResults($event)"></omni-search>
 
         <ion-grid scroll-grid>
 

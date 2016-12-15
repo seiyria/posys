@@ -45,6 +45,10 @@ export class PromotionsManagerComponent implements OnInit {
     if(!this.promotion.endDate)   { this.promotion.endDate = dateString; }
   }
 
+  handleSingleSearchResult(result: any) {
+    this.handleSearchResults({ items: [result] });
+  }
+
   handleSearchResults(result: any) {
     if(result.items.length !== 1) { return; }
 

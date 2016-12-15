@@ -14,32 +14,13 @@
             <omni-search
               offerToAdd="true"
               allowTemporaryAdd="true"
+              useSearchWindow="true"
               [cancelWatcher]="omniCancelControl"
-              (hasQuery)="setShowResults($event)"
-              (searchResults)="setSearchResults($event)"></omni-search>
+              (singleSearchItemResult)="addToTransaction($event)"></omni-search>
           </ion-col>
         </ion-row>
 
         <div body-area>
-          <ion-list *ngIf="showSearchItems" no-margin-bottom header>
-            <ion-item>
-              <ion-grid no-padding>
-                <ion-row>
-                  <ion-col width-50 no-padding>Product</ion-col>
-                  <ion-col width-20 no-padding>SKU</ion-col>
-                  <ion-col width-10 no-padding>Cost</ion-col>
-                  <ion-col width-20 no-padding></ion-col>
-                </ion-row>
-              </ion-grid>
-            </ion-item>
-          </ion-list>
-
-          <ion-list has-header can-scroll *ngIf="showSearchItems">
-            <ion-item no-border-bottom *ngIf="searchItems.length === 0">No search results.</ion-item>
-            <ion-item *ngFor="let item of searchItems">
-              <query-item [item]="item" (choose)="addToTransaction($event)"></query-item>
-            </ion-item>
-          </ion-list>
 
           <ion-list *ngIf="!showSearchItems && currentTransaction.length !== 0" no-margin-bottom header>
             <ion-item>

@@ -16,7 +16,11 @@
   <ion-grid scroll-grid>
     <ion-row>
       <ion-col>
-        <omni-search (searchResults)="handleSearchResults($event)" autofocus="true" offerToAdd="true"></omni-search>
+        <omni-search (searchResults)="handleSearchResults($event)"
+                     (singleSearchItemResult)="handleSingleSearchResult($event)"
+                     useSearchWindow="true"
+                     autofocus="true"
+                     offerToAdd="true"></omni-search>
       </ion-col>
     </ion-row>
     <ion-row full-height *ngIf="scanItems.length === 0">

@@ -28,7 +28,7 @@ import { ReportingPageComponent } from '../pages/reporting/reporting';
 
 import { FormErrorComponent } from '../components/form-error';
 import { TopIconButtonComponent } from '../components/top-icon-button';
-import { OmnisearchComponent } from '../components/omni-search';
+import { OmnisearchComponent, OmnisearchWindowComponent, QueryItemComponent } from '../components/omni-search';
 
 import { AddButtonComponent } from '../components/add-button';
 import { ConfirmButtonComponent } from '../components/confirm-button';
@@ -42,7 +42,6 @@ import { ViewButtonComponent } from '../components/view-button';
 import { VoidButtonComponent } from '../components/void-button';
 
 import { TransactionItemComponent, TransactionItemPopoverComponent } from '../pages/pointofsale/transactionitem';
-import { QueryItemComponent } from '../pages/pointofsale/queryitem';
 import { InventoryItemComponent } from '../pages/inventory/inventoryitem';
 import { PromotionDisplayComponent } from '../pages/promotions/promotiondisplay';
 import { InvoiceItemComponent } from '../pages/invoices/invoiceitem';
@@ -81,6 +80,7 @@ import { TruncatePipe } from '../pipes/truncate';
     FormErrorComponent,
     TopIconButtonComponent,
     OmnisearchComponent,
+    OmnisearchWindowComponent,
     TransactionItemComponent,
     TransactionItemPopoverComponent,
     InventoryItemComponent,
@@ -112,6 +112,7 @@ import { TruncatePipe } from '../pipes/truncate';
   entryComponents: [
     MyAppComponent,
     HomePageComponent,
+    OmnisearchWindowComponent,
     InventoryPageComponent,
     InventoryManagerComponent,
     OUManagerComponent,

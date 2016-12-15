@@ -2,7 +2,7 @@
 import * as _ from 'lodash';
 
 import { Component, Input, Output, EventEmitter, Renderer, OnInit, OnDestroy, ElementRef } from '@angular/core';
-import { ModalController, AlertController } from 'ionic-angular';
+import { ModalController, AlertController, NavParams, ViewController } from 'ionic-angular';
 
 import { InventoryManagerComponent } from '../pages/inventory/management/inventory.management';
 
@@ -33,6 +33,9 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
 
   @Output() searchResults = new EventEmitter();
   @Output() hasQuery = new EventEmitter();
+  @Output() singleSearchItemResult = new EventEmitter();
+
+  @Input() useSearchWindow: true;
   @Input() autofocus: boolean;
   @Input() offerToAdd: boolean;
   @Input() allowTemporaryAdd: boolean;
@@ -198,6 +201,17 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
       })
       .then(items => {
         this.searchResults.emit({ items, force });
+
+        if(this.useSearchWindow && items.length > 1 && query) {
+          const modal = this.modalCtrl.create(OmnisearchWindowComponent, {
+            searchResults: items
+          }, { enableBackdropDismiss: false });
+          modal.onDidDismiss(item => {
+            this.singleSearchItemResult.emit(item);
+            this.searchQuery = '';
+          });
+          modal.present();
+        }
       });
   }
 
@@ -212,4 +226,72 @@ export class OmnisearchComponent implements OnInit, OnDestroy {
   showSearchResults(): boolean {
     return !!this.searchQuery.trim();
   }
+}
+
+@Component({
+  template: `
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Search Results
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span color="danger">Cancel</span>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let item of searchResults">
+      <query-item [item]="item" (choose)="dismiss($event)"></query-item>
+    </ion-item>
+  </ion-list>
+</ion-content>
+`
+})
+export class OmnisearchWindowComponent implements OnInit {
+  public searchResults: StockItem[] = [];
+
+  constructor(public navParams: NavParams, public viewCtrl: ViewController) {}
+
+  ngOnInit() {
+    this.searchResults = this.navParams.get('searchResults');
+  }
+
+  dismiss(item?: StockItem) {
+    this.viewCtrl.dismiss(item);
+  }
+}
+
+@Component({
+  selector: 'query-item',
+  template: `
+    <ion-grid no-padding>
+      <ion-row>
+        <ion-col width-60 no-padding>
+          <ion-row>
+            <ion-col no-padding>{{ item.name | truncate:50 }}</ion-col>
+          </ion-row>
+          <ion-row background-text>
+            <ion-col no-padding>{{ item.description | truncate:50 }}</ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col width-20 no-padding vertical-center>
+          {{ item.sku }}
+        </ion-col>
+        <ion-col width-20 no-padding text-right>
+          <button ion-button icon-only round no-margin (click)="choose.next(item)">
+            <ion-icon name="checkmark-circle"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+`,
+})
+export class QueryItemComponent {
+  @Input() item: StockItem;
+  @Output() choose = new EventEmitter();
 }
