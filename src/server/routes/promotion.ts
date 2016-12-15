@@ -1,3 +1,4 @@
+/* tslint:disable:only-arrow-functions no-invalid-this */
 
 import * as _ from 'lodash';
 
@@ -45,13 +46,10 @@ export default (app) => {
           qb
             .andWhere('endDate', '>', now);
         }
-
-        console.log(qb.toString());
       })
       .orderBy('startDate')
       .orderBy('endDate')
       .orderBy('name')
-      // .where('quantity', '>', +req.query.hideOutOfStock ? '0' : '-1')
       .fetchPage(pageOpts)
       .then(collection => {
         res.json({ items: collection.toJSON(), pagination: collection.pagination });
