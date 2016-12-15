@@ -19,6 +19,29 @@
   <ion-grid scroll-grid>
 
     <ion-row>
+      <ion-col width-20 vertical-center>
+        <ion-item shrunk-item-checkbox no-border-bottom>
+          <ion-label>Hide Current</ion-label>
+          <ion-checkbox color="primary" [(ngModel)]="hideCurrent" (ionChange)="toggleHide()"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+
+      <ion-col width-20 vertical-center>
+        <ion-item shrunk-item-checkbox no-border-bottom>
+          <ion-label>Hide Future</ion-label>
+          <ion-checkbox color="primary" [(ngModel)]="hideFuture" (ionChange)="toggleHide()"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+
+      <ion-col width-20 vertical-center>
+        <ion-item shrunk-item-checkbox no-border-bottom>
+          <ion-label>Hide Past</ion-label>
+          <ion-checkbox color="primary" [(ngModel)]="hidePast" (ionChange)="toggleHide()"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
       <ion-col>
         <ion-list no-margin-bottom>
           <ion-item>
@@ -40,7 +63,22 @@
     <ion-row scroll-row>
       <ion-col>
         <ion-list>
-          <ion-item *ngFor="let item of currentPromotions">
+          <ion-item *ngIf="!hasResults">
+            No search results.
+          </ion-item>
+
+          <ion-list-header *ngIf="promotions.current.length > 0">Current Promotions</ion-list-header>
+          <ion-item *ngFor="let item of promotions.current">
+            <promotion-display [item]="item" (edit)="openPromoModal(item)" (remove)="removePromo(item)"></promotion-display>
+          </ion-item>
+
+          <ion-list-header *ngIf="promotions.future.length > 0">Future Promotions</ion-list-header>
+          <ion-item *ngFor="let item of promotions.future">
+            <promotion-display [item]="item" (edit)="openPromoModal(item)" (remove)="removePromo(item)"></promotion-display>
+          </ion-item>
+
+          <ion-list-header *ngIf="promotions.past.length > 0">Past Promotions</ion-list-header>
+          <ion-item *ngFor="let item of promotions.past">
             <promotion-display [item]="item" (edit)="openPromoModal(item)" (remove)="removePromo(item)"></promotion-display>
           </ion-item>
         </ion-list>

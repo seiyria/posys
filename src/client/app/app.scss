@@ -86,10 +86,10 @@ ion-item[no-margin] .label {
   }
 
   .item-inner {
-    text-align: right;
 
     .label {
-      margin: 0 !important;
+      text-align: left;
+      margin-left: 5px !important;
     }
   }
 }

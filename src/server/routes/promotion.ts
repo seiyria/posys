@@ -18,11 +18,40 @@ export default (app) => {
       withRelated: ['organizationalunit', 'promoItems']
     };
 
+    const hideCurrent = +req.query.hideCurrent;
+    const hideFuture  = +req.query.hideFuture;
+    const hidePast    = +req.query.hidePast;
+
     Promotion
       .forge()
+      .query(qb => {
+        const now = new Date();
+
+        if(hideCurrent) {
+          qb
+            .andWhere(function() {
+              return this
+                .where('startDate', '>', now)
+                .orWhere('endDate', '<', now);
+            });
+        }
+
+        if(hideFuture) {
+          qb
+            .andWhere('startDate', '<', now);
+        }
+
+        if(hidePast) {
+          qb
+            .andWhere('endDate', '>', now);
+        }
+
+        console.log(qb.toString());
+      })
       .orderBy('startDate')
       .orderBy('endDate')
       .orderBy('name')
+      // .where('quantity', '>', +req.query.hideOutOfStock ? '0' : '-1')
       .fetchPage(pageOpts)
       .then(collection => {
         res.json({ items: collection.toJSON(), pagination: collection.pagination });

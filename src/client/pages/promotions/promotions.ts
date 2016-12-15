@@ -1,8 +1,11 @@
+import * as _ from 'lodash';
+
 import { Component, OnInit } from '@angular/core';
 
 import { ModalController, AlertController } from 'ionic-angular';
 
 import { Pagination } from 'ionic2-pagination';
+import { LocalStorage } from 'ng2-webstorage';
 
 import { Promotion } from '../../models/promotion';
 import { PromotionService } from '../../services/promotion.service';
@@ -14,7 +17,18 @@ import { PromotionsManagerComponent } from './management/promotions.management';
 })
 export class PromotionsPageComponent implements OnInit {
 
-  public currentPromotions: Promotion[] = [];
+  @LocalStorage()
+  public hideCurrent: boolean;
+
+  @LocalStorage()
+  public hideFuture: boolean;
+
+  @LocalStorage()
+  public hidePast: boolean;
+
+  public hasResults: boolean;
+
+  public promotions = { past: [], current: [], future: [] };
   public paginationInfo: Pagination;
 
   constructor(public modalCtrl: ModalController,
@@ -25,12 +39,41 @@ export class PromotionsPageComponent implements OnInit {
     this.changePage(1);
   }
 
+  toggleHide() {
+    if(!this.paginationInfo) { return; }
+    this.changePage(this.paginationInfo.page);
+  }
+
+  categorizePromotions(promotions: Promotion[]) {
+    const now = new Date();
+
+    const pastPromotions = _.filter(promotions, promo => {
+      return new Date(promo.endDate) < now;
+    });
+
+    const currentPromotions = _.filter(promotions, promo => {
+      return new Date(promo.startDate) < now && new Date(promo.endDate) > now;
+    });
+
+    const futurePromotions = _.filter(promotions, promo => {
+      return new Date(promo.startDate) > now;
+    });
+
+    this.hasResults = pastPromotions.length !== 0 || currentPromotions.length !== 0 || futurePromotions.length !== 0;
+
+    this.promotions = {
+      past: pastPromotions,
+      current: currentPromotions,
+      future: futurePromotions
+    };
+  }
+
   changePage(newPage) {
     this.prService
-      .getMany({ page: newPage })
+      .getMany({ page: newPage, hidePast: +this.hidePast, hideCurrent: +this.hideCurrent, hideFuture: +this.hideFuture })
       .toPromise()
       .then(({ items, pagination }) => {
-        this.currentPromotions = items;
+        this.categorizePromotions(items);
         this.paginationInfo = pagination;
       });
   }
