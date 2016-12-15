@@ -65,6 +65,11 @@ ion-item[no-margin] .label {
   align-items: center;
 }
 
+[vertical-bottom] {
+  display: flex;
+  align-items: flex-end;
+}
+
 [big-text] {
   font-size: 300%;
 }

@@ -112,8 +112,24 @@ export default (app) => {
       withRelated: ['stockitems', 'promotions', 'stockitems._stockitemData', 'promotions._promoData']
     };
 
+    const earliestDate = req.query.earliestDate;
+    const latestDate   = req.query.latestDate;
+
     Invoice
       .forge()
+      .query(qb => {
+        const now = new Date();
+
+        if(earliestDate) {
+          qb
+            .andWhere('purchaseTime', '>=', earliestDate);
+        }
+
+        if(latestDate) {
+          qb
+            .andWhere('purchaseTime', '<=', latestDate);
+        }
+      })
       .orderBy('-id')
       .fetchPage(pageOpts)
       .then(collection => {

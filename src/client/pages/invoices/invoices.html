@@ -8,6 +8,34 @@
   <ion-grid scroll-grid>
 
     <ion-row>
+      <ion-col width-20 vertical-center>
+        <ion-item list-header shrunk-item-checkbox no-border-bottom>
+          <ion-label stacked>Earliest Date</ion-label>
+          <ion-datetime displayFormat="MM/DD/YYYY HH:mm" [(ngModel)]="earliestDate" (ionChange)="toggleDate()"></ion-datetime>
+        </ion-item>
+      </ion-col>
+
+      <ion-col vertical-bottom width-10>
+        <button ion-button [disabled]="!earliestDate" icon-only (click)="unsetDate('earliestDate')" color="danger" small>
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-col>
+
+      <ion-col width-20 vertical-center>
+        <ion-item list-header shrunk-item-checkbox no-border-bottom>
+          <ion-label stacked>Latest Date</ion-label>
+          <ion-datetime displayFormat="MM/DD/YYYY HH:mm" [(ngModel)]="latestDate" (ionChange)="toggleDate()"></ion-datetime>
+        </ion-item>
+      </ion-col>
+
+      <ion-col vertical-bottom width-10>
+        <button ion-button [disabled]="!latestDate" icon-only (click)="unsetDate('latestDate')" color="danger" small>
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
       <ion-col>
         <ion-list no-margin-bottom>
           <ion-item>

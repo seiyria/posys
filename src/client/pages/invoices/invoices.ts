@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { ModalController } from 'ionic-angular';
 import { Pagination } from 'ionic2-pagination';
+import { LocalStorage } from 'ng2-webstorage';
 
 import { InvoiceViewComponent } from './view/invoice.view';
 
@@ -14,6 +15,12 @@ import { Invoice } from '../../models/invoice';
 })
 export class InvoicesPageComponent implements OnInit {
 
+  @LocalStorage()
+  public earliestDate: string;
+
+  @LocalStorage()
+  public latestDate: string;
+
   public currentInvoices: Invoice[] = [];
   public paginationInfo: Pagination;
 
@@ -23,9 +30,18 @@ export class InvoicesPageComponent implements OnInit {
     this.changePage(1);
   }
 
+  unsetDate(type: string) {
+    this[type] = '';
+    this.toggleDate();
+  }
+
+  toggleDate() {
+    this.changePage(this.paginationInfo.page);
+  }
+
   changePage(newPage) {
     this.ivService
-      .getMany({ page: newPage })
+      .getMany({ page: newPage, earliestDate: this.earliestDate, latestDate: this.latestDate })
       .toPromise()
       .then(({ items, pagination }) => {
         this.currentInvoices = items;
