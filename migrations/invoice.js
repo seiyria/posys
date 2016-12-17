@@ -26,6 +26,7 @@ exports.up = (knex) => {
       table.integer('invoiceId').unsigned().references('invoice.id');
       table.integer('stockitemId').unsigned().references('stockitem.id');
       table.integer('quantity').unsigned();
+      table.decimal('cost', TOTAL_DIGITS, CENT_DIGITS);
       table.boolean('taxable');
       table.jsonb('stockitemData');
       table.timestamps();

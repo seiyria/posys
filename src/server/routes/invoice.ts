@@ -86,14 +86,20 @@ export default (app) => {
         return InvoicePromo.forge().save(new InvoicePromoModel(i), { transacting: t }).catch(errorHandler);
       });
 
-      const decrementPromises = decrementItems(countMap, t);
+      let otherPromises = [];
+
+      if(invoice.isReturned) {
+        otherPromises = incrementItems(countMap, t);
+      } else {
+        otherPromises = decrementItems(countMap, t);
+      }
 
       Invoice
         .forge()
         .save(invoice, { transacting: t })
         .then(item => {
           return Promise
-            .all(itemPromises(item).concat(promoPromises(item)).concat(decrementPromises))
+            .all(itemPromises(item).concat(promoPromises(item)).concat(otherPromises))
             .then(t.commit, t.rollback)
             .then(() => {
               res.json({ flash: `Transaction completed successfully.`, data: item });

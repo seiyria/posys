@@ -8,6 +8,7 @@ import { ModalController, AlertController } from 'ionic-angular';
 import { InvoiceService } from '../../services/invoice.service';
 
 import { CashPayComponent } from './cashpay/pointofsale.cashpay';
+import { CurrencyFromSettingsPipe } from '../../pipes/currency-from-settings';
 
 import { ApplicationSettingsService } from '../../services/settings.service';
 import { StockItem } from '../../models/stockitem';
@@ -17,7 +18,7 @@ import { PurchaseMethod, Invoice } from '../../models/invoice';
 @Component({
   selector: 'my-page-pointofsale',
   templateUrl: 'pointofsale.html',
-  providers: [ApplicationSettingsService]
+  providers: [ApplicationSettingsService, CurrencyFromSettingsPipe]
 })
 export class PointOfSalePageComponent {
 
@@ -53,6 +54,7 @@ export class PointOfSalePageComponent {
   constructor(public modalCtrl: ModalController,
               public alertCtrl: AlertController,
               public ivService: InvoiceService,
+              public currencyFromSettings: CurrencyFromSettingsPipe,
               public settings: ApplicationSettingsService) {}
 
   addTransactionItem(item: StockItem): void {
@@ -111,7 +113,9 @@ export class PointOfSalePageComponent {
           handler: () => {
             this.createInvoice({
               purchaseMethod: 'Return',
-              purchasePrice: -this.total
+              purchasePrice: -this.total,
+              isReturned: true,
+              isVoided: true
             });
           }
         }
@@ -146,7 +150,7 @@ export class PointOfSalePageComponent {
   finalize(purchaseMethod: PurchaseMethod, cashGiven?: number) {
     const confirm = this.alertCtrl.create({
       title: 'Complete Transaction?',
-      message: `You are doing a ${purchaseMethod} transaction with a value of $${this.total} across 
+      message: `You are doing a ${purchaseMethod} transaction with a value of ${this.currencyFromSettings.transform(this.total)} across 
                 ${this.currentTransaction.length} items with ${this.currentPromotions.length} promotions.`,
       buttons: [
         {
