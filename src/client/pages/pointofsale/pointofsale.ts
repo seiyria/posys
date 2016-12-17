@@ -108,8 +108,6 @@ export class PointOfSalePageComponent {
       this.addTransactionItem($event.items[0]);
       return;
     }
-
-    this.searchItems = $event.items;
   }
 
   getCashValue() {

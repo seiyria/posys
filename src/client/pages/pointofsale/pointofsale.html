@@ -16,7 +16,8 @@
               allowTemporaryAdd="true"
               useSearchWindow="true"
               [cancelWatcher]="omniCancelControl"
-              (singleSearchItemResult)="addToTransaction($event)"></omni-search>
+              (singleSearchItemResult)="addToTransaction($event)"
+              (searchResults)="setSearchResults($event)"></omni-search>
           </ion-col>
         </ion-row>
 
