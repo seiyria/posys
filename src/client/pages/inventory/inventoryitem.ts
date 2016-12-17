@@ -16,7 +16,7 @@ import { StockItem } from '../../models/stockitem';
             <ion-col no-padding>{{ item.description | truncate:50 }}</ion-col>
           </ion-row>
         </ion-col>
-        <ion-col width-10 no-padding vertical-center>
+        <ion-col width-20 no-padding vertical-center>
           {{ item.organizationalunit.name | truncate:15 }}
         </ion-col>
         <ion-col width-10 no-padding vertical-center>
@@ -24,9 +24,6 @@ import { StockItem } from '../../models/stockitem';
         </ion-col>
         <ion-col width-10 no-padding vertical-center text-right>
           {{ item.quantity }}
-        </ion-col>
-        <ion-col width-10 no-padding vertical-center text-right>
-          {{ item.vendorPurchasePrice | currencyFromSettings }}
         </ion-col>
         <ion-col width-10 no-padding vertical-center text-right>
           {{ item.cost | currencyFromSettings }}
