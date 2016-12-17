@@ -5,7 +5,7 @@ import { InvoiceItem } from './invoiceitem';
 import { InvoicePromo } from './invoicepromo';
 
 export type PurchaseMethod =
-  'Cash' | 'Check' | 'Debit' | 'Credit';
+  'Cash' | 'Check' | 'Debit' | 'Credit' | 'Return';
 
 export class Invoice {
   id?: number;
@@ -14,6 +14,7 @@ export class Invoice {
   purchasePrice: number;
   cashGiven?: number;
   isVoided?: boolean;
+  isReturned?: boolean;
 
   stockitems?: InvoiceItem[];
   promotions?: InvoicePromo[];

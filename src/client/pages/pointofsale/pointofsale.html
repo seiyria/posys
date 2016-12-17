@@ -71,6 +71,9 @@
               <top-icon-button text="Hold" icon="pause" size="medium" [disabled]="currentTransaction.length === 0"></top-icon-button>
             </ion-col>
             <ion-col main-button>
+              <top-icon-button text="Return" icon="exit" size="medium" (subClick)="returnItems()" [disabled]="currentTransaction.length === 0"></top-icon-button>
+            </ion-col>
+            <ion-col main-button>
               <top-icon-button text="Void" icon="close" size="medium" (subClick)="voidTransaction()" [disabled]="currentTransaction.length === 0"></top-icon-button>
             </ion-col>
           </ion-row>

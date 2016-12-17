@@ -81,7 +81,7 @@ export class PointOfSalePageComponent {
 
   voidTransaction(): void {
     const confirm = this.alertCtrl.create({
-      title: 'Void transaction?',
+      title: 'Void Transaction?',
       message: 'This is irreversible and unrecoverable. All items in the current transaction will be removed.',
       buttons: [
         {
@@ -91,6 +91,28 @@ export class PointOfSalePageComponent {
           text: 'Confirm',
           handler: () => {
             this.clearTransaction();
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  returnItems(): void {
+    const confirm = this.alertCtrl.create({
+      title: 'Return Items?',
+      message: 'This will create an invoice with a negative value. All promotions will be removed from this transaction.',
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            this.createInvoice({
+              purchaseMethod: 'Return',
+              purchasePrice: -this.total
+            });
           }
         }
       ]
@@ -133,26 +155,30 @@ export class PointOfSalePageComponent {
         {
           text: 'Confirm',
           handler: () => {
-            const invoice = new Invoice({
-              purchaseTime: new Date(),
+            this.createInvoice({
               purchaseMethod,
               cashGiven,
               purchasePrice: this.total,
-              stockitems: this.currentTransaction,
               promotions: this.currentPromotions
             });
-
-            this.ivService
-              .create(invoice)
-              .toPromise()
-              .then(newInvoice => {
-                this.clearTransaction();
-              });
           }
         }
       ]
     });
     confirm.present();
+  }
+
+  createInvoice(opts) {
+    opts.purchaseTime = new Date();
+    opts.stockitems = this.currentTransaction;
+    const invoice = new Invoice(opts);
+
+    this.ivService
+      .create(invoice)
+      .toPromise()
+      .then(newInvoice => {
+        this.clearTransaction();
+      });
   }
 
   get subtotal(): number {

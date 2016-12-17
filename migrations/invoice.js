@@ -11,6 +11,7 @@ exports.up = (knex) => {
       table.decimal('purchasePrice', TOTAL_DIGITS, CENT_DIGITS);
       table.decimal('cashGiven', TOTAL_DIGITS, CENT_DIGITS);
       table.boolean('isVoided');
+      table.boolean('isReturned');
       table.timestamps();
     })
     .createTable('invoicepromo', (table) => {
