@@ -21,6 +21,18 @@ export class InvoicesPageComponent implements OnInit {
   @LocalStorage()
   public latestDate: string;
 
+  @LocalStorage()
+  public hideVoided: boolean;
+
+  @LocalStorage()
+  public hideHolds: boolean;
+
+  @LocalStorage()
+  public hideReturns: boolean;
+
+  @LocalStorage()
+  public hideCompleted: boolean;
+
   public currentInvoices: Invoice[] = [];
   public paginationInfo: Pagination;
 
@@ -32,16 +44,25 @@ export class InvoicesPageComponent implements OnInit {
 
   unsetDate(type: string) {
     this[type] = '';
-    this.toggleDate();
+    this.toggleFilter();
   }
 
-  toggleDate() {
+  toggleFilter() {
+    if(!this.paginationInfo) { return; }
     this.changePage(this.paginationInfo.page);
   }
 
   changePage(newPage) {
     this.ivService
-      .getMany({ page: newPage, earliestDate: this.earliestDate, latestDate: this.latestDate })
+      .getMany({
+        page: newPage,
+        earliestDate: this.earliestDate,
+        latestDate: this.latestDate,
+        hideVoided: +this.hideVoided,
+        hideHolds: +this.hideHolds,
+        hideReturns: +this.hideReturns,
+        hideCompleted: +this.hideCompleted
+      })
       .toPromise()
       .then(({ items, pagination }) => {
         this.currentInvoices = items;

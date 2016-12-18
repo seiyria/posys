@@ -126,22 +126,44 @@ export default (app) => {
       withRelated: ['stockitems', 'promotions', 'stockitems._stockitemData', 'promotions._promoData']
     };
 
-    const earliestDate = req.query.earliestDate;
-    const latestDate   = req.query.latestDate;
+    const earliestDate  = req.query.earliestDate;
+    const latestDate    = req.query.latestDate;
+    const hideVoided    = +req.query.hideVoided;
+    const hideReturns   = +req.query.hideReturns;
+    const hideHolds     = +req.query.hideHolds;
+    const hideCompleted = +req.query.hideCompleted;
 
     Invoice
       .forge()
       .query(qb => {
-        const now = new Date();
-
         if(earliestDate) {
-          qb
-            .andWhere('purchaseTime', '>=', earliestDate);
+          qb.andWhere('purchaseTime', '>=', earliestDate);
         }
 
         if(latestDate) {
+          qb.andWhere('purchaseTime', '<=', latestDate);
+        }
+
+        if(hideVoided) {
+          qb.andWhere('isVoided', '!=', true);
+        }
+
+        if(hideReturns) {
+          qb.andWhere('purchaseMethod', '!=', 'Return');
+        }
+
+        if(hideHolds) {
+          qb.andWhere('isOnHold', '!=', true);
+        }
+
+        if(hideCompleted) {
           qb
-            .andWhere('purchaseTime', '<=', latestDate);
+            .whereNot(function() {
+              this
+                .where('isVoided', '!=', true)
+                .andWhere('isOnHold', '!=', true)
+                .andWhere('purchaseMethod', '!=', 'Return');
+            });
         }
       })
       .orderBy('-id')

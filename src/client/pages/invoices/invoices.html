@@ -11,7 +11,7 @@
       <ion-col width-20 vertical-center>
         <ion-item list-header shrunk-item-checkbox no-border-bottom>
           <ion-label stacked>Earliest Date</ion-label>
-          <ion-datetime displayFormat="MM/DD/YYYY HH:mm" [(ngModel)]="earliestDate" (ionChange)="toggleDate()"></ion-datetime>
+          <ion-datetime displayFormat="MM/DD/YYYY HH:mm" [(ngModel)]="earliestDate" (ionChange)="toggleFilter()"></ion-datetime>
         </ion-item>
       </ion-col>
 
@@ -24,7 +24,7 @@
       <ion-col width-20 vertical-center>
         <ion-item list-header shrunk-item-checkbox no-border-bottom>
           <ion-label stacked>Latest Date</ion-label>
-          <ion-datetime displayFormat="MM/DD/YYYY HH:mm" [(ngModel)]="latestDate" (ionChange)="toggleDate()"></ion-datetime>
+          <ion-datetime displayFormat="MM/DD/YYYY HH:mm" [(ngModel)]="latestDate" (ionChange)="toggleFilter()"></ion-datetime>
         </ion-item>
       </ion-col>
 
@@ -32,6 +32,28 @@
         <button ion-button [disabled]="!latestDate" icon-only (click)="unsetDate('latestDate')" color="danger" small>
           <ion-icon name="close"></ion-icon>
         </button>
+      </ion-col>
+
+      <ion-col>
+        <ion-item shrunk-item-checkbox no-border-bottom>
+          <ion-label>Hide Voided</ion-label>
+          <ion-checkbox color="primary" [(ngModel)]="hideVoided" (ionChange)="toggleFilter()"></ion-checkbox>
+        </ion-item>
+        <ion-item shrunk-item-checkbox no-border-bottom>
+          <ion-label>Hide Returns</ion-label>
+          <ion-checkbox color="primary" [(ngModel)]="hideReturns" (ionChange)="toggleFilter()"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+
+      <ion-col>
+        <ion-item shrunk-item-checkbox no-border-bottom>
+          <ion-label>Hide Holds</ion-label>
+          <ion-checkbox color="primary" [(ngModel)]="hideHolds" (ionChange)="toggleFilter()"></ion-checkbox>
+        </ion-item>
+        <ion-item shrunk-item-checkbox no-border-bottom>
+          <ion-label>Hide Completed</ion-label>
+          <ion-checkbox color="primary" [(ngModel)]="hideCompleted" (ionChange)="toggleFilter()"></ion-checkbox>
+        </ion-item>
       </ion-col>
     </ion-row>
 
