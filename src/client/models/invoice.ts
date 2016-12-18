@@ -15,6 +15,9 @@ export class Invoice {
   cashGiven?: number;
   isVoided?: boolean;
   isReturned?: boolean;
+  isOnHold?: boolean;
+
+  previousId?: number;
 
   stockitems?: InvoiceItem[];
   promotions?: InvoicePromo[];

@@ -14,17 +14,17 @@ import { Invoice } from '../../models/invoice';
         <ion-col width-20 no-padding vertical-center>
           {{ item.purchaseTime | date:'medium' }}
         </ion-col>
+        <ion-col width-10 no-padding vertical-center>
+          {{ item.purchaseMethod }}
+        </ion-col>
+        <ion-col width-10 no-padding vertical-center>
+          {{ invoiceStatus(item) }}
+        </ion-col>
         <ion-col width-10 no-padding vertical-center text-right>
           {{ item.stockitems.length }}
         </ion-col>
         <ion-col width-10 no-padding vertical-center text-right>
           {{ item.purchasePrice | currencyFromSettings }}
-        </ion-col>
-        <ion-col width-10 no-padding vertical-center text-right>
-          {{ item.purchaseMethod }}
-        </ion-col>
-        <ion-col width-10 no-padding vertical-center text-right>
-          {{ item.isVoided ? 'Yes' : 'No' }}
         </ion-col>
         <ion-col no-padding vertical-center text-right>
           <view-button (click)="view.next()"></view-button>
@@ -36,4 +36,11 @@ import { Invoice } from '../../models/invoice';
 export class InvoiceItemComponent {
   @Input() item: Invoice;
   @Output() view = new EventEmitter();
+
+  invoiceStatus(invoice: Invoice) {
+    if(invoice.isOnHold)   { return 'On Hold'; }
+    if(invoice.isReturned) { return 'Returned'; }
+    if(invoice.isVoided)   { return 'Voided'; }
+    return 'Completed';
+  }
 }

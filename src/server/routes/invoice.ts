@@ -55,6 +55,7 @@ export default (app) => {
     delete invoice.promotions;
 
     const errorHandler = (e) => {
+      console.error(e);
       res.status(500).json({ formErrors: e.data || [], flash: 'Transaction failed to complete correctly.' });
     };
 
@@ -88,10 +89,17 @@ export default (app) => {
 
       let otherPromises = [];
 
-      if(invoice.isReturned) {
-        otherPromises = incrementItems(countMap, t);
-      } else {
-        otherPromises = decrementItems(countMap, t);
+      if(!invoice.isOnHold) {
+        if(invoice.isReturned) {
+          otherPromises = incrementItems(countMap, t);
+        } else {
+          otherPromises = decrementItems(countMap, t);
+        }
+      }
+
+      if(invoice.previousId) {
+        otherPromises.push(Invoice.forge({ id: invoice.previousId }).destroy({ transacting: t }));
+        delete invoice.previousId;
       }
 
       Invoice

@@ -36,6 +36,7 @@ import { EditButtonComponent } from '../components/edit-button';
 import { ResetButtonComponent } from '../components/reset-button';
 import { ImportButtonComponent } from '../components/import-button';
 import { RemoveButtonComponent } from '../components/remove-button';
+import { ResumeTransactionButtonComponent } from '../components/resume-button';
 import { UpdateButtonComponent } from '../components/update-button';
 import { UpdateQuantityButtonComponent } from '../components/update-quantity-button';
 import { ViewButtonComponent } from '../components/view-button';
@@ -94,6 +95,7 @@ import { TruncatePipe } from '../pipes/truncate';
     ResetButtonComponent,
     ImportButtonComponent,
     RemoveButtonComponent,
+    ResumeTransactionButtonComponent,
     UpdateButtonComponent,
     UpdateQuantityButtonComponent,
     ViewButtonComponent,

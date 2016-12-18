@@ -8,7 +8,7 @@ import { InvoicePromo } from './invoicepromo';
 export const Invoice = bookshelf.Model.extend({
   tableName: 'invoice',
   hasTimestamps: true,
-  softDelete: false,
+  softDelete: true,
   stockitems: function() {
     return this.hasMany(InvoiceItem, 'invoiceId');
   },
@@ -29,7 +29,7 @@ export const Invoice = bookshelf.Model.extend({
       },
       {
         method: 'isIn',
-        args: { arr: ['Cash', 'Credit', 'Debit', 'Check', 'Return'] },
+        args: { arr: ['Cash', 'Credit', 'Debit', 'Check', 'Return', 'Hold'] },
         error: 'Invalid invoice purchase method specified.'
       }
     ],

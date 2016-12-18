@@ -1,9 +1,9 @@
 
 import * as _ from 'lodash';
 
-import { Component, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 
-import { ModalController, AlertController } from 'ionic-angular';
+import { ModalController, AlertController, NavParams } from 'ionic-angular';
 
 import { InvoiceService } from '../../services/invoice.service';
 
@@ -20,13 +20,15 @@ import { PurchaseMethod, Invoice } from '../../models/invoice';
   templateUrl: 'pointofsale.html',
   providers: [ApplicationSettingsService, CurrencyFromSettingsPipe]
 })
-export class PointOfSalePageComponent {
+export class PointOfSalePageComponent implements OnInit {
 
   public currentTransaction: StockItem[] = [];
   public currentPromotions: Promotion[] = [];
   public searchItems: StockItem[] = [];
   public showSearchItems: boolean;
   public omniCancelControl = new EventEmitter();
+
+  public prevTransaction: Invoice;
 
   public transactionItemButtons = [
     { text: 'Discount', callback: (item) => {
@@ -53,9 +55,19 @@ export class PointOfSalePageComponent {
 
   constructor(public modalCtrl: ModalController,
               public alertCtrl: AlertController,
+              public navParams: NavParams,
               public ivService: InvoiceService,
               public currencyFromSettings: CurrencyFromSettingsPipe,
               public settings: ApplicationSettingsService) {}
+
+  ngOnInit() {
+    this.prevTransaction = this.navParams.get('prevInvoice');
+    if(this.prevTransaction) {
+      _.each(this.prevTransaction.stockitems, item => {
+        this.addTransactionItem(item.realData);
+      });
+    }
+  }
 
   addTransactionItem(item: StockItem): void {
 
@@ -79,6 +91,30 @@ export class PointOfSalePageComponent {
   private clearTransaction() {
     this.currentTransaction = [];
     this.currentPromotions = [];
+    this.prevTransaction = null;
+  }
+
+  holdTransaction(): void {
+    const confirm = this.alertCtrl.create({
+      title: 'Hold Transaction?',
+      message: 'You can resume this transaction later by going to invoices and finding this transaction.',
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            this.createInvoice({
+              purchaseMethod: 'Hold',
+              purchasePrice: this.total,
+              isOnHold: true
+            });
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
   voidTransaction(): void {
@@ -176,6 +212,10 @@ export class PointOfSalePageComponent {
     opts.purchaseTime = new Date();
     opts.stockitems = this.currentTransaction;
     const invoice = new Invoice(opts);
+
+    if(this.prevTransaction) {
+      invoice.previousId = this.prevTransaction.id;
+    }
 
     this.ivService
       .create(invoice)

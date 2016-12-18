@@ -7,11 +7,13 @@ exports.up = (knex) => {
     .createTable('invoice', (table) => {
       table.increments('id').primary();
       table.dateTime('purchaseTime');
+      table.dateTime('deleted_at');
       table.string('purchaseMethod');
       table.decimal('purchasePrice', TOTAL_DIGITS, CENT_DIGITS);
       table.decimal('cashGiven', TOTAL_DIGITS, CENT_DIGITS);
       table.boolean('isVoided');
       table.boolean('isReturned');
+      table.boolean('isOnHold');
       table.timestamps();
     })
     .createTable('invoicepromo', (table) => {

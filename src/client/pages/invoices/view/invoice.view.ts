@@ -1,8 +1,10 @@
 import * as _ from 'lodash';
 
 import { Component } from '@angular/core';
-import { ViewController, AlertController, LoadingController, NavParams } from 'ionic-angular';
+import { ViewController, AlertController, LoadingController, App, NavParams } from 'ionic-angular';
 import { Invoice } from '../../../models/invoice';
+
+import { PointOfSalePageComponent } from '../../pointofsale/pointofsale';
 
 import { ApplicationSettingsService } from '../../../services/settings.service';
 import { InvoiceService } from '../../../services/invoice.service';
@@ -14,6 +16,7 @@ export class InvoiceViewComponent {
   public invoice: Invoice;
 
   constructor(public viewCtrl: ViewController,
+              public appCtrl: App,
               public alertCtrl: AlertController,
               public loadingCtrl: LoadingController,
               public params: NavParams,
@@ -35,6 +38,16 @@ export class InvoiceViewComponent {
 
   totalItems() {
     return _.reduce(this.invoice.stockitems, (prev, cur) => prev + cur.quantity, 0);
+  }
+
+  resumeTransaction() {
+    const rootNav = this.appCtrl.getRootNav();
+    rootNav
+      .popToRoot()
+      .then(() => {
+      this.dismiss();
+        rootNav.push(PointOfSalePageComponent, { prevInvoice: this.invoice });
+      });
   }
 
   dismiss(item?: Invoice) {
