@@ -61,8 +61,8 @@ export class PromotionService {
   checkFor(items: StockItem[]): Observable<InvoicePromo[]> {
     return this.http.post(this.settings.buildAPIURL(`${this.url}/check`), items)
       .map((res: Response) => {
-        const items = this.logger.observableUnwrap(res.json());
-        return _.map(items, item => this.transformToInvoicePromo(item))
+        const invoicepromos = this.logger.observableUnwrap(res.json());
+        return _.map(invoicepromos, item => this.transformToInvoicePromo(item));
       })
       .catch(e => this.logger.observableError(e));
   }
