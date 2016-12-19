@@ -16,6 +16,7 @@ import Settings from './_settings';
 const calculatePromotionDiscount = (promo: PromotionModel, validItems: StockItemModel[]) => {
 
   let discount = 0;
+  let affectedSKUs = [];
   let affectedItems = [];
   const itemsSortedByPrice = _.sortBy(validItems, 'cost').reverse();
 
@@ -29,12 +30,12 @@ const calculatePromotionDiscount = (promo: PromotionModel, validItems: StockItem
       affectedItems.push(thisItem);
     }
 
+    affectedSKUs = [itemsSortedByPrice[0].sku];
+
   } else if(promo.itemReductionType === 'BuyXGetNext') {
     const priceComparator = itemsSortedByPrice[0];
     const otherItems = _.takeRight(itemsSortedByPrice, promo.numItemsRequired);
     affectedItems = [priceComparator, ...otherItems];
-
-    // console.log(priceComparator, otherItems);
 
     if(promo.discountType === 'Dollar') {
       discount = promo.discountValue;
@@ -42,8 +43,10 @@ const calculatePromotionDiscount = (promo: PromotionModel, validItems: StockItem
     } else {
       discount = Math.min(priceComparator.cost, otherItems[0].cost * (promo.discountValue / 100));
     }
+
+    affectedSKUs = _.map(affectedItems, 'sku');
   }
-  return { discount, affectedItems };
+  return { discount, affectedSKUs, affectedItems };
 };
 
 const numPromoApplications = (promo: PromotionModel, transactionItems: StockItemModel[]) => {
@@ -170,16 +173,17 @@ export default (app) => {
           const { numApplications, validItems } = numPromoApplications(promo, items);
           if(numApplications < 1) { return []; }
 
-          const allPromos = _.map(new Array(numApplications), () => ({ promo, totalDiscount: 0 }));
+          const allPromos = _.map(new Array(numApplications), () => ({ promo, skus: [], totalDiscount: 0 }));
           let itemClone = _.cloneDeep(validItems);
 
           _.each(allPromos, promoContainer => {
-            const { discount, affectedItems } = calculatePromotionDiscount(promoContainer.promo, itemClone);
+            const { discount, affectedItems, affectedSKUs } = calculatePromotionDiscount(promoContainer.promo, itemClone);
 
             if(affectedItems.length > 0) {
               itemClone = _.reject(itemClone, item => _.includes(affectedItems, item));
             }
 
+            promoContainer.skus = affectedSKUs;
             promoContainer.totalDiscount = -discount;
           });
 

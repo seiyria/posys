@@ -67,10 +67,11 @@ export class PromotionService {
       .catch(e => this.logger.observableError(e));
   }
 
-  transformToInvoicePromo({ totalDiscount, promo }: any): InvoicePromo {
+  transformToInvoicePromo({ totalDiscount, skus, promo }: any): InvoicePromo {
     const invoicePromo = new InvoicePromo({
       cost: totalDiscount,
-      promoId: promo.id
+      promoId: promo.id,
+      skus
     });
 
     invoicePromo.realData = promo;

@@ -267,7 +267,29 @@ export class PointOfSalePageComponent implements OnInit {
   }
 
   get subtotalTaxable(): number {
-    return _.reduce(this.currentTransaction, (prev, cur) => prev + (cur.taxable ? (cur.cost * cur.quantity) : 0), 0);
+    let subtotal = 0;
+    let promoClones = _.cloneDeep(this.currentPromotions);
+
+    const allItems = _.flatten(_.map(this.currentTransaction, item => {
+      return _.map(new Array(item.quantity), () => _.cloneDeep(item));
+    }));
+
+    _.each(allItems, item => {
+      if(!item.taxable) return;
+
+      let itemValue = +item.cost;
+
+      const applicablePromo = _.find(promoClones, promo => _.includes(promo.skus, item.sku));
+      if(applicablePromo) {
+        itemValue += applicablePromo.cost;
+        promoClones = _.reject(promoClones, promo => promo === applicablePromo);
+      }
+
+      subtotal += itemValue;
+
+    });
+
+    return subtotal;
   }
 
   get tax(): number {
