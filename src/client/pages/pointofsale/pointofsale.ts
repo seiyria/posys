@@ -275,7 +275,7 @@ export class PointOfSalePageComponent implements OnInit {
     }));
 
     _.each(allItems, item => {
-      if(!item.taxable) return;
+      if(!item.taxable) { return; }
 
       let itemValue = +item.cost;
 
