@@ -29,12 +29,12 @@ export class InvoiceViewComponent {
   }
 
   invoiceItemData(item) {
-    if(!_.isEmpty(item.stockitemData)) return item.stockitemData;
+    if(!_.isEmpty(item.stockitemData)) { return item.stockitemData; }
     return item._stockitemData;
   }
 
   invoicePromoData(item) {
-    if(!_.isEmpty(item.promoData)) return item.promoData;
+    if(!_.isEmpty(item.promoData)) { return item.promoData; }
     return item._promoData;
   }
 
