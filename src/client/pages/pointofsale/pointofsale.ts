@@ -11,8 +11,12 @@ import { PromotionService } from '../../services/promotion.service';
 import { CashPayComponent } from './cashpay/pointofsale.cashpay';
 import { CurrencyFromSettingsPipe } from '../../pipes/currency-from-settings';
 
+import { PromotionsManagerComponent } from '../promotions/management/promotions.management';
+
 import { ApplicationSettingsService } from '../../services/settings.service';
 import { StockItem } from '../../models/stockitem';
+import { PromoItem } from '../../models/promoitem';
+import { Promotion } from '../../models/promotion';
 import { InvoicePromo } from '../../models/invoicepromo';
 import { PurchaseMethod, Invoice } from '../../models/invoice';
 
@@ -25,6 +29,7 @@ export class PointOfSalePageComponent implements OnInit {
 
   public currentTransaction: StockItem[] = [];
   public currentPromotions: InvoicePromo[] = [];
+  public temporaryPromotions: InvoicePromo[] = [];
   public searchItems: StockItem[] = [];
   public showSearchItems: boolean;
   public omniCancelControl = new EventEmitter();
@@ -33,6 +38,34 @@ export class PointOfSalePageComponent implements OnInit {
 
   public transactionItemButtons = [
     { text: 'Discount', callback: (item) => {
+
+      let modal = this.modalCtrl.create(PromotionsManagerComponent, {
+        promotion: new Promotion({
+          name: `${item.name} Discount`,
+          discountType: 'Percent',
+          itemReductionType: 'All',
+          discountGrouping: 'SKU',
+          numItemsRequired: 1,
+          discountValue: 0,
+          startDate: `${new Date().toISOString().slice(0, 10)}T00:00`,
+          endDate: `${new Date().toISOString().slice(0, 10)}T00:00`,
+          temporary: true,
+          promoItems: [
+            new PromoItem(item)
+          ]
+        })
+      }, { enableBackdropDismiss: false });
+
+      modal.onDidDismiss(promo => {
+        this.prService
+          .createTemporary(promo, item)
+          .toPromise()
+          .then(invoicePromo => {
+            this.temporaryPromotions.push(invoicePromo);
+          });
+      });
+
+      modal.present();
     } },
     { text: 'Remove', callback: (item) => {
       const confirm = this.alertCtrl.create({
@@ -219,7 +252,7 @@ export class PointOfSalePageComponent implements OnInit {
     const confirm = this.alertCtrl.create({
       title: 'Complete Transaction?',
       message: `You are doing a ${purchaseMethod} transaction with a value of ${this.currencyFromSettings.transform(this.total)} across 
-                ${this.currentTransaction.length} items with ${this.currentPromotions.length} promotions.`,
+                ${this.currentTransaction.length} items with ${this.allPromotions.length} promotions.`,
       buttons: [
         {
           text: 'Cancel'
@@ -231,7 +264,7 @@ export class PointOfSalePageComponent implements OnInit {
               purchaseMethod,
               cashGiven,
               purchasePrice: this.total,
-              promotions: this.currentPromotions
+              promotions: this.allPromotions
             });
           }
         }
@@ -257,8 +290,12 @@ export class PointOfSalePageComponent implements OnInit {
       });
   }
 
+  get allPromotions() {
+    return this.currentPromotions.concat(this.temporaryPromotions);
+  }
+
   get promoDiscount() {
-    return _.sumBy(this.currentPromotions, 'cost');
+    return _.sumBy(this.allPromotions, 'cost');
   }
 
   get subtotal(): number {
@@ -268,7 +305,7 @@ export class PointOfSalePageComponent implements OnInit {
 
   get subtotalTaxable(): number {
     let subtotal = 0;
-    let promoClones = _.cloneDeep(this.currentPromotions);
+    let promoClones = _.cloneDeep(this.allPromotions);
 
     const allItems = _.flatten(_.map(this.currentTransaction, item => {
       return _.map(new Array(item.quantity), () => _.cloneDeep(item));

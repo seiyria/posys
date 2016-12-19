@@ -151,6 +151,18 @@ export default (app) => {
     });
   });
 
+  app.post('/promotion/temporary', (req, res) => {
+    const { promo, item } = req.body;
+    const { discount } = calculatePromotionDiscount(promo, [item]);
+
+    res.json({
+      promo,
+      skus: [item.sku],
+      totalDiscount: -discount
+    });
+
+  });
+
   app.post('/promotion/check', (req, res) => {
 
     const now = new Date();

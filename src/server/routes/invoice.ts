@@ -77,15 +77,18 @@ export default (app) => {
       });
 
       const promoPromises = (newInvoice) => _.map(promos, (i: any) => {
+
         i.invoiceId = newInvoice.id;
         delete i.id;
-        delete i.skus;
 
         if(i.temporary) {
           i.promoData = new PromotionModel(i);
         }
 
-        return InvoicePromo.forge().save(new InvoicePromoModel(i), { transacting: t }).catch(errorHandler);
+        const model = new InvoicePromoModel(i);
+        delete model.skus;
+
+        return InvoicePromo.forge().save(model, { transacting: t }).catch(errorHandler);
       });
 
       let otherPromises = [];

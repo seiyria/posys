@@ -20,12 +20,6 @@ export class InvoiceService {
               private logger: LoggerService,
               private settings: ApplicationSettingsService) {}
 
-  search(query: string): Observable<Invoice[]> {
-    return this.http.get(this.settings.buildAPIURL(`${this.url}/search`), { search: this.settings.buildSearchParams({ query }) })
-      .map((res: Response) => this.logger.observableUnwrap(res.json()))
-      .catch(e => this.logger.observableError(e));
-  }
-
   getMany(args: any): Observable<PagedItems<Invoice>> {
     return this.http.get(this.settings.buildAPIURL(this.url), { search: this.settings.buildSearchParams(args) })
       .map((res: Response) => this.logger.observableUnwrap(res.json()))

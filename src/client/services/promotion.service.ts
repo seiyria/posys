@@ -67,11 +67,20 @@ export class PromotionService {
       .catch(e => this.logger.observableError(e));
   }
 
-  transformToInvoicePromo({ totalDiscount, skus, promo }: any): InvoicePromo {
+  createTemporary(promo: Promotion, item: StockItem): Observable<InvoicePromo> {
+    return this.http.post(this.settings.buildAPIURL(`${this.url}/temporary`), { promo, item })
+      .map((res: Response) => {
+        return this.transformToInvoicePromo(this.logger.observableUnwrap(res.json()));
+      })
+      .catch(e => this.logger.observableError(e));
+  }
+
+  private transformToInvoicePromo({ totalDiscount, skus, promo }: any): InvoicePromo {
     const invoicePromo = new InvoicePromo({
       cost: totalDiscount,
       promoId: promo.id,
-      skus
+      skus,
+      promoData: promo
     });
 
     invoicePromo.realData = promo;
