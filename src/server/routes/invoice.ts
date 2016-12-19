@@ -79,6 +79,7 @@ export default (app) => {
       const promoPromises = (newInvoice) => _.map(promos, (i: any) => {
         i.invoiceId = newInvoice.id;
         delete i.id;
+        delete i.skus;
 
         if(i.temporary) {
           i.promoData = new PromotionModel(i);
