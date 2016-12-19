@@ -43,6 +43,7 @@ import { ViewButtonComponent } from '../components/view-button';
 import { VoidButtonComponent } from '../components/void-button';
 
 import { TransactionItemComponent, TransactionItemPopoverComponent } from '../pages/pointofsale/transactionitem';
+import { TransactionPromoComponent, TransactionPromoPopoverComponent } from '../pages/pointofsale/transactionpromo';
 import { InventoryItemComponent } from '../pages/inventory/inventoryitem';
 import { PromotionDisplayComponent } from '../pages/promotions/promotiondisplay';
 import { InvoiceItemComponent } from '../pages/invoices/invoiceitem';
@@ -84,6 +85,8 @@ import { TruncatePipe } from '../pipes/truncate';
     OmnisearchWindowComponent,
     TransactionItemComponent,
     TransactionItemPopoverComponent,
+    TransactionPromoComponent,
+    TransactionPromoPopoverComponent,
     InventoryItemComponent,
     PromotionDisplayComponent,
     QueryItemComponent,
@@ -129,7 +132,8 @@ import { TruncatePipe } from '../pipes/truncate';
     PromotionsManagerComponent,
     ReportingPageComponent,
 
-    TransactionItemPopoverComponent
+    TransactionItemPopoverComponent,
+    TransactionPromoPopoverComponent
   ],
   providers: [
     ApplicationSettingsService,

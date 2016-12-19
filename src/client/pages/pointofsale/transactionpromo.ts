@@ -2,10 +2,10 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { PopoverController, ViewController, NavParams } from 'ionic-angular';
 
-import { StockItem } from '../../models/stockitem';
+import { InvoicePromo } from '../../models/invoicepromo';
 
 @Component({
-  selector: 'transaction-item',
+  selector: 'transaction-promo',
   template: `
     <ion-grid no-padding>
       <ion-row>
@@ -18,22 +18,19 @@ import { StockItem } from '../../models/stockitem';
         </ion-col>
         <ion-col width-50 no-padding>
           <ion-row>
-            <ion-col no-padding>{{ item.name | truncate:50 }}</ion-col>
+            <ion-col no-padding>{{ item.realData.name | truncate:50 }}</ion-col>
           </ion-row>
           <ion-row background-text>
-            <ion-col no-padding>{{ item.description | truncate:50 }}</ion-col>
+            <ion-col no-padding>{{ item.realData.description | truncate:50 }}</ion-col>
           </ion-row>
         </ion-col>
         <ion-col width-20 no-padding vertical-center>
-          {{ item.sku }}
         </ion-col>
         <ion-col width-10 no-padding vertical-center>
-          <update-quantity-button [quantity]="item.quantity" (quantityChange)="updateQuantity($event, item)"></update-quantity-button>
         </ion-col>
         <ion-col width-10 no-padding vertical-center>
           <ion-item shrunk-item-checkbox no-border-bottom>
-            <ion-label>{{ item.cost | currencyFromSettings }}</ion-label>
-            <ion-checkbox color="primary" [(ngModel)]="item.taxable"></ion-checkbox>
+            <ion-label text-right>{{ item.cost | currencyFromSettings }}</ion-label>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -45,22 +42,15 @@ import { StockItem } from '../../models/stockitem';
     }
   `]
 })
-export class TransactionItemComponent {
-  @Input() item: StockItem;
+export class TransactionPromoComponent {
+  @Input() item: InvoicePromo;
   @Input() buttons: any[];
   @Input() index: number;
 
-  @Output() quantityChange = new EventEmitter();
-
   constructor(public popoverCtrl: PopoverController) {}
 
-  updateQuantity(quantity, item) {
-    item.quantity = quantity;
-    this.quantityChange.next({ quantity, item });
-  }
-
   moreOptions($event) {
-    const popover = this.popoverCtrl.create(TransactionItemPopoverComponent, { buttons: this.buttons, item: this.item });
+    const popover = this.popoverCtrl.create(TransactionPromoPopoverComponent, { buttons: this.buttons, item: this.item });
 
     popover.present({
       ev: $event
@@ -77,9 +67,9 @@ export class TransactionItemComponent {
     </ion-list>
   `
 })
-export class TransactionItemPopoverComponent implements OnInit {
+export class TransactionPromoPopoverComponent implements OnInit {
   public buttons: any[];
-  private item: StockItem;
+  private item: InvoicePromo;
 
   constructor(private navParams: NavParams, private viewCtrl: ViewController) {}
 

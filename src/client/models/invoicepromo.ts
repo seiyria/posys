@@ -8,6 +8,7 @@ export class InvoicePromo {
   invoiceId?: number;
   promoId?: number;
   promoData?: Promotion;
+  cost?: number;
 
   realData?: any;
 
@@ -17,5 +18,6 @@ export class InvoicePromo {
     this.invoiceId = initializer.invoiceId;
     this.promoId = initializer.promoId;
     this.promoData = initializer.promoData;
+    this.cost = initializer.cost;
   }
 }

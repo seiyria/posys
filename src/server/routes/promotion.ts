@@ -7,8 +7,68 @@ import { bookshelf } from '../server';
 import { Promotion } from '../orm/promotion';
 import { PromoItem } from '../orm/promoitem';
 
+import { Promotion as PromotionModel } from '../../client/models/promotion';
+import { StockItem as StockItemModel } from '../../client/models/stockitem';
+
 import { Logger } from '../logger';
 import Settings from './_settings';
+
+const calculatePromotionDiscount = (promo: PromotionModel, validItems: StockItemModel[]) => {
+
+  let discount = 0;
+  let affectedItems = [];
+  // console.log(validItems);
+  const itemsSortedByPrice = _.sortBy(validItems, 'cost').reverse();
+
+  if(promo.itemReductionType === 'All') {
+    if(promo.discountType === 'Dollar') {
+      discount = promo.discountValue;
+
+    } else {
+      const thisItem = itemsSortedByPrice[0];
+      discount = thisItem.cost * (promo.discountValue / 100);
+      affectedItems.push(thisItem);
+    }
+
+  } else if(promo.itemReductionType === 'BuyXGetNext') {
+    const priceComparator = itemsSortedByPrice[0];
+    const otherItems = _.takeRight(itemsSortedByPrice, promo.numItemsRequired);
+    affectedItems = [priceComparator, ...otherItems];
+
+    // console.log(priceComparator, otherItems);
+
+    if(promo.discountType === 'Dollar') {
+      discount = promo.discountValue;
+
+    } else {
+      discount = Math.min(priceComparator.cost, otherItems[0].cost * (promo.discountValue / 100));
+    }
+  }
+  return { discount, affectedItems };
+};
+
+const numPromoApplications = (promo: PromotionModel, transactionItems: StockItemModel[]) => {
+
+  const numItemsRequired = promo.itemReductionType === 'BuyXGetNext' ? promo.numItemsRequired + 1 : promo.numItemsRequired;
+  const promoItemSKU = _.map(promo.promoItems, 'sku');
+
+  let validItems: StockItemModel[] = [];
+
+  if(promo.discountGrouping === 'OU') {
+    validItems = _.filter(transactionItems, item => item.organizationalunitId === promo.organizationalunitId);
+  } else {
+    validItems = _.filter(transactionItems, item => _.includes(promoItemSKU, item.sku));
+  }
+
+  // splat them out into quantity of 1 to make it easier to process them as separate items
+  validItems = _.flatten(_.map(validItems, item => {
+    return _.map(new Array(item.quantity), () => _.cloneDeep(item));
+  }));
+
+  const numApplications = Math.floor(validItems.length / numItemsRequired);
+
+  return { numApplications, validItems };
+};
 
 export default (app) => {
   app.get('/promotion', (req, res) => {
@@ -62,28 +122,76 @@ export default (app) => {
   app.put('/promotion', (req, res) => {
 
     const promo = req.body;
-    const items = promo.promoItems;
+    const items = promo.promoItems || [];
     delete promo.promoItems;
 
     bookshelf.transaction(t => {
       Promotion
         .forge()
         .save(promo, { transacting: t })
-        .then(item => {
+        .then(newPromo => {
           return Promise
             .all(_.map(items, (i: any) => {
-              i.promoId = item.id;
+              i.promoId = newPromo.id;
               return PromoItem.forge().save(i, { transacting: t });
             }))
             .then(t.commit, t.rollback)
             .then(() => {
-              res.json({ flash: `Created new promotion "${item.name}"`, data: item });
+              res.json({ flash: `Created new promotion successfully`, data: newPromo });
+            })
+            .catch(e => {
+              res.status(500).json({ formErrors: e.data || [] });
             });
         })
         .catch(e => {
           res.status(500).json({ formErrors: e.data || [] });
         });
     });
+  });
+
+  app.post('/promotion/check', (req, res) => {
+
+    const now = new Date();
+    const items = req.body;
+
+    Promotion
+      .forge()
+      .query(qb => {
+        qb
+          .andWhere('startDate', '<=', now)
+          .andWhere('endDate', '>=', now);
+      })
+      .fetchAll({
+        withRelated: ['organizationalunit', 'promoItems']
+      })
+      .then(promoModels => {
+        const promos: PromotionModel[] = promoModels.toJSON();
+
+        const promoApplicationData = _.compact(_.flatten(_.map(promos, promo => {
+          const { numApplications, validItems } = numPromoApplications(promo, items);
+          if(numApplications < 1) { return []; }
+
+          const allPromos = _.map(new Array(numApplications), () => ({ promo, totalDiscount: 0 }));
+          let itemClone = _.cloneDeep(validItems);
+
+          _.each(allPromos, promoContainer => {
+            const { discount, affectedItems } = calculatePromotionDiscount(promoContainer.promo, itemClone);
+
+            if(affectedItems.length > 0) {
+              itemClone = _.reject(itemClone, item => _.includes(affectedItems, item));
+            }
+
+            promoContainer.totalDiscount = -discount;
+          });
+
+          return allPromos;
+        })));
+
+        res.json(promoApplicationData);
+      })
+      .catch(e => {
+        res.status(500).json(Logger.browserError(Logger.error('Route:Promotion/check:POST', e)));
+      });
   });
 
   app.get('/promotion/:id', (req, res) => {
@@ -96,7 +204,7 @@ export default (app) => {
         res.json(item);
       })
       .catch(e => {
-        res.status(500).json(Logger.browserError(Logger.error('Route:StockItem/:id:GET', e)));
+        res.status(500).json(Logger.browserError(Logger.error('Route:Promotion/:id:GET', e)));
       });
   });
 
@@ -105,6 +213,7 @@ export default (app) => {
     const promo = req.body;
     const items = promo.promoItems;
     delete promo.promoItems;
+    delete promo.organizationalunit;
 
     bookshelf.transaction(t => {
       PromoItem
@@ -130,7 +239,6 @@ export default (app) => {
                 });
             })
             .catch(e => {
-              console.log(e);
               res.status(500).json({ formErrors: e.data || [] });
             });
         })

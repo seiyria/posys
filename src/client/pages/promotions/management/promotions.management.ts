@@ -54,10 +54,14 @@ export class PromotionsManagerComponent implements OnInit {
 
     if(!this.promotion.promoItems) { this.promotion.promoItems = []; }
 
-    const newPromoItem = new PromoItem(_.cloneDeep(result.items[0]));
+    const stockitem = _.cloneDeep(result.items[0]);
+
+    const newPromoItem = new PromoItem(stockitem);
 
     if(_.find(this.promotion.promoItems, { sku: newPromoItem.sku })) { return; }
     delete newPromoItem.id;
+    newPromoItem.stockitemId = stockitem.id;
+
     this.promotion.promoItems.push(newPromoItem);
 
     setTimeout(() => {

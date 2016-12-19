@@ -20,6 +20,7 @@ exports.up = (knex) => {
       table.increments('id').primary();
       table.integer('invoiceId').unsigned().references('invoice.id');
       table.integer('promoId').unsigned().references('promo.id');
+      table.decimal('cost', TOTAL_DIGITS, CENT_DIGITS);
       table.jsonb('promoData');
       table.timestamps();
     })

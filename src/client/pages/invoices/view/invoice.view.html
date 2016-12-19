@@ -89,6 +89,7 @@
                 <ion-item *ngIf="invoice.promotions.length === 0">None</ion-item>
                 <ion-item *ngFor="let item of invoice.promotions">
                   {{ item.realData.name }}
+                  <ion-note item-right>{{ item.cost | currencyFromSettings }}</ion-note>
                 </ion-item>
               </ion-list>
             </ion-col>

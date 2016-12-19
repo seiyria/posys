@@ -6,13 +6,14 @@ import { Component, EventEmitter, OnInit } from '@angular/core';
 import { ModalController, AlertController, NavParams } from 'ionic-angular';
 
 import { InvoiceService } from '../../services/invoice.service';
+import { PromotionService } from '../../services/promotion.service';
 
 import { CashPayComponent } from './cashpay/pointofsale.cashpay';
 import { CurrencyFromSettingsPipe } from '../../pipes/currency-from-settings';
 
 import { ApplicationSettingsService } from '../../services/settings.service';
 import { StockItem } from '../../models/stockitem';
-import { Promotion } from '../../models/promotion';
+import { InvoicePromo } from '../../models/invoicepromo';
 import { PurchaseMethod, Invoice } from '../../models/invoice';
 
 @Component({
@@ -23,7 +24,7 @@ import { PurchaseMethod, Invoice } from '../../models/invoice';
 export class PointOfSalePageComponent implements OnInit {
 
   public currentTransaction: StockItem[] = [];
-  public currentPromotions: Promotion[] = [];
+  public currentPromotions: InvoicePromo[] = [];
   public searchItems: StockItem[] = [];
   public showSearchItems: boolean;
   public omniCancelControl = new EventEmitter();
@@ -38,13 +39,12 @@ export class PointOfSalePageComponent implements OnInit {
         title: `Remove "${item.name}"?`,
         message: 'This item will be removed from the current transaction.',
         buttons: [
-          {
-            text: 'Cancel'
-          },
+          { text: 'Cancel' },
           {
             text: 'Confirm',
             handler: () => {
               this.currentTransaction = _.reject(this.currentTransaction, i => i === item);
+              this.updatePromos();
             }
           }
         ]
@@ -57,6 +57,7 @@ export class PointOfSalePageComponent implements OnInit {
               public alertCtrl: AlertController,
               public navParams: NavParams,
               public ivService: InvoiceService,
+              public prService: PromotionService,
               public currencyFromSettings: CurrencyFromSettingsPipe,
               public settings: ApplicationSettingsService) {}
 
@@ -76,6 +77,9 @@ export class PointOfSalePageComponent implements OnInit {
     newItem.quantity = 1;
 
     this.currentTransaction.push(newItem);
+
+    this.updatePromos();
+
     // wait for next render cycle
     setTimeout(() => {
       const transactionList = document.getElementById('transaction-list');
@@ -86,6 +90,15 @@ export class PointOfSalePageComponent implements OnInit {
   addToTransaction($event): void {
     this.addTransactionItem($event);
     this.omniCancelControl.next();
+  }
+
+  updatePromos() {
+    this.prService
+      .checkFor(this.currentTransaction)
+      .toPromise()
+      .then(promotions => {
+        this.currentPromotions = promotions;
+      });
   }
 
   private clearTransaction() {
@@ -225,8 +238,13 @@ export class PointOfSalePageComponent implements OnInit {
       });
   }
 
+  get promoDiscount() {
+    return _.sumBy(this.currentPromotions, 'cost');
+  }
+
   get subtotal(): number {
-    return _.reduce(this.currentTransaction, (prev, cur) => prev + (cur.cost * cur.quantity), 0);
+    const transactionValue =  _.reduce(this.currentTransaction, (prev, cur) => prev + (cur.cost * cur.quantity), 0);
+    return this.promoDiscount + transactionValue;
   }
 
   get subtotalTaxable(): number {

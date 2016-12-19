@@ -15,14 +15,10 @@ export const PromoItem = bookshelf.Model.extend({
       {
         method: 'isLength',
         args: { min: 1, max: 50 },
-        error: 'Your OU name must be between 1 and 50 characters.'
+        error: 'Your item  name must be between 1 and 50 characters.'
       }
     ],
     sku: [
-      {
-        method: 'isRequired',
-        error: 'SKU is required.'
-      },
       {
         method: 'isLength',
         args: { min: 1, max: 50 },
@@ -40,6 +36,12 @@ export const PromoItem = bookshelf.Model.extend({
       {
         method: 'isNum',
         error: 'You must specify a valid item.'
+      }
+    ],
+    organizationalunitId: [
+      {
+        method: 'isNum',
+        error: 'You must specify a valid OU id.'
       }
     ]
   }

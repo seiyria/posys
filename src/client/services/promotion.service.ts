@@ -3,6 +3,8 @@ import * as _ from 'lodash';
 
 import { PagedItems } from '../models/pageditems';
 import { Promotion } from '../models/promotion';
+import { StockItem } from '../models/stockitem';
+import { InvoicePromo } from '../models/invoicepromo';
 
 import { LoggerService } from './logger.service';
 import { ApplicationSettingsService } from './settings.service';
@@ -54,5 +56,24 @@ export class PromotionService {
     return this.http.delete(this.settings.buildAPIURL(this.url, item.id))
       .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
+  }
+
+  checkFor(items: StockItem[]): Observable<InvoicePromo[]> {
+    return this.http.post(this.settings.buildAPIURL(`${this.url}/check`), items)
+      .map((res: Response) => {
+        const items = this.logger.observableUnwrap(res.json());
+        return _.map(items, item => this.transformToInvoicePromo(item))
+      })
+      .catch(e => this.logger.observableError(e));
+  }
+
+  transformToInvoicePromo({ totalDiscount, promo }: any): InvoicePromo {
+    const invoicePromo = new InvoicePromo({
+      cost: totalDiscount,
+      promoId: promo.id
+    });
+
+    invoicePromo.realData = promo;
+    return invoicePromo;
   }
 }
