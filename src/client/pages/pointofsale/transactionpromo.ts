@@ -12,7 +12,7 @@ import { InvoicePromo } from '../../models/invoicepromo';
         <ion-col width-10 no-padding vertical-center space-between-col>
           #{{ index }}
           
-          <button ion-button icon-only clear color="dark" (click)="moreOptions($event)" *ngIf="buttons.length > 0">
+          <button ion-button icon-only clear color="dark" (click)="moreOptions($event)" [attr.invisible]="buttons.length === 0">
             <ion-icon name="more"></ion-icon>
           </button>
         </ion-col>

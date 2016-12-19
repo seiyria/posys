@@ -42,7 +42,7 @@
               <transaction-item [item]="item" [index]="i+1" [buttons]="transactionItemButtons" (quantityChange)="updatePromos()"></transaction-item>
             </ion-item>
             <ion-item *ngFor="let item of currentPromotions; let i = index">
-              <transaction-promo [item]="item" [index]="currentTransaction.length+i+1" [buttons]="transactionItemButtons"></transaction-promo>
+              <transaction-promo [item]="item" [index]="currentTransaction.length+i+1" [buttons]="promotionItemButtons"></transaction-promo>
             </ion-item>
           </ion-list>
 

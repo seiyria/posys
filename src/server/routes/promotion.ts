@@ -17,7 +17,6 @@ const calculatePromotionDiscount = (promo: PromotionModel, validItems: StockItem
 
   let discount = 0;
   let affectedItems = [];
-  // console.log(validItems);
   const itemsSortedByPrice = _.sortBy(validItems, 'cost').reverse();
 
   if(promo.itemReductionType === 'All') {
