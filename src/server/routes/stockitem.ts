@@ -81,6 +81,24 @@ export default (app) => {
       });
   });
 
+  app.post('/stockitem/export', (req, res) => {
+    let numItems = 0;
+
+    Promise.all(_.map(req.body, (v: number, k: string) => {
+      numItems += v;
+
+      return knex('stockitem')
+        .where('sku', '=', k)
+        .decrement('quantity', v);
+    }))
+      .then(() => {
+        res.json({ flash: `Updated quantities for ${_.keys(req.body).length} stock items (${numItems} total exported)` });
+      })
+      .catch(e => {
+        res.status(500).json(Logger.browserError(Logger.error('Route:StockItem/export:POST', e)));
+      });
+  });
+
   app.put('/stockitem', (req, res) => {
     cleanItem(req.body);
 

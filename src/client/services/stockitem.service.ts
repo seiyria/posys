@@ -56,13 +56,22 @@ export class StockItemService {
       .catch(e => this.logger.observableError(e));
   }
 
-  importMany(items: StockItem[]): Observable<any> {
-    const data = _.reduce(items, (prev: any, cur: StockItem) => {
+  private transformItemsToHash(items: StockItem[]): any {
+    return _.reduce(items, (prev: any, cur: StockItem) => {
       prev[cur.sku] = prev[cur.sku] || 0;
       prev[cur.sku] += cur.quantity;
       return prev;
     }, {});
-    return this.http.post(this.settings.buildAPIURL(`${this.url}/import`), data)
+  }
+
+  importMany(items: StockItem[]): Observable<any> {
+    return this.http.post(this.settings.buildAPIURL(`${this.url}/import`), this.transformItemsToHash(items))
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
+      .catch(e => this.logger.observableError(e));
+  }
+
+  exportMany(items: StockItem[]): Observable<any> {
+    return this.http.post(this.settings.buildAPIURL(`${this.url}/export`), this.transformItemsToHash(items))
       .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }

@@ -5,6 +5,7 @@
     </ion-title>
     <ion-buttons start>
       <import-button (click)="importItems()" [disabled]="scanItems.length === 0"></import-button>
+      <export-button (click)="exportItems()" [disabled]="scanItems.length === 0"></export-button>
       <button ion-button (click)="dismiss()">
         <span color="danger">Cancel</span>
       </button>

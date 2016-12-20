@@ -2,15 +2,15 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'import-button',
+  selector: 'export-button',
   template: `
     <button ion-button icon-left [disabled]="disabled">
-      <ion-icon name="log-in"></ion-icon>
-      Import
+      <ion-icon name="log-out"></ion-icon>
+      Export
     </button>
 `
 })
-export class ImportButtonComponent {
+export class ExportButtonComponent {
 
   @Input() disabled: boolean;
 

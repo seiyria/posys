@@ -47,6 +47,15 @@ export class QuickComponent {
       });
   }
 
+  exportItems() {
+    this.siService
+      .exportMany(this.scanItems)
+      .toPromise()
+      .then(() => {
+        this.dismiss();
+      });
+  }
+
   updateQuantity(newQuantity, item) {
     item.quantity = newQuantity;
   }

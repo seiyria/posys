@@ -34,6 +34,7 @@ import { OmnisearchComponent, OmnisearchWindowComponent, QueryItemComponent } fr
 import { AddButtonComponent } from '../components/add-button';
 import { ConfirmButtonComponent } from '../components/confirm-button';
 import { EditButtonComponent } from '../components/edit-button';
+import { ExportButtonComponent } from '../components/export-button';
 import { ResetButtonComponent } from '../components/reset-button';
 import { ImportButtonComponent } from '../components/import-button';
 import { RemoveButtonComponent } from '../components/remove-button';
@@ -97,6 +98,7 @@ import { TruncatePipe } from '../pipes/truncate';
     AddButtonComponent,
     ConfirmButtonComponent,
     EditButtonComponent,
+    ExportButtonComponent,
     ResetButtonComponent,
     ImportButtonComponent,
     RemoveButtonComponent,
