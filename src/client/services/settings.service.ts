@@ -25,7 +25,7 @@ export class Settings {
     const { application, db } = this;
 
     return !_.isUndefined(application.currencyCode) && application.currencyCode.length > 0
-        && application.taxRate > 0
+        && application.taxRate >= 0
 
         && !_.isUndefined(db.hostname) && db.hostname.length > 0
         && !_.isUndefined(db.username) && db.username.length > 0
