@@ -6,6 +6,7 @@
     "outDir": "../../www/server"
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "*.json"
   ]
 }

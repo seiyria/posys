@@ -13,6 +13,7 @@ import { OUManagerComponent } from '../pages/inventory/oumanage/ou.management';
 import { QuickComponent } from '../pages/inventory/quick/quick';
 
 import { AboutComponent } from '../pages/settings/about/about';
+import { EditSettingsComponent } from '../pages/settings/edit/editsettings';
 import { SettingsPageComponent } from '../pages/settings/settings';
 
 import { PointOfSalePageComponent } from '../pages/pointofsale/pointofsale';
@@ -70,6 +71,7 @@ import { TruncatePipe } from '../pipes/truncate';
     QuickComponent,
 
     SettingsPageComponent,
+    EditSettingsComponent,
     AboutComponent,
     PointOfSalePageComponent,
     CashPayComponent,
@@ -123,6 +125,7 @@ import { TruncatePipe } from '../pipes/truncate';
     OUManagerComponent,
     QuickComponent,
     SettingsPageComponent,
+    EditSettingsComponent,
     AboutComponent,
     PointOfSalePageComponent,
     CashPayComponent,

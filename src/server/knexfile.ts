@@ -1,5 +1,5 @@
 
-const config = require('./server.config.json');
+const config = require('./../../server.config.json');
 
 module.exports = {
   client: 'pg',

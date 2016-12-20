@@ -3,47 +3,30 @@ import * as _ from 'lodash';
 import { Logger } from './logger';
 
 const fs = require('fs');
+const appRoot = require('app-root-path');
 
 Logger.info('Init', 'Starting server...');
 
-const kill = () => process.exit();
+const defaultConfig = {
+  server: {
+    port: 8080
+  },
+  db: {
+    hostname: 'localhost',
+    username: 'postgres',
+    password: 'postgres',
+    database: 'posys'
+  }
+};
 
 try {
-  fs.accessSync(`${__dirname}/server.config.json`, fs.F_OK);
+  fs.accessSync(`${appRoot}/server.config.json`, fs.F_OK);
 } catch (e) {
-  Logger.error('Init', 'Can\'t find the server.config.json file. Please place one in src/server (dev) or in the root (prod).');
-  kill();
+  Logger.info('Init', 'Can\'t find the server.config.json file. Creating a default one...');
+  fs.writeFileSync(`${appRoot}/server.config.json`, JSON.stringify(defaultConfig, null, 4));
 }
 
-const config = require('./server.config.json');
-
-if(_.isUndefined(config.db)) {
-  Logger.error('Init', 'No `db` key in config file. Please create one with these keys: hostname, username, password, database');
-  kill();
-}
-
-if(_.isUndefined(config.server)) {
-  Logger.error('Init', 'No `server` key in config file. Please create one with these keys: port');
-  kill();
-}
-
-if(_.isUndefined(config.db.hostname)
-|| _.isUndefined(config.db.username)
-|| _.isUndefined(config.db.password)
-|| _.isUndefined(config.db.database)) {
-  Logger.error('Init', '`db` object not complete. Please ensure these keys exist: hostname, username, password, database');
-  kill();
-}
-
-if(_.isUndefined(config.server.port)) {
-  Logger.error('Init', '`server` object not complete. Please ensure these keys exist: port');
-  kill();
-}
-
-if(!config.db.hostname || !config.db.username || !config.db.database) {
-  Logger.error('Init', '`db` object not complete. hostname, username, database are required');
-  kill();
-}
+const config = require(`${appRoot}/server.config.json`);
 
 export const knex = require('knex')(require('./knexfile'));
 

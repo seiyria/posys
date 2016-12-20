@@ -23,7 +23,7 @@ import { PurchaseMethod, Invoice } from '../../models/invoice';
 @Component({
   selector: 'my-page-pointofsale',
   templateUrl: 'pointofsale.html',
-  providers: [ApplicationSettingsService, CurrencyFromSettingsPipe]
+  providers: [CurrencyFromSettingsPipe]
 })
 export class PointOfSalePageComponent implements OnInit {
 

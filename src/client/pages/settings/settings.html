@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Settings</ion-title>
+    <ion-title>System</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -9,13 +9,11 @@
     <ion-row>
       <ion-col width-20></ion-col>
       <ion-col width-20 main-button text-center>
-        <top-icon-button text="Region" icon="globe"></top-icon-button>
+        <top-icon-button text="Technical Settings" icon="pulse" (subClick)="openEdit()"></top-icon-button>
       </ion-col>
+      <ion-col width-20></ion-col>
       <ion-col width-20 main-button text-center>
-        <top-icon-button text="Technical Settings" icon="pulse"></top-icon-button>
-      </ion-col>
-      <ion-col width-20 main-button text-center>
-        <top-icon-button text="About Posys" icon="information-circle" (click)="openAbout()"></top-icon-button>
+        <top-icon-button text="About Posys" icon="information-circle" (subClick)="openAbout()"></top-icon-button>
       </ion-col>
       <ion-col width-20></ion-col>
     </ion-row>

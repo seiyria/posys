@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 
+import { ApplicationSettingsService } from '../../services/settings.service';
+
 import { PointOfSalePageComponent } from '../pointofsale/pointofsale';
 import { PromotionsPageComponent } from '../promotions/promotions';
 import { InventoryPageComponent } from '../inventory/inventory';
@@ -15,8 +17,10 @@ import { SettingsPageComponent } from '../settings/settings';
 })
 export class HomePageComponent {
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, private settings: ApplicationSettingsService) {}
 
+  isInvalidSetup() {
+    return !this.settings.isValidConfiguration();
   }
 
   goToInventory() {

@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Edit Settings
+    </ion-title>
+    <ion-buttons start>
+      <confirm-button (click)="saveSettings()"></confirm-button>
+      <button ion-button (click)="dismiss()">
+        <span color="danger">Close</span>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+
+    <ion-list-header>Regional Settings</ion-list-header>
+    <ion-item>
+      <ion-label stacked>Tax Rate</ion-label>
+      <ion-input type="number" [(ngModel)]="settings.application.taxRate"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Currency Code</ion-label>
+      <ion-select [(ngModel)]="settings.application.currencyCode">
+        <ion-option *ngFor="let code of currencyCodes" [value]="code">{{ code }}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-list-header>Database Settings</ion-list-header>
+    <ion-item>
+      <ion-label stacked>Hostname</ion-label>
+      <ion-input type="text" [(ngModel)]="settings.db.hostname"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Username</ion-label>
+      <ion-input type="text" [(ngModel)]="settings.db.username"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Password</ion-label>
+      <ion-input type="text" [(ngModel)]="settings.db.password"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Database</ion-label>
+      <ion-input type="text" [(ngModel)]="settings.db.database"></ion-input>
+    </ion-item>
+
+  </ion-list>
+</ion-content>

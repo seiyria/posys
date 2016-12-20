@@ -9,23 +9,23 @@
     <ion-row>
       <ion-col width-20></ion-col>
       <ion-col width-20 main-button text-center>
-        <top-icon-button text="Point of Sale" icon="cart" (subClick)="goToPointOfSale()"></top-icon-button>
+        <top-icon-button text="Point of Sale" icon="cart" [disabled]="isInvalidSetup()" (subClick)="goToPointOfSale()"></top-icon-button>
       </ion-col>
       <ion-col width-20 main-button text-center>
-        <top-icon-button text="Inventory" icon="briefcase" (subClick)="goToInventory()"></top-icon-button>
+        <top-icon-button text="Inventory" icon="briefcase" [disabled]="isInvalidSetup()" (subClick)="goToInventory()"></top-icon-button>
       </ion-col>
       <ion-col width-20 main-button text-center>
-        <top-icon-button text="Invoices" icon="clipboard" (subClick)="goToInvoices()"></top-icon-button>
+        <top-icon-button text="Invoices" icon="clipboard" [disabled]="isInvalidSetup()" (subClick)="goToInvoices()"></top-icon-button>
       </ion-col>
       <ion-col width-20></ion-col>
     </ion-row>
     <ion-row>
       <ion-col width-20></ion-col>
       <ion-col width-20 main-button text-center>
-        <top-icon-button text="Promotions" icon="trending-up" (subClick)="goToPromotions()"></top-icon-button>
+        <top-icon-button text="Promotions" icon="trending-up" [disabled]="isInvalidSetup()" (subClick)="goToPromotions()"></top-icon-button>
       </ion-col>
       <ion-col width-20 main-button text-center>
-        <top-icon-button text="Reporting" icon="paper" (subClick)="goToReporting()"></top-icon-button>
+        <top-icon-button text="Reporting" icon="paper" [disabled]="isInvalidSetup()" (subClick)="goToReporting()"></top-icon-button>
       </ion-col>
       <ion-col width-20 main-button text-center>
         <top-icon-button text="System" icon="settings" (subClick)="goToSettings()"></top-icon-button>
