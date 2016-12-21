@@ -68,10 +68,10 @@ export default (app) => {
               res.status(500).json({ flash: Logger.parseDatabaseError(e, 'Import') });
             };
 
-            const insertPromises = _.map(items, item => {
+            const insertPromises = _.map(items, newItem => {
               return StockItem
                 .forge()
-                .save(item, { transacting: t })
+                .save(newItem, { transacting: t })
                 .catch(errorHandler);
             });
 
