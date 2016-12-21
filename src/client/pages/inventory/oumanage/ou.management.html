@@ -51,7 +51,7 @@
                 <ion-col width-67 vertical-center>{{ ou.name }}</ion-col>
                 <ion-col width-33 flex-right vertical-center>
                   <edit-button (click)="editOU(ou)"></edit-button>
-                  <remove-button (click)="removeOU(ou)"></remove-button>
+                  <remove-button (click)="removeOU(ou)" *ngIf="ou.id !== 1"></remove-button>
                 </ion-col>
               </ion-row>
             </ion-grid>

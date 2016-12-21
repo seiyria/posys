@@ -56,7 +56,7 @@ export default (app) => {
     delete invoice.promotions;
 
     const errorHandler = (e) => {
-      console.error(e);
+      if(res.headersSent) { return; }
       res.status(500).json({ formErrors: e.data || [], flash: 'Transaction failed to complete correctly.' });
     };
 

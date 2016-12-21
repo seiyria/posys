@@ -8,6 +8,10 @@ export class Logger {
       return `Items that depend on that ${category} still exist. Removal aborted.`;
     }
 
+    if(_.includes(err.message, 'duplicate key value violates unique constraint')) {
+      return `An item with a duplicate chunk of unique data exists. Aborted.`;
+    }
+
     return 'Unknown error.';
   }
 

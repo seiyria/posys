@@ -41,6 +41,11 @@ export default (app) => {
   });
 
   app.delete('/organizationalunit/:id', (req, res) => {
+    if(req.params.id == 1) {
+      res.status(500).json({ flash: 'Cannot remove the first OU. '});
+      return;
+    }
+
     OrganizationalUnit
       .forge({ id: req.params.id })
       .destroy()
