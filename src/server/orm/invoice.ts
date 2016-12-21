@@ -29,7 +29,7 @@ export const Invoice = bookshelf.Model.extend({
       },
       {
         method: 'isIn',
-        args: { arr: ['Cash', 'Credit', 'Debit', 'Check', 'Return', 'Hold'] },
+        args: { arr: ['Cash', 'Credit', 'Debit', 'Check', 'Return', 'Hold', 'Void'] },
         error: 'Invalid invoice purchase method specified.'
       }
     ],

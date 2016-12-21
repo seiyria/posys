@@ -193,7 +193,11 @@ export class PointOfSalePageComponent implements OnInit {
         {
           text: 'Confirm',
           handler: () => {
-            this.clearTransaction();
+            this.createInvoice({
+              purchaseMethod: 'Void',
+              purchasePrice: 0.00,
+              isVoided: true
+            });
           }
         }
       ]

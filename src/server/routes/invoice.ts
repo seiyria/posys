@@ -93,7 +93,7 @@ export default (app) => {
 
       let otherPromises = [];
 
-      if(!invoice.isOnHold) {
+      if(!invoice.isOnHold && !invoice.isVoided) {
         if(invoice.isReturned) {
           otherPromises = incrementItems(countMap, t);
         } else {

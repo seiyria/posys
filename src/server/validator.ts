@@ -2,7 +2,7 @@
 import * as _ from 'lodash';
 
 export default {
-  isRequired: (x) => !!x,
+  isRequired: (x) => !_.isUndefined(x),
   isNum:      (x, { min, max } = { min: undefined, max: undefined }) => {
     const test = +x;
     if(_.isNaN(+test))     { return false; }
