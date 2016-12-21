@@ -5,7 +5,7 @@ import { InvoiceItem } from './invoiceitem';
 import { InvoicePromo } from './invoicepromo';
 
 export type PurchaseMethod =
-  'Cash' | 'Check' | 'Debit' | 'Credit' | 'Return';
+  'Cash' | 'Check' | 'Debit' | 'Credit' | 'Return' | 'Void';
 
 export class Invoice {
   id?: number;
