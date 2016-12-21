@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Inventory Management
+    </ion-title>
+    <ion-buttons start>
+      <import-button (click)="doImport()" *ngIf="mode === 'Import'"></import-button>
+      <export-button (click)="doExport()" *ngIf="mode === 'Export'"></export-button>
+      <button ion-button (click)="dismiss()">
+        <span color="danger">Cancel</span>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content my-modal-ivmanage>
+  <ion-grid>
+    <ion-row *ngFor="let column of columns">
+      <ion-grid>
+        <ion-row>
+          <ion-col width-10 vertical-center>
+            <ion-item shrunk-item-checkbox no-border-bottom>
+              <ion-checkbox [(ngModel)]="column.shouldUse"></ion-checkbox>
+            </ion-item>
+          </ion-col>
+          <ion-col width-20 vertical-center>
+            {{ column.name }}
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Alias</ion-label>
+              <ion-input type="text" [(ngModel)]="column.alias"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-row>
+  </ion-grid>
+</ion-content>

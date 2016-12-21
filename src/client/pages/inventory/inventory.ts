@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 
+import { InventoryMassManagementComponent } from './ivmanage/ivmanage';
 import { InventoryManagerComponent } from './management/inventory.management';
 import { OUManagerComponent } from './oumanage/ou.management';
 import { QuickComponent } from './quick/quick';
@@ -29,7 +30,8 @@ export class InventoryPageComponent implements OnInit {
   @LocalStorage()
   public hideOutOfStock: boolean;
 
-  constructor(public modalCtrl: ModalController, public siService: StockItemService) {}
+  constructor(public modalCtrl: ModalController,
+              public siService: StockItemService) {}
 
   ngOnInit() {
     this.changePage(1);
@@ -91,11 +93,13 @@ export class InventoryPageComponent implements OnInit {
   }
 
   importData() {
-
+    const modal = this.modalCtrl.create(InventoryMassManagementComponent, { mode: 'Import' }, { enableBackdropDismiss: false });
+    modal.present();
   }
 
   exportData() {
-
+    const modal = this.modalCtrl.create(InventoryMassManagementComponent, { mode: 'Export' }, { enableBackdropDismiss: false });
+    modal.present();
   }
 
 }

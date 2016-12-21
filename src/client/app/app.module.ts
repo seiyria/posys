@@ -8,6 +8,7 @@ import { MyAppComponent } from './app.component';
 import { HomePageComponent } from '../pages/home/home';
 
 import { InventoryPageComponent } from '../pages/inventory/inventory';
+import { InventoryMassManagementComponent } from '../pages/inventory/ivmanage/ivmanage';
 import { InventoryManagerComponent } from '../pages/inventory/management/inventory.management';
 import { OUManagerComponent } from '../pages/inventory/oumanage/ou.management';
 import { QuickComponent } from '../pages/inventory/quick/quick';
@@ -55,6 +56,7 @@ import { LoggerService } from '../services/logger.service';
 import { PromotionService } from '../services/promotion.service';
 import { StockItemService } from '../services/stockitem.service';
 import { InvoiceService } from '../services/invoice.service';
+import { InventoryService } from '../services/inventory.service';
 import { OrganizationalUnitService } from '../services/organizationalunit.service';
 
 import { PaginationComponent } from 'ionic2-pagination';
@@ -67,6 +69,7 @@ import { TruncatePipe } from '../pipes/truncate';
     MyAppComponent,
     HomePageComponent,
     InventoryPageComponent,
+    InventoryMassManagementComponent,
     InventoryManagerComponent,
     OUManagerComponent,
     QuickComponent,
@@ -123,6 +126,7 @@ import { TruncatePipe } from '../pipes/truncate';
     HomePageComponent,
     OmnisearchWindowComponent,
     InventoryPageComponent,
+    InventoryMassManagementComponent,
     InventoryManagerComponent,
     OUManagerComponent,
     QuickComponent,
@@ -146,6 +150,7 @@ import { TruncatePipe } from '../pipes/truncate';
     StockItemService,
     PromotionService,
     InvoiceService,
+    InventoryService,
     OrganizationalUnitService,
     CurrencyPipe
   ]
