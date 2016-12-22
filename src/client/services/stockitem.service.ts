@@ -8,7 +8,8 @@ import { LoggerService } from './logger.service';
 import { ApplicationSettingsService } from './settings.service';
 
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Response } from '@angular/http';
+import { HttpClient } from './http.custom';
 import { Observable } from 'rxjs/Rx';
 
 @Injectable()
@@ -16,7 +17,7 @@ export class StockItemService {
 
   private url = 'stockitem';
 
-  constructor(private http: Http,
+  constructor(private http: HttpClient,
               private logger: LoggerService,
               private settings: ApplicationSettingsService) {}
 
@@ -71,7 +72,7 @@ export class StockItemService {
   }
 
   exportMany(items: StockItem[]): Observable<any> {
-    return this.http.post(this.settings.buildAPIURL(`${this.url}/export`), this.transformItemsToHash(items))
+    return this.http.post(this.settings.buildAPIURL(`${this.url}/import`), this.transformItemsToHash(items))
       .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }

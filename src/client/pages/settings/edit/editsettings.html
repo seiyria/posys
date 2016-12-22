@@ -17,6 +17,14 @@
 
     <ion-list-header>Regional Settings</ion-list-header>
     <ion-item>
+      <ion-label stacked>Location Name</ion-label>
+      <ion-input type="text" [(ngModel)]="settings.application.locationName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Terminal Identifier</ion-label>
+      <ion-input type="text" [(ngModel)]="settings.application.terminalId"></ion-input>
+    </ion-item>
+    <ion-item>
       <ion-label stacked>Tax Rate (%)</ion-label>
       <ion-input type="number" [(ngModel)]="settings.application.taxRate"></ion-input>
     </ion-item>

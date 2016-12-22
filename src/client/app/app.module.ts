@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
+import { RequestOptions, Http, XHRBackend} from '@angular/http';
 import { CurrencyPipe } from '@angular/common';
 
 import { IonicApp, IonicModule } from 'ionic-angular';
-import { Ng2Webstorage } from 'ng2-webstorage';
+import { Ng2Webstorage, LocalStorageService } from 'ng2-webstorage';
 
 import { MyAppComponent } from './app.component';
 import { HomePageComponent } from '../pages/home/home';
@@ -58,6 +59,8 @@ import { StockItemService } from '../services/stockitem.service';
 import { InvoiceService } from '../services/invoice.service';
 import { InventoryService } from '../services/inventory.service';
 import { OrganizationalUnitService } from '../services/organizationalunit.service';
+
+import { HttpClient } from '../services/http.custom';
 
 import { PaginationComponent } from 'ionic2-pagination';
 
@@ -152,7 +155,8 @@ import { TruncatePipe } from '../pipes/truncate';
     InvoiceService,
     InventoryService,
     OrganizationalUnitService,
-    CurrencyPipe
+    CurrencyPipe,
+    HttpClient
   ]
 })
 export class AppModule {}

@@ -1,6 +1,4 @@
 
-import * as _ from 'lodash';
-
 import { PagedItems } from '../models/pageditems';
 import { Invoice } from '../models/invoice';
 
@@ -8,7 +6,8 @@ import { LoggerService } from './logger.service';
 import { ApplicationSettingsService } from './settings.service';
 
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Response } from '@angular/http';
+import { HttpClient } from './http.custom';
 import { Observable } from 'rxjs/Rx';
 
 @Injectable()
@@ -16,7 +15,7 @@ export class InvoiceService {
 
   private url = 'invoice';
 
-  constructor(private http: Http,
+  constructor(private http: HttpClient,
               private logger: LoggerService,
               private settings: ApplicationSettingsService) {}
 

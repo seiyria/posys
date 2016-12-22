@@ -17,6 +17,7 @@ const cleanItem = (item) => {
 
 export default (app) => {
   app.get('/stockitem', (req, res) => {
+    console.log(req.headers);
 
     const pageOpts = {
       pageSize: +req.query.pageSize || Settings.pagination.pageSize,

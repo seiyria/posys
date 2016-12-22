@@ -44,7 +44,14 @@ export const start = () => {
   const cors = require('cors');
   const app = express();
   app.use(bodyParser.json());
-  app.use(cors());
+
+  const corsOptions = {
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
+    allowedHeaders: ['X-Location', 'X-Terminal', 'Content-Type'],
+    exposedHeaders: ['X-Location', 'X-Terminal', 'Content-Type']
+  };
+
+  app.use(cors(corsOptions));
 
   require('./routes/index').default(app);
 

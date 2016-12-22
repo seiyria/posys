@@ -4,8 +4,9 @@ import * as _ from 'lodash';
 import { LoggerService } from './logger.service';
 
 import { Injectable } from '@angular/core';
-import { URLSearchParams, Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { URLSearchParams, Response } from '@angular/http';
+import { LocalStorageService } from 'ng2-webstorage';
+import { HttpClient } from './http.custom';
 
 const CONNECTION_URL = 'http://localhost:8080';
 
@@ -26,6 +27,8 @@ export class Settings {
 
     return !_.isUndefined(application.currencyCode) && application.currencyCode.length > 0
         && application.taxRate >= 0
+        && application.locationName
+        && application.terminalId
 
         && !_.isUndefined(db.hostname) && db.hostname.length > 0
         && !_.isUndefined(db.username) && db.username.length > 0
@@ -41,9 +44,18 @@ export class ApplicationSettingsService {
 
   private url = 'system';
 
-  constructor(private http: Http,
+  constructor(private http: HttpClient,
+              private localStorage: LocalStorageService,
               private logger: LoggerService) {
     this.getAllSettings();
+  }
+
+  get terminalId(): string {
+    return this.settings.application.terminalId;
+  }
+
+  get locationName(): string {
+    return this.settings.application.locationName;
   }
 
   get currencyCode(): string {
@@ -66,13 +78,19 @@ export class ApplicationSettingsService {
     return this.settings.isValid;
   }
 
+  mergeSettings(newSettings): void {
+    _.merge(this.settings, newSettings);
+    this.localStorage.store('locationName', this.settings.application.locationName);
+    this.localStorage.store('terminalId', this.settings.application.terminalId);
+  }
+
   getAllSettings(): void {
     this.http.get(this.buildAPIURL(this.url))
       .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e))
       .toPromise()
       .then(data => {
-        _.merge(this.settings, data);
+        this.mergeSettings(data);
       });
   }
 
@@ -82,7 +100,7 @@ export class ApplicationSettingsService {
       .catch(e => this.logger.observableError(e))
       .toPromise()
       .then(data => {
-        _.merge(this.settings, data);
+        this.mergeSettings(data);
         return this.settings;
       });
   }

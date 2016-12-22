@@ -10,7 +10,8 @@ import { LoggerService } from './logger.service';
 import { ApplicationSettingsService } from './settings.service';
 
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Response } from '@angular/http';
+import { HttpClient } from './http.custom';
 import { Observable } from 'rxjs/Rx';
 
 @Injectable()
@@ -18,7 +19,7 @@ export class PromotionService {
 
   private url = 'promotion';
 
-  constructor(private http: Http,
+  constructor(private http: HttpClient,
               private logger: LoggerService,
               private settings: ApplicationSettingsService) {}
 
