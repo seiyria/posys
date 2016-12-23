@@ -8,5 +8,9 @@ export class OrganizationalUnit {
 
   constructor(initializer?: OrganizationalUnit) {
     _.assign(this, initializer);
+
+    if(this.name) {
+      this.name = this.name.trim();
+    }
   }
 }

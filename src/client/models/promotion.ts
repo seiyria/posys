@@ -36,5 +36,13 @@ export class Promotion {
 
   constructor(initializer?: Promotion) {
     _.assign(this, initializer);
+
+    if(this.name) {
+      this.name = this.name.trim();
+    }
+
+    if(this.description) {
+      this.description = this.description.trim();
+    }
   }
 }

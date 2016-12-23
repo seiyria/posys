@@ -22,5 +22,13 @@ export class StockItem {
 
   constructor(initializer?: StockItem) {
     _.assign(this, initializer);
+
+    if(this.name) {
+      this.name = this.name.trim();
+    }
+
+    if(this.description) {
+      this.description = this.description.trim();
+    }
   }
 }

@@ -2,6 +2,8 @@
 import { OrganizationalUnit } from '../orm/organizationalunit';
 import { Logger } from '../logger';
 
+import { OrganizationalUnit as OrganizationalUnitModel } from '../../client/models/organizationalunit';
+
 export default (app) => {
   app.get('/organizationalunit', (req, res) => {
     OrganizationalUnit
@@ -17,8 +19,10 @@ export default (app) => {
   });
 
   app.put('/organizationalunit', (req, res) => {
+    const ou = new OrganizationalUnitModel(req.body);
+
     OrganizationalUnit
-      .forge(req.body)
+      .forge(ou)
       .save()
       .then(item => {
         res.json(item);
@@ -29,9 +33,11 @@ export default (app) => {
   });
 
   app.patch('/organizationalunit/:id', (req, res) => {
+    const ou = new OrganizationalUnitModel(req.body);
+
     OrganizationalUnit
       .forge({ id: req.params.id })
-      .save(req.body, { patch: true })
+      .save(ou, { patch: true })
       .then(item => {
         res.json(item);
       })

@@ -123,7 +123,7 @@ export default (app) => {
 
   app.put('/promotion', (req, res) => {
 
-    const promo = req.body;
+    const promo = new PromotionModel(req.body);
     const items = promo.promoItems || [];
     delete promo.promoItems;
 
@@ -156,7 +156,7 @@ export default (app) => {
     const { discount } = calculatePromotionDiscount(promo, [item]);
 
     res.json({
-      promo,
+      promo: new PromotionModel(promo),
       skus: [item.sku],
       totalDiscount: -discount
     });
@@ -225,7 +225,7 @@ export default (app) => {
 
   app.patch('/promotion/:id', (req, res) => {
 
-    const promo = req.body;
+    const promo = new PromotionModel(req.body);
     const items = promo.promoItems;
     delete promo.promoItems;
     delete promo.organizationalunit;

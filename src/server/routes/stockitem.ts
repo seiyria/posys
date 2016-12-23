@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { knex } from '../server';
 
 import { StockItem } from '../orm/stockitem';
+import { StockItem as StockItemModel } from '../../client/models/stockitem';
 
 import { Logger } from '../logger';
 import Settings from './_settings';
@@ -13,11 +14,11 @@ const cleanItem = (item) => {
   if(!item.reorderThreshold) { item.reorderThreshold = undefined; }
   if(!item.reorderUpToAmount) { item.reorderUpToAmount = undefined; }
   delete item.organizationalunit;
+  return item;
 };
 
 export default (app) => {
   app.get('/stockitem', (req, res) => {
-    console.log(req.headers);
 
     const pageOpts = {
       pageSize: +req.query.pageSize || Settings.pagination.pageSize,
@@ -101,10 +102,10 @@ export default (app) => {
   });
 
   app.put('/stockitem', (req, res) => {
-    cleanItem(req.body);
+    const stockitem = cleanItem(new StockItemModel(req.body));
 
     StockItem
-      .forge(req.body)
+      .forge(stockitem)
       .save()
       .then(item => {
         StockItem
@@ -140,17 +141,18 @@ export default (app) => {
   });
 
   app.patch('/stockitem/:id', (req, res) => {
-    cleanItem(req.body);
+    const stockitem = cleanItem(new StockItemModel(req.body));
+
+    console.log(stockitem);
 
     StockItem
       .forge({ id: req.params.id })
-      .save(req.body, { patch: true })
+      .save(stockitem, { patch: true })
       .then(item => {
         item = item.toJSON();
         res.json({ flash: `Updated item "${item.name}"`, data: item });
       })
       .catch(e => {
-        console.error(e);
         res.status(500).json({ formErrors: e.data || [] });
       });
   });
