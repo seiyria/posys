@@ -17,7 +17,7 @@ import { SettingsPageComponent } from '../settings/settings';
 })
 export class HomePageComponent {
 
-  constructor(public navCtrl: NavController, private settings: ApplicationSettingsService) {}
+  constructor(public navCtrl: NavController, public settings: ApplicationSettingsService) {}
 
   isInvalidSetup() {
     return !this.settings.isValidConfiguration();
