@@ -27,6 +27,7 @@ export class Settings {
 
     return !_.isUndefined(application.currencyCode) && application.currencyCode.length > 0
         && application.taxRate >= 0
+        && application.businessName
         && application.locationName
         && application.terminalId
 
@@ -56,6 +57,10 @@ export class ApplicationSettingsService {
 
   get locationName(): string {
     return this.settings.application.locationName;
+  }
+
+  get businessName(): string {
+    return this.settings.application.businessName;
   }
 
   get currencyCode(): string {

@@ -17,6 +17,10 @@
 
     <ion-list-header>Regional Settings</ion-list-header>
     <ion-item>
+      <ion-label stacked>Business Name</ion-label>
+      <ion-input type="text" [(ngModel)]="settings.application.businessName"></ion-input>
+    </ion-item>
+    <ion-item>
       <ion-label stacked>Location Name</ion-label>
       <ion-input type="text" [(ngModel)]="settings.application.locationName"></ion-input>
     </ion-item>
