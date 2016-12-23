@@ -2,7 +2,7 @@
 import * as _ from 'lodash';
 
 import { OrganizationalUnit } from './organizationalunit';
-import { StockItemVendor } from "./stockitemvendor";
+import { StockItemVendor } from './stockitemvendor';
 
 export class StockItem {
   id?: number;
