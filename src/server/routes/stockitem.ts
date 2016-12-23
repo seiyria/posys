@@ -1,9 +1,10 @@
 
 import * as _ from 'lodash';
 
-import { knex } from '../server';
+import { knex, bookshelf } from '../server';
 
 import { StockItem } from '../orm/stockitem';
+import { StockItemVendor } from '../orm/stockitemvendor';
 import { StockItem as StockItemModel } from '../../client/models/stockitem';
 
 import { Logger } from '../logger';
@@ -23,7 +24,7 @@ export default (app) => {
     const pageOpts = {
       pageSize: +req.query.pageSize || Settings.pagination.pageSize,
       page: +req.query.page || 1,
-      withRelated: ['organizationalunit']
+      withRelated: ['organizationalunit', 'vendors']
     };
 
     StockItem
@@ -55,7 +56,7 @@ export default (app) => {
       .fetchPage({
         pageSize: Settings.search.pageSize,
         page: 1,
-        withRelated: ['organizationalunit']
+        withRelated: ['organizationalunit', 'vendors']
       })
       .then(collection => {
         res.json(collection.toJSON());
@@ -103,34 +104,38 @@ export default (app) => {
 
   app.put('/stockitem', (req, res) => {
     const stockitem = cleanItem(new StockItemModel(req.body));
+    const vendors = stockitem.vendors;
+    delete stockitem.vendors;
 
-    StockItem
-      .forge(stockitem)
-      .save()
-      .then(item => {
-        StockItem
-          .forge({ id: item.id })
-          .fetch({
-            withRelated: ['organizationalunit']
-          })
-          .then(newItem => {
-            newItem = newItem.toJSON();
-            res.json({ flash: `Created new item "${newItem.name}"`, data: newItem });
-          })
-          .catch(e => {
-            res.status(500).json({ formErrors: e.data || [] });
-          });
-      })
-      .catch(e => {
-        res.status(500).json({ formErrors: e.data || [] });
-      });
+    bookshelf.transaction(t => {
+      StockItem
+        .forge()
+        .save(stockitem, { transacting: t })
+        .then(newItem => {
+          return Promise
+            .all(_.map(vendors, (i: any) => {
+              i.stockitemId = newItem.id;
+              return StockItemVendor.forge().save(i, { transacting: t });
+            }))
+            .then(t.commit, t.rollback)
+            .then(() => {
+              res.json({ flash: `Created new item successfully`, data: newItem });
+            })
+            .catch(e => {
+              res.status(500).json({ formErrors: e.data || [] });
+            });
+        })
+        .catch(e => {
+          res.status(500).json({ formErrors: e.data || [] });
+        });
+    });
   });
 
   app.get('/stockitem/:id', (req, res) => {
     StockItem
       .forge({ id: req.params.id })
       .fetch({
-        withRelated: ['organizationalunit']
+        withRelated: ['organizationalunit', 'vendors']
       })
       .then(item => {
         res.json(item);
@@ -142,19 +147,43 @@ export default (app) => {
 
   app.patch('/stockitem/:id', (req, res) => {
     const stockitem = cleanItem(new StockItemModel(req.body));
+    const vendors = stockitem.vendors;
+    delete stockitem.vendors;
 
-    console.log(stockitem);
+    bookshelf.transaction(t => {
+      StockItemVendor
+        .query(qb => {
+          qb
+            .where({ stockitemId: req.params.id });
+        })
+        .destroy({ transacting: t })
+        .then(() => {
+          return StockItem
+            .forge()
+            .save(stockitem, { transacting: t, patch: true })
+            .then(item => {
+              const realItem = item.toJSON();
 
-    StockItem
-      .forge({ id: req.params.id })
-      .save(stockitem, { patch: true })
-      .then(item => {
-        item = item.toJSON();
-        res.json({ flash: `Updated item "${item.name}"`, data: item });
-      })
-      .catch(e => {
-        res.status(500).json({ formErrors: e.data || [] });
-      });
+              return Promise
+                .all(_.map(vendors, (i: any) => {
+                  i.stockitemId = item.id;
+                  delete i.id;
+                  return StockItemVendor.forge().save(i, { transacting: t });
+                }))
+                .then(t.commit, t.rollback)
+                .then(() => {
+                  res.json({ flash: `Updated item "${realItem.name}"`, data: realItem });
+                });
+            })
+            .catch(e => {
+              res.status(500).json({ formErrors: e.data || [] });
+            });
+        })
+        .catch(e => {
+          const errorMessage = Logger.parseDatabaseError(e, 'Item');
+          res.status(500).json({ flash: errorMessage });
+        });
+    });
   });
 
   app.delete('/stockitem/:id', (req, res) => {

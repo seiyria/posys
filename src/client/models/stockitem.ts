@@ -2,11 +2,11 @@
 import * as _ from 'lodash';
 
 import { OrganizationalUnit } from './organizationalunit';
+import { StockItemVendor } from "./stockitemvendor";
 
 export class StockItem {
   id?: number;
   sku: string;
-  stockCode?: string;
   name: string;
   photoUrl?: string;
   description?: string;
@@ -14,10 +14,12 @@ export class StockItem {
   organizationalunit?: OrganizationalUnit;
   taxable: boolean;
   cost: number;
-  vendorPurchasePrice?: number;
   quantity: number;
   reorderThreshold?: number;
   reorderUpToAmount?: number;
+
+  vendors?: StockItemVendor[];
+
   temporary?: boolean;
 
   constructor(initializer?: StockItem) {

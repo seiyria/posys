@@ -2,11 +2,15 @@
 
 import { bookshelf } from '../server';
 import { OrganizationalUnit } from './organizationalunit';
+import { StockItemVendor } from './stockitemvendor';
 
 export const StockItem = bookshelf.Model.extend({
   tableName: 'stockitem',
   hasTimestamps: true,
   softDelete: false,
+  vendors: function() {
+    return this.hasMany(StockItemVendor, 'stockitemId');
+  },
   organizationalunit: function() {
     return this.belongsTo(OrganizationalUnit, 'organizationalunitId');
   },
