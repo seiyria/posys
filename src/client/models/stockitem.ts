@@ -32,5 +32,9 @@ export class StockItem {
     if(this.description) {
       this.description = this.description.trim();
     }
+
+    if(!this.vendors) {
+      this.vendors = [];
+    }
   }
 }
