@@ -16,6 +16,9 @@ export default (app) => {
 
   app.patch('/system', (req, res) => {
     req.body.application.taxRate = +req.body.application.taxRate;
+    req.body.application.businessName = _.truncate(req.body.application.businessName, { length: 50, omission: '' });
+    req.body.application.locationName = _.truncate(req.body.application.locationName, { length: 50, omission: '' });
+    req.body.application.terminalId = _.truncate(req.body.application.terminalId, { length: 50, omission: '' });
 
     fs.writeFile(`${appRoot}/server.config.json`, JSON.stringify(req.body, null, 4), (err) => {
       if(err) { throw err; }

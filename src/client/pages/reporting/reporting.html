@@ -10,7 +10,7 @@
       <ion-col width-25>
         <ion-list-header>Saved Reports</ion-list-header>
         <ion-list>
-          <button ion-item *ngFor="let report of baseReports">
+          <button ion-item *ngFor="let report of baseReports" (click)="selectNewReport(report)">
             {{ report.name }}
           </button>
         </ion-list>

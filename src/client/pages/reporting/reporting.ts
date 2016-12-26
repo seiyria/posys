@@ -60,6 +60,10 @@ export class ReportingPageComponent {
       columnChecked: ['Purchase Time', 'Tax Collected'] }
   ];
 
+  selectNewReport(reportConfig: ReportConfiguration) {
+
+  }
+
   constructor() {
 
   }
