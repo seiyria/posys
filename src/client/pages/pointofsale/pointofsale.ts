@@ -280,6 +280,8 @@ export class PointOfSalePageComponent implements OnInit {
   createInvoice(opts) {
     opts.purchaseTime = new Date();
     opts.stockitems = this.currentTransaction;
+    opts.taxCollected = this.tax;
+    opts.subtotal = this.subtotal;
     const invoice = new Invoice(opts);
 
     if(this.prevTransaction) {

@@ -10,6 +10,8 @@ exports.up = (knex) => {
       table.dateTime('deleted_at');
       table.string('purchaseMethod');
       table.decimal('purchasePrice', TOTAL_DIGITS, CENT_DIGITS);
+      table.decimal('taxCollected', TOTAL_DIGITS, CENT_DIGITS);
+      table.decimal('subtotal', TOTAL_DIGITS, CENT_DIGITS);
       table.decimal('cashGiven', TOTAL_DIGITS, CENT_DIGITS);
       table.boolean('isVoided').defaultTo(false);
       table.boolean('isReturned').defaultTo(false);

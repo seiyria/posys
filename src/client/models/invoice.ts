@@ -13,6 +13,8 @@ export class Invoice {
   purchaseMethod: PurchaseMethod;
   purchasePrice: number;
   cashGiven?: number;
+  taxCollected?: number;
+  subtotal?: number;
   isVoided?: boolean;
   isReturned?: boolean;
   isOnHold?: boolean;
