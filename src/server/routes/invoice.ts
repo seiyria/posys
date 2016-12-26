@@ -52,8 +52,22 @@ export default (app) => {
     const items = invoice.stockitems;
     const promos = invoice.promotions;
 
+    const locationName = req.header('X-Location');
+    const terminalId = req.header('X-Terminal');
+
+    if(!locationName) {
+      return res.json({ flash: 'Location name is not specified in system settings. Transaction aborted.' });
+    }
+
+    if(!terminalId) {
+      return res.json({ flash: 'Terminal id is not specified in system settings. Transaction aborted.' });
+    }
+
     delete invoice.stockitems;
     delete invoice.promotions;
+
+    invoice.locationName = locationName;
+    invoice.terminalId = terminalId;
 
     const errorHandler = (e) => {
       if(res.headersSent) { return; }

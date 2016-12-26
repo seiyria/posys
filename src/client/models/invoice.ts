@@ -19,6 +19,9 @@ export class Invoice {
   isReturned?: boolean;
   isOnHold?: boolean;
 
+  locationName?: string;
+  terminalId?: string;
+
   previousId?: number;
 
   stockitems?: InvoiceItem[];
