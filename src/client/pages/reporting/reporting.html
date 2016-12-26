@@ -10,17 +10,15 @@
       <ion-col width-25>
         <ion-list-header>Saved Reports</ion-list-header>
         <ion-list>
-          <ion-item>Inventory (Current)</ion-item>
-          <ion-item>Inventory (Old)</ion-item>
-          <ion-item>Inventory (Reorder)</ion-item>
-          <ion-item>Sales (Completed)</ion-item>
-          <ion-item>Sales (Voided)</ion-item>
-          <ion-item>Tax Collected</ion-item>
+          <button ion-item *ngFor="let report of baseReports">
+            {{ report.name }}
+          </button>
         </ion-list>
       </ion-col>
 
       <ion-col>
-
+        <ion-row></ion-row>
+        <ion-row></ion-row>
       </ion-col>
     </ion-row>
   </ion-grid>
