@@ -1,0 +1,29 @@
+
+export type ReportRoute =
+  'base/inventory/current'
+| 'base/inventory/old'
+| 'base/inventory/reorder'
+| 'base/sales/completed'
+| 'base/sales/voided'
+| 'base/sales/tax';
+
+export class ReportConfiguration {
+  name: string;
+  reportRoute: ReportRoute;
+  hasDateFilter?: boolean;
+  singleDateFilter?: boolean;
+  startDate?: Date;
+  endDate?: Date;
+  dateText?: string = 'Date Range';
+  columnOrder?: string[];
+  columnChecked?: string[];
+  columns: any[];
+  options?: any[];
+  optionValues?: any;
+
+  filters?: any;
+
+  sortBy?: string;
+  groupBy?: string;
+  ouFilter?: number;
+}

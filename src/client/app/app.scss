@@ -34,8 +34,20 @@ ion-grid[vertical-center] {
   }
 }
 
-[no-border-bottom] .item-inner {
+[no-border-top] {
+  border-top: none !important;
+
+  & .item-inner {
+    border-top: none !important;
+  }
+}
+
+[no-border-bottom] {
   border-bottom: none !important;
+
+  & .item-inner {
+    border-top: none !important;
+  }
 }
 
 [no-margin-bottom] {
@@ -156,4 +168,9 @@ ion-item[no-margin] .label {
 
 [invisible] {
   visibility: hidden !important;
+}
+
+.datetime-md {
+  padding-top: 8px;
+  padding-bottom: 8px;
 }

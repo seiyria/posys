@@ -51,16 +51,32 @@ export class ApplicationSettingsService {
     this.getAllSettings();
   }
 
+  private safeify(str: string): string {
+    return str.split(' ').join('');
+  }
+
   get terminalId(): string {
     return this.settings.application.terminalId;
+  }
+
+  get safeTerminalId(): string {
+    return this.safeify(this.terminalId);
   }
 
   get locationName(): string {
     return this.settings.application.locationName;
   }
 
+  get safeLocationName(): string {
+    return this.safeify(this.locationName);
+  }
+
   get businessName(): string {
     return this.settings.application.businessName;
+  }
+
+  get safeBusinessName(): string {
+    return this.safeify(this.businessName);
   }
 
   get currencyCode(): string {

@@ -1,3 +1,7 @@
 my-page-reporting {
-
+  [options-column] {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 }

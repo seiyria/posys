@@ -5,6 +5,7 @@ import promotion from './promotion';
 import invoice from './invoice';
 import inventory from './inventory';
 import system from './system';
+import report from './report';
 
 export default (app) => {
   stockitem(app);
@@ -13,4 +14,5 @@ export default (app) => {
   invoice(app);
   inventory(app);
   system(app);
+  report(app);
 };

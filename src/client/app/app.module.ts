@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { RequestOptions, Http, XHRBackend} from '@angular/http';
 import { CurrencyPipe } from '@angular/common';
 
 import { IonicApp, IonicModule } from 'ionic-angular';
@@ -59,6 +58,7 @@ import { StockItemService } from '../services/stockitem.service';
 import { InvoiceService } from '../services/invoice.service';
 import { InventoryService } from '../services/inventory.service';
 import { OrganizationalUnitService } from '../services/organizationalunit.service';
+import { ReportService } from '../services/report.service';
 
 import { HttpClient } from '../services/http.custom';
 
@@ -155,6 +155,7 @@ import { TruncatePipe } from '../pipes/truncate';
     InvoiceService,
     InventoryService,
     OrganizationalUnitService,
+    ReportService,
     CurrencyPipe,
     HttpClient
   ]
