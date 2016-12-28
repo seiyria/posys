@@ -262,7 +262,7 @@ export class ReportingPageComponent implements OnInit {
   ${_.map(data, ({ name, group }) => {
   return `
     <thead>
-      <tr><th colspan="${usefulColumns.length}">Grouping: ${name}</th></tr>
+      <tr><th colspan="${usefulColumns.length}">Grouping: ${name || 'Unknown'}</th></tr>
       <tr>
         ${_.map(usefulColumns, col => {
           return `<th>${col}</th>`;
