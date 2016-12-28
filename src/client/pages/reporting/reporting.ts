@@ -203,11 +203,13 @@ export class ReportingPageComponent implements OnInit {
       _.each(dataGroups, (group) => {
         const baseObj: any = { Name: 'Totals', doBold: true };
 
-        baseObj.Quantity = (_.reduce(group, (prev, cur: any) => prev + cur.Quantity, 0)).toFixed(2);
-        baseObj.Cost = (_.reduce(group, (prev, cur: any) => prev + ((cur.Cost || 0) * cur.Quantity), 0)).toFixed(2);
-        baseObj['Vendor Cost'] = (_.reduce(group, (prev, cur: any) => {
-          return prev + ((cur['Vendor Cost'] || 0) * (cur['Reorder Quantity'] || cur.Quantity));
-        }, 0)).toFixed(2);
+        if(_.some(group, (item: any) => item.Quantity)) {
+          baseObj.Quantity = (_.reduce(group, (prev, cur: any) => prev + cur.Quantity, 0)).toFixed(2);
+          baseObj.Cost = (_.reduce(group, (prev, cur: any) => prev + ((cur.Cost || 0) * cur.Quantity), 0)).toFixed(2);
+          baseObj['Vendor Cost'] = (_.reduce(group, (prev, cur: any) => {
+            return prev + ((cur['Vendor Cost'] || 0) * (cur['Reorder Quantity'] || cur.Quantity));
+          }, 0)).toFixed(2);
+        }
 
         if(_.some(group, item => item['Reorder Quantity'])) {
           baseObj['Reorder Quantity'] = (_.reduce(group, (prev, cur: any) => prev + cur['Reorder Quantity'], 0)).toFixed(2);
