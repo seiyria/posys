@@ -21,6 +21,9 @@ export class ReportConfiguration {
   options?: any[];
   optionValues?: any;
 
+  modifyColumns?: Function;
+  modifyData?: Function;
+
   filters?: any;
 
   sortBy?: string;

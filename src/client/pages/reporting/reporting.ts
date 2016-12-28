@@ -69,8 +69,14 @@ export class ReportingPageComponent implements OnInit {
       ],
       columnChecked: ['Name', 'SKU', 'OU', 'Cost', 'Quantity', 'Last Sold' ] },
     { name: 'Inventory (Reorder)', reportRoute: 'base/inventory/reorder', columns: stockItemColumns,
-      filters: { sortBy: true }, sortBy: 'Name',
-      columnChecked: ['Name', 'Quantity', 'Vendor Name', 'Vendor SKU', 'Vendor Cost'] },
+      filters: { sortBy: true, groupBy: true, ouFilter: true }, sortBy: 'Name',
+      options: [
+        { name: 'Reverse Sort',         short: 'reverseSort' },
+        { name: 'Show Totals',          short: 'showTotals' }
+      ],
+      modifyColumns: (columns) => columns.push('Reorder Quantity'),
+      modifyData:    (item) => item['Reorder Quantity'] = item['Reorder Up To'] - item.Quantity,
+      columnChecked: ['Name', 'Quantity', 'Reorder Alert', 'Reorder Up To', 'Vendor Name', 'Vendor SKU', 'Vendor Cost'] },
     { name: 'Sales (Completed)',   reportRoute: 'base/sales/completed',   columns: invoiceColumns,
       filters: { multiDateFilter: true },
       columnChecked: ['Purchase Time', 'Purchase Method', 'Purchase Price', 'Tax Collected', 'Subtotal', '# Items'] },
@@ -181,6 +187,12 @@ export class ReportingPageComponent implements OnInit {
       }
     }
 
+    if(this.currentReport.modifyData) {
+      _.each(baseData, item => {
+        this.currentReport.modifyData(item);
+      });
+    }
+
     let dataGroups: any = { All: baseData };
 
     if(this.currentReport.groupBy) {
@@ -193,7 +205,13 @@ export class ReportingPageComponent implements OnInit {
 
         baseObj.Quantity = (_.reduce(group, (prev, cur: any) => prev + cur.Quantity, 0)).toFixed(2);
         baseObj.Cost = (_.reduce(group, (prev, cur: any) => prev + ((cur.Cost || 0) * cur.Quantity), 0)).toFixed(2);
-        baseObj['Vendor Cost'] = (_.reduce(group, (prev, cur: any) => prev + ((cur['Vendor Cost'] || 0) * cur.Quantity), 0)).toFixed(2);
+        baseObj['Vendor Cost'] = (_.reduce(group, (prev, cur: any) => {
+          return prev + ((cur['Vendor Cost'] || 0) * (cur['Reorder Quantity'] || cur.Quantity));
+        }, 0)).toFixed(2);
+
+        if(_.some(group, item => item['Reorder Quantity'])) {
+          baseObj['Reorder Quantity'] = (_.reduce(group, (prev, cur: any) => prev + cur['Reorder Quantity'], 0)).toFixed(2);
+        }
 
         group.push(baseObj);
       });
@@ -226,6 +244,10 @@ export class ReportingPageComponent implements OnInit {
       .filter(col => col.checked)
       .map('name')
       .value());
+
+    if(this.currentReport.modifyColumns) {
+      this.currentReport.modifyColumns(usefulColumns);
+    }
 
     const content = `
 <table>
@@ -278,7 +300,7 @@ export class ReportingPageComponent implements OnInit {
 table { border-collapse: collapse; }
 .data-row:nth-child(2n) { background-color: #ccc; }
 .table-separator { height: 20px; }
-td { padding-left: 10px; padding-right: 10px; margin-left: 5px; margin-right: 10px; margin-top: 50px; }
+td, th { padding-left: 10px; padding-right: 10px; margin-left: 5px; margin-right: 10px; margin-top: 50px; }
 
 .print-show { display: none; }
 

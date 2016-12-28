@@ -83,7 +83,7 @@ export default (app) => {
         if(config.optionValues.includeUnsold) {
           qb
             .orWhere('lastSoldAt', '<', config.startDate)
-            .orWhere('lastSoldAt', 'is', null);
+            .orWhereNull('lastSoldAt');
         } else {
           qb.where('lastSoldAt', '<', config.startDate);
         }
@@ -99,6 +99,37 @@ export default (app) => {
       })
       .catch(e => {
         res.status(500).json(Logger.browserError(Logger.error('Route:Report/base/inventory/old:POST', e)));
+      });
+  });
+
+  app.post('/report/base/inventory/reorder', (req, res) => {
+
+    const config: ReportConfigurationModel = req.body;
+
+    const { columns, withRelated } = getColumnsAndRelated(_.map(config.columns, 'key'));
+
+    StockItem
+      .forge()
+      .where(qb => {
+        if(config.ouFilter) {
+          qb.where('organizationalunitId', '=', config.ouFilter);
+        }
+
+        qb.andWhere('reorderThreshold', '>', 0);
+        qb.andWhere('reorderUpToAmount', '>', 0);
+        qb.whereRaw('quantity <= "reorderThreshold"');
+      })
+      .fetchAll({ columns, withRelated })
+      .then(collection => {
+        const items = collection.toJSON();
+        _.each(items, item => {
+          if(!item.vendors || !item.vendors.length) { return; }
+          item.vendors = [_.find(item.vendors, { isPreferred: true })];
+        });
+        res.json(items);
+      })
+      .catch(e => {
+        res.status(500).json(Logger.browserError(Logger.error('Route:Report/base/inventory/reorder:POST', e)));
       });
   });
 };
