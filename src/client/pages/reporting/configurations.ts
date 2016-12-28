@@ -71,10 +71,20 @@ export const AllReportConfigurations: ReportConfiguration[] = [
   { name: 'Sales (Voided)',      reportRoute: 'base/sales/voided',      columns: invoiceColumns,
     filters: { multiDateFilter: true },
     datePeriod: 0, dateDenomination: 'Day',
-    columnChecked: ['Purchase Time', 'Purchase Method', '# Items']  },
+    options: [
+      { name: 'Reverse Sort',         short: 'reverseSort' },
+      { name: 'Use Custom Dates',     short: 'useCustomDatePicker' },
+      { name: 'Show Totals',          short: 'showTotals', checked: true }
+    ],
+    columnChecked: ['Purchase Time', 'Purchase Method', 'Purchase Price', '# Items']  },
 
-  { name: 'Sales (Tax)',         reportRoute: 'base/sales/tax',         columns: invoiceColumns,
+  { name: 'Sales (Tax)',         reportRoute: 'base/sales/completed',   columns: invoiceColumns,
     filters: { multiDateFilter: true },
     datePeriod: 0, dateDenomination: 'Day',
+    options: [
+      { name: 'Reverse Sort',         short: 'reverseSort' },
+      { name: 'Use Custom Dates',     short: 'useCustomDatePicker' },
+      { name: 'Show Totals',          short: 'showTotals', checked: true }
+    ],
     columnChecked: ['Purchase Time', 'Tax Collected'] }
 ];

@@ -192,10 +192,9 @@ export default (app) => {
     Invoice
       .forge()
       .query(qb => {
-        qb.andWhere('purchaseTime', '>=', config.startDate);
-        qb.andWhere('purchaseTime', '<', config.endDate);
-
         qb
+          .andWhere('purchaseTime', '>=', config.startDate)
+          .andWhere('purchaseTime', '<', config.endDate)
           .andWhere('isVoided', '!=', true)
           .andWhere('isOnHold', '!=', true)
           .andWhere('purchaseMethod', '!=', 'Return');
@@ -217,7 +216,49 @@ export default (app) => {
         res.json(resObj);
       })
       .catch(e => {
-        res.status(500).json(Logger.browserError(Logger.error('Route:Invoice:GET', e)));
+        res.status(500).json(Logger.browserError(Logger.error('Route:Sales/Completed:POST', e)));
+      });
+  });
+
+  app.post('/report/base/sales/voided', (req, res) => {
+
+    const config: ReportConfigurationModel = req.body;
+
+    const { columns, withRelated } = getColumnsAndRelated(_.map(config.columns, 'key'));
+    columns.push('id');
+    withRelated.push(...['stockitems', 'promotions']);
+
+    Invoice
+      .forge()
+      .query(qb => {
+        qb
+          .andWhere('purchaseTime', '>=', config.startDate)
+          .andWhere('purchaseTime', '<', config.endDate)
+          .andWhere(function() {
+            this
+              .orWhere('isVoided', '=', true)
+              .orWhere('purchaseMethod', '=', 'Void')
+              .orWhereNull('isVoided');
+          });
+      })
+      .orderBy('-id')
+      .fetchAll({ columns, withRelated })
+      .then(collection => {
+        const data = collection.toJSON();
+        const resObj: any = { data };
+        if(!data.length) {
+          resObj.flash = 'No data matched your query.';
+        }
+        if(resObj.stockitems) {
+          resObj.stockitems = { length: resObj.stockitems.length };
+        }
+        if(resObj.promotions) {
+          resObj.promotions = { length: resObj.promotions.length };
+        }
+        res.json(resObj);
+      })
+      .catch(e => {
+        res.status(500).json(Logger.browserError(Logger.error('Route:Sales/Completed:POST', e)));
       });
   });
 };

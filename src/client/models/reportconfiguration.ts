@@ -4,8 +4,7 @@ export type ReportRoute =
 | 'base/inventory/old'
 | 'base/inventory/reorder'
 | 'base/sales/completed'
-| 'base/sales/voided'
-| 'base/sales/tax';
+| 'base/sales/voided';
 
 export class ReportConfiguration {
   name: string;
