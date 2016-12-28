@@ -30,9 +30,16 @@ const decrementItems = (items, transaction?) => {
   return _.map(items, (v: number, k: string) => {
     let base = knex('stockitem');
     if(transaction) { base = base.transacting(transaction); }
-    return base
+    const query = base
       .where('sku', '=', k)
-      .decrement('quantity', v);
+      // .decrement('quantity', v)
+      .update({
+        quantity: knex.raw(`quantity - ${v}`),
+        lastSoldAt: new Date()
+      });
+
+    console.log(query.toString());
+    return query;
   });
 };
 

@@ -17,6 +17,7 @@ export class StockItem {
   quantity: number;
   reorderThreshold?: number;
   reorderUpToAmount?: number;
+  lastSoldAt?: Date;
 
   vendors?: StockItemVendor[];
 

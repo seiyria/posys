@@ -15,6 +15,7 @@ exports.up = (knex) => {
       table.integer('quantity');
       table.integer('reorderThreshold');
       table.integer('reorderUpToAmount');
+      table.dateTime('lastSoldAt');
       table.timestamps();
     })
     .createTable('stockitemvendor', (table) => {

@@ -43,7 +43,7 @@ export default (app) => {
       .forge()
       .where(qb => {
         if(!config.optionValues.includeOutOfStock) {
-          qb.where('quantity', '>=', 0);
+          qb.where('quantity', '>', 0);
         }
         if(config.ouFilter) {
           qb.where('organizationalunitId', '=', config.ouFilter);
@@ -60,6 +60,37 @@ export default (app) => {
       })
       .catch(e => {
         res.status(500).json(Logger.browserError(Logger.error('Route:Report/base/inventory/current:POST', e)));
+      });
+  });
+
+  app.post('/report/base/inventory/old', (req, res) => {
+
+    const config: ReportConfigurationModel = req.body;
+
+    const { columns, withRelated } = getColumnsAndRelated(_.map(config.columns, 'key'));
+
+    if(!config.optionValues.startDate) {
+      return res.status(500).json({ flash: 'You must specify a date to filter by.' });
+    }
+
+    StockItem
+      .forge()
+      .where(qb => {
+        if(config.ouFilter) {
+          qb.where('organizationalunitId', '=', config.ouFilter);
+        }
+      })
+      .fetchAll({ columns, withRelated })
+      .then(collection => {
+        const items = collection.toJSON();
+        _.each(items, item => {
+          if(!item.vendors || !item.vendors.length) { return; }
+          item.vendors = [_.find(item.vendors, { isPreferred: true })];
+        });
+        res.json(items);
+      })
+      .catch(e => {
+        res.status(500).json(Logger.browserError(Logger.error('Route:Report/base/inventory/old:POST', e)));
       });
   });
 };

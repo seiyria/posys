@@ -57,8 +57,12 @@ export class ReportingPageComponent implements OnInit {
       ],
       columnChecked: ['Name', 'SKU', 'OU', 'Cost', 'Quantity' ] },
     { name: 'Inventory (Old)',     reportRoute: 'base/inventory/old',     columns: stockItemColumns,
-      filters: { singleDateFilter: true, sortBy: true }, sortBy: 'Name',
+      filters: { singleDateFilter: true, sortBy: true, groupBy: true, ouFilter: true }, sortBy: 'Name',
       dateText: 'Items Not Sold Since',
+      options: [
+        { name: 'Reverse Sort',         short: 'reverseSort' },
+        { name: 'Show Totals',          short: 'showTotals' }
+      ],
       columnChecked: ['Name', 'SKU', 'OU', 'Cost', 'Quantity' ] },
     { name: 'Inventory (Reorder)', reportRoute: 'base/inventory/reorder', columns: stockItemColumns,
       filters: { sortBy: true }, sortBy: 'Name',
@@ -132,6 +136,8 @@ export class ReportingPageComponent implements OnInit {
           const blob = new Blob([csv], { type: 'text/plain;charset=utf-8' });
           saveAs(blob, `${this.formattedReportName}.csv`);
         };
+      }, () => {
+        this.runningReport = false;
       });
   }
 
