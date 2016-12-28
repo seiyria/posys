@@ -96,7 +96,7 @@ export class ApplicationSettingsService {
   }
 
   toIonicDateString(date: Date): string {
-    return `${date.toISOString().slice(0, 10)}T00:00`
+    return `${date.toISOString().slice(0, 10)}T00:00`;
   }
 
   isValidConfiguration(): boolean {

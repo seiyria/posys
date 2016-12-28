@@ -57,7 +57,6 @@ export class ReportingPageComponent implements OnInit {
     const modifiedEnd = dateFunctions[`endOf${this.currentReport.dateDenomination}`](modified);
 
     this.currentReport.startDate = this.settings.toIonicDateString(modifiedStart);
-
     this.currentReport.endDate = this.settings.toIonicDateString(modifiedEnd);
   }
 
@@ -77,6 +76,8 @@ export class ReportingPageComponent implements OnInit {
     _.each(this.currentReport.columnChecked, col => {
       _.find(this.currentReport.columns, { name: col }).checked = true;
     });
+
+    this.updateOptionValues();
 
     if(!_.isUndefined(reportConfig.dateDenomination) && !_.isUndefined(reportConfig.datePeriod)) {
       this.updateDatesBasedOnPeriodAndDenomination();
