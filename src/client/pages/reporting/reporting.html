@@ -5,9 +5,9 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid>
-    <ion-row>
-      <ion-col width-25>
+  <ion-grid full-height>
+    <ion-row full-height>
+      <ion-col width-25 full-height>
         <ion-list>
           <ion-list-header no-border-top>Base Reports</ion-list-header>
           <button ion-item *ngFor="let report of baseReports" (click)="selectNewReport(report)" [disabled]="runningReport">
@@ -16,18 +16,29 @@
         </ion-list>
       </ion-col>
 
-      <ion-col>
+      <ion-col full-height report-container>
         <ion-row full-height true-center big-text background-text *ngIf="!currentReport">
           Select a report to get started.
         </ion-row>
 
-        <ion-row *ngIf="currentReport">
-          <ion-col text-center>
+        <ion-row *ngIf="currentReport" header-row>
+          <ion-col text-center width-67>
             <h1>{{ currentReport.name }}</h1>
+          </ion-col>
+
+          <ion-col vertical-center text-right width-33>
+            <button ion-button icon-left color="secondary" disabled>
+              <ion-icon name="bookmark"></ion-icon>
+              Save Report As...
+            </button>
+            <button ion-button icon-left color="primary" (click)="runReport()" [disabled]="runningReport">
+              <ion-icon name="clipboard"></ion-icon>
+              {{ runningReport ? 'Running report...' : 'Run Report' }}
+            </button>
           </ion-col>
         </ion-row>
 
-        <ion-row *ngIf="currentReport && currentReport.filters" padding-left padding-right>
+        <ion-row *ngIf="currentReport && currentReport.filters" padding-left padding-right filter-row>
 
           <ion-col width-20 *ngIf="currentReport.filters.singleDateFilter">
             <ion-item list-header shrunk-item-checkbox no-border-bottom>
@@ -79,10 +90,13 @@
             </ion-item>
           </ion-col>
         </ion-row>
-        <ion-row *ngIf="currentReport">
-          <ion-col width-75>
-            <ion-list>
+
+        <ion-row *ngIf="currentReport" options-row>
+          <ion-col scroll-list-container width-67 full-height>
+            <ion-list scroll-list-header no-margin-bottom>
               <ion-list-header no-border-top>Report Columns</ion-list-header>
+            </ion-list>
+            <ion-list scroll-list>
               <ion-item-group reorder="true" (ionItemReorder)="reorderColumns($event)">
                 <ion-item *ngFor="let item of currentReport.columns">
                   <ion-label>{{ item.name }}</ion-label>
@@ -91,29 +105,18 @@
               </ion-item-group>
             </ion-list>
           </ion-col>
-          <ion-col width-25 options-column>
+
+          <ion-col width-33 full-height>
             <ion-row>
-              <ion-col>
-                <ion-list *ngIf="currentReport.options">
+              <ion-col scroll-list-container *ngIf="currentReport.options">
+                <ion-list scroll-list-header no-margin-bottom>
                   <ion-list-header no-border-top>Report Options</ion-list-header>
+                </ion-list>
+                <ion-list scroll-list>
                   <ion-item *ngFor="let item of currentReport.options">
                     <ion-label>{{ item.name }}</ion-label>
                     <ion-checkbox [(ngModel)]="item.checked"></ion-checkbox>
                   </ion-item>
-                </ion-list>
-              </ion-col>
-            </ion-row>
-            <ion-row buttons-row>
-              <ion-col>
-                <ion-list no-lines>
-                  <button ion-item icon-left color="primary" (click)="runReport()" [disabled]="runningReport">
-                    <ion-icon name="clipboard"></ion-icon>
-                    {{ runningReport ? 'Running report...' : 'Run Report' }}
-                  </button>
-                  <button ion-item icon-left color="secondary" disabled>
-                    <ion-icon name="bookmark"></ion-icon>
-                    Save Report As...
-                  </button>
                 </ion-list>
               </ion-col>
             </ion-row>

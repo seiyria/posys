@@ -1,7 +1,34 @@
 my-page-reporting {
-  [options-column] {
+  [report-container] {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+
+    [header-row] {
+      flex: 1;
+    }
+
+    [filter-row] {
+      flex: 1;
+    }
+
+    [options-row] {
+      flex: 7;
+      display: flex;
+      flex-direction: row;
+
+      [scroll-list-container] {
+        display: flex;
+        flex-direction: column;
+
+        [scroll-list-header] {
+          flex: 1;
+        }
+
+        [scroll-list] {
+          flex: 6;
+          overflow: auto;
+        }
+      }
+    }
   }
 }
