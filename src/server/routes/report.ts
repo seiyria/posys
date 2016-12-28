@@ -1,9 +1,8 @@
 
 import * as _ from 'lodash';
 
-import { bookshelf } from '../server';
-
 import { StockItem } from '../orm/stockitem';
+import { Invoice } from '../orm/invoice';
 import { ReportConfiguration as ReportConfigurationModel } from '../../client/models/reportconfiguration';
 import { Logger } from '../logger';
 
@@ -13,7 +12,7 @@ const getColumnsAndRelated = (columns) => {
   if(_.includes(columns, 'organizationalunit.name')) {
     columns.push('organizationalunitId');
     withRelated.push('organizationalunit');
-    _.pull(columns, 'organizationalunit.name');
+    columns = _.reject(columns, testCol => testCol === 'organizationalunit.name');
   }
 
   const vendorKeys = ['vendors[0].name', 'vendors[0].stockId', 'vendors[0].cost'];
@@ -21,12 +20,12 @@ const getColumnsAndRelated = (columns) => {
   if(_.some(vendorKeys, key => _.includes(columns, key))) {
     columns.push('id');
     withRelated.push('vendors');
-    _.each(vendorKeys, key => _.pull(columns, key));
+    _.each(vendorKeys, key => columns = _.reject(columns, testCol => testCol === key));
   }
 
   _.each(columns, col => {
     if(!_.includes(col, '.length')) { return; }
-    _.pull(columns, col);
+    columns = _.reject(columns, testCol => testCol === col);
   });
 
   return { columns, withRelated };
@@ -95,7 +94,13 @@ export default (app) => {
           if(!item.vendors || !item.vendors.length) { return; }
           item.vendors = [_.find(item.vendors, { isPreferred: true })];
         });
-        res.json(items);
+
+        const data = collection.toJSON();
+        const resObj: any = { data: items };
+        if(!data.length) {
+          resObj.flash = 'No data matched your query.';
+        }
+        res.json(resObj);
       })
       .catch(e => {
         res.status(500).json(Logger.browserError(Logger.error('Route:Report/base/inventory/old:POST', e)));
@@ -126,10 +131,93 @@ export default (app) => {
           if(!item.vendors || !item.vendors.length) { return; }
           item.vendors = [_.find(item.vendors, { isPreferred: true })];
         });
-        res.json(items);
+
+        const data = collection.toJSON();
+        const resObj: any = { data: items };
+        if(!data.length) {
+          resObj.flash = 'No data matched your query.';
+        }
+        res.json(resObj);
       })
       .catch(e => {
         res.status(500).json(Logger.browserError(Logger.error('Route:Report/base/inventory/reorder:POST', e)));
+      });
+  });
+
+  app.post('/report/base/invoice/reorder', (req, res) => {
+
+    const config: ReportConfigurationModel = req.body;
+
+    const { columns, withRelated } = getColumnsAndRelated(_.map(config.columns, 'key'));
+
+    StockItem
+      .forge()
+      .where(qb => {
+        if(config.ouFilter) {
+          qb.where('organizationalunitId', '=', config.ouFilter);
+        }
+
+        qb.andWhere('reorderThreshold', '>', 0);
+        qb.andWhere('reorderUpToAmount', '>', 0);
+        qb.whereRaw('quantity <= "reorderThreshold"');
+      })
+      .fetchAll({ columns, withRelated })
+      .then(collection => {
+        const items = collection.toJSON();
+        _.each(items, item => {
+          if(!item.vendors || !item.vendors.length) { return; }
+          item.vendors = [_.find(item.vendors, { isPreferred: true })];
+        });
+
+        const data = collection.toJSON();
+        const resObj: any = { data: items };
+        if(!data.length) {
+          resObj.flash = 'No data matched your query.';
+        }
+        res.json(resObj);
+      })
+      .catch(e => {
+        res.status(500).json(Logger.browserError(Logger.error('Route:Report/base/inventory/reorder:POST', e)));
+      });
+  });
+
+  app.post('/report/base/sales/completed', (req, res) => {
+
+    const config: ReportConfigurationModel = req.body;
+
+    const { columns, withRelated } = getColumnsAndRelated(_.map(config.columns, 'key'));
+    columns.push('id');
+    withRelated.push(...['stockitems', 'promotions']);
+
+    Invoice
+      .forge()
+      .query(qb => {
+        qb.andWhere('purchaseTime', '>=', config.startDate);
+        qb.andWhere('purchaseTime', '<', config.endDate);
+
+        qb
+          .andWhere('isVoided', '!=', true)
+          .andWhere('isOnHold', '!=', true)
+          .andWhere('purchaseMethod', '!=', 'Return');
+      })
+      .orderBy('-id')
+      .fetchAll({ columns, withRelated })
+      .then(collection => {
+        const data = collection.toJSON();
+        const resObj: any = { data };
+        if(!data.length) {
+          resObj.flash = 'No data matched your query.';
+        }
+        if(resObj.stockitems) {
+          resObj.stockitems = { length: resObj.stockitems.length };
+        }
+        if(resObj.promotions) {
+          resObj.promotions = { length: resObj.promotions.length };
+        }
+        res.json(resObj);
+      })
+      .catch(e => {
+        res.status(500).json(Logger.browserError(Logger.error('Route:Invoice:GET', e)));
       });
   });
 };

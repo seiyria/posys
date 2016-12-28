@@ -101,9 +101,11 @@ export class ReportingPageComponent implements OnInit {
     this.reportService
       .runReport(this.currentReport)
       .toPromise()
-      .then(data => {
+      .then(({ data }) => {
         this.runningReport = false;
+        if(!data || !data.length) { return; }
         const transformedData = this.transformData(data);
+        console.log(transformedData);
         const reportWindow = window.open('', this.formattedReportName, 'height=500&width=500');
         reportWindow.document.write(this.reportAggregate(transformedData));
 
@@ -135,11 +137,11 @@ export class ReportingPageComponent implements OnInit {
           prev[cur.name] = '';
         }
 
-        if(cur.name === 'Last Sold') {
+        if(_.includes(['Purchase Time', 'Last Sold'], cur.name)) {
           if(!value) {
             prev[cur.name] = 'Never';
           } else {
-            prev[cur.name] = dateFunctions.format(new Date(value), 'YYYY-MM-DD');
+            prev[cur.name] = dateFunctions.format(new Date(value), 'YYYY-MM-DD HH:MM A');
           }
         }
 
@@ -173,7 +175,7 @@ export class ReportingPageComponent implements OnInit {
 
     if(this.currentReport.optionValues.showTotals) {
       _.each(dataGroups, (group) => {
-        const baseObj: any = { Name: 'Totals', doBold: true };
+        const baseObj: any = { Name: 'Totals', doBold: true, 'Purchase Time': 'Totals' };
 
         if(_.some(group, (item: any) => item.Quantity)) {
           baseObj.Quantity = (_.reduce(group, (prev, cur: any) => prev + cur.Quantity, 0)).toFixed(2);
@@ -181,6 +183,13 @@ export class ReportingPageComponent implements OnInit {
           baseObj['Vendor Cost'] = (_.reduce(group, (prev, cur: any) => {
             return prev + ((cur['Vendor Cost'] || 0) * (cur['Reorder Quantity'] || cur.Quantity));
           }, 0)).toFixed(2);
+
+        } else if(_.some(group, (item: any) => item['Purchase Time'])) {
+          const keys = ['Purchase Price', 'Tax Collected', 'Subtotal', '# Items', '# Promos'];
+
+          _.each(keys, key => {
+            baseObj[key] = (_.reduce(group, (prev, cur: any) => prev + (+cur[key] || 0), 0)).toFixed(2);
+          });
         }
 
         if(_.some(group, item => item['Reorder Quantity'])) {
@@ -228,7 +237,7 @@ export class ReportingPageComponent implements OnInit {
   <caption class="main-title">${this.settings.businessName}</caption>
   <caption class="sub-title">${this.currentReport.name}</caption>
   <caption class="info-title">Run at ${this.settings.locationName} - ${this.settings.terminalId} on ${new Date()}</caption>
-  <caption class="info-title">${this.reportRunPeriod()}</caption>
+  <caption class="info-title">Report Period: ${this.reportRunPeriod()}</caption>
   <caption>&nbsp;</caption>
   
   ${_.map(data, ({ name, group }) => {

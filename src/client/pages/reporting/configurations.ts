@@ -17,8 +17,8 @@ const stockItemColumns = [
 ];
 
 const invoiceColumns = [
-  { name: 'Purchase Method',  key: 'purchaseMethod' },
   { name: 'Purchase Time',    key: 'purchaseTime' },
+  { name: 'Purchase Method',  key: 'purchaseMethod', allowGroup: true },
   { name: 'Purchase Price',   key: 'purchasePrice' },
   { name: 'Tax Collected',    key: 'taxCollected' },
   { name: 'Cash Given',       key: 'cashGiven' },
@@ -59,12 +59,12 @@ export const AllReportConfigurations: ReportConfiguration[] = [
     columnChecked: ['Name', 'Quantity', 'Reorder Alert', 'Reorder Up To', 'Vendor Name', 'Vendor SKU', 'Vendor Cost'] },
 
   { name: 'Sales (Completed)',   reportRoute: 'base/sales/completed',   columns: invoiceColumns,
-    filters: { multiDateFilter: true },
+    filters: { multiDateFilter: true, sortBy: true, groupBy: true },
     datePeriod: 0, dateDenomination: 'Day',
     options: [
       { name: 'Reverse Sort',         short: 'reverseSort' },
       { name: 'Use Custom Dates',     short: 'useCustomDatePicker' },
-      { name: 'Show Totals',          short: 'showTotals' }
+      { name: 'Show Totals',          short: 'showTotals', checked: true }
     ],
     columnChecked: ['Purchase Time', 'Purchase Method', 'Purchase Price', 'Tax Collected', 'Subtotal', '# Items'] },
 
