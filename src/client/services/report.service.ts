@@ -21,12 +21,6 @@ export class ReportService {
               private settings: ApplicationSettingsService) {}
 
   runReport(item: ReportConfiguration): Observable<any> {
-
-    item.optionValues = _.reduce(item.options, (prev, cur) => {
-      prev[cur.short] = cur.checked;
-      return prev;
-    }, {});
-
     return this.http.post(this.settings.buildAPIURL(`${this.url}/${item.reportRoute}`), item)
       .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));

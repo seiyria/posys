@@ -36,16 +36,18 @@ export const AllReportConfigurations: ReportConfiguration[] = [
       { name: 'Show Totals',          short: 'showTotals' }
     ],
     columnChecked: ['Name', 'SKU', 'OU', 'Cost', 'Quantity' ] },
+
   { name: 'Inventory (Old)',     reportRoute: 'base/inventory/old',     columns: stockItemColumns,
     filters: { singleDateFilter: true, sortBy: true, groupBy: true, ouFilter: true }, sortBy: 'Name',
     dateText: 'Items Not Sold Since',
     startDate: `${new Date().toISOString().slice(0, 10)}T00:00`,
-  options: [
-    { name: 'Reverse Sort',         short: 'reverseSort' },
-    { name: 'Include Unsold',       short: 'includeUnsold' },
-    { name: 'Show Totals',          short: 'showTotals' }
-  ],
-  columnChecked: ['Name', 'SKU', 'OU', 'Cost', 'Quantity', 'Last Sold' ] },
+    options: [
+      { name: 'Reverse Sort',         short: 'reverseSort' },
+      { name: 'Include Unsold',       short: 'includeUnsold' },
+      { name: 'Show Totals',          short: 'showTotals' }
+    ],
+    columnChecked: ['Name', 'SKU', 'OU', 'Cost', 'Quantity', 'Last Sold' ] },
+
   { name: 'Inventory (Reorder)', reportRoute: 'base/inventory/reorder', columns: stockItemColumns,
     filters: { sortBy: true, groupBy: true, ouFilter: true }, sortBy: 'Name',
     options: [
@@ -53,15 +55,26 @@ export const AllReportConfigurations: ReportConfiguration[] = [
       { name: 'Show Totals',          short: 'showTotals' }
     ],
     modifyColumns: (columns) => columns.push('Reorder Quantity'),
-  modifyData:    (item) => item['Reorder Quantity'] = item['Reorder Up To'] - item.Quantity,
-  columnChecked: ['Name', 'Quantity', 'Reorder Alert', 'Reorder Up To', 'Vendor Name', 'Vendor SKU', 'Vendor Cost'] },
+    modifyData:    (item) => item['Reorder Quantity'] = item['Reorder Up To'] - item.Quantity,
+    columnChecked: ['Name', 'Quantity', 'Reorder Alert', 'Reorder Up To', 'Vendor Name', 'Vendor SKU', 'Vendor Cost'] },
+
   { name: 'Sales (Completed)',   reportRoute: 'base/sales/completed',   columns: invoiceColumns,
     filters: { multiDateFilter: true },
+    datePeriod: 0, dateDenomination: 'Day',
+    options: [
+      { name: 'Reverse Sort',         short: 'reverseSort' },
+      { name: 'Use Custom Dates',     short: 'useCustomDatePicker' },
+      { name: 'Show Totals',          short: 'showTotals' }
+    ],
     columnChecked: ['Purchase Time', 'Purchase Method', 'Purchase Price', 'Tax Collected', 'Subtotal', '# Items'] },
+
   { name: 'Sales (Voided)',      reportRoute: 'base/sales/voided',      columns: invoiceColumns,
     filters: { multiDateFilter: true },
+    datePeriod: 0, dateDenomination: 'Day',
     columnChecked: ['Purchase Time', 'Purchase Method', '# Items']  },
+
   { name: 'Sales (Tax)',         reportRoute: 'base/sales/tax',         columns: invoiceColumns,
     filters: { multiDateFilter: true },
+    datePeriod: 0, dateDenomination: 'Day',
     columnChecked: ['Purchase Time', 'Tax Collected'] }
-]
+];

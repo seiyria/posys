@@ -174,3 +174,8 @@ ion-item[no-margin] .label {
   padding-top: 8px;
   padding-bottom: 8px;
 }
+
+[width-40] {
+  flex: 0 0 40%;
+  max-width: 40%;
+}

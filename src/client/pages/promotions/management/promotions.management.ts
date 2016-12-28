@@ -3,13 +3,14 @@ import * as _ from 'lodash';
 import { Component, OnInit } from '@angular/core';
 import { ViewController, NavParams } from 'ionic-angular';
 
-import { Promotion, DiscountType } from '../../../models/promotion';
+import { Promotion } from '../../../models/promotion';
 import { PromoItem } from '../../../models/promoitem';
 import { OrganizationalUnit } from '../../../models/organizationalunit';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 import { PromotionService } from '../../../services/promotion.service';
 import { OrganizationalUnitService } from '../../../services/organizationalunit.service';
+import { ApplicationSettingsService } from '../../../services/settings.service';
 
 @Component({
   templateUrl: 'promotions.management.html'
@@ -28,7 +29,8 @@ export class PromotionsManagerComponent implements OnInit {
   constructor(public viewCtrl: ViewController,
               public params: NavParams,
               public prService: PromotionService,
-              public ouService: OrganizationalUnitService) {
+              public ouService: OrganizationalUnitService,
+              public settings: ApplicationSettingsService) {
 
     this.promotion = params.get('promotion');
     this.allOU = this.ouService.getAll();
@@ -36,11 +38,11 @@ export class PromotionsManagerComponent implements OnInit {
 
   ngOnInit() {
     const today = new Date();
-    this.today = today.toISOString().slice(0, 10);
+    this.today = this.settings.toIonicDateString(today);
     today.setFullYear(today.getFullYear() + 100);
-    this.futureToday = today.toISOString().slice(0, 10);
+    this.futureToday = this.settings.toIonicDateString(today);
 
-    const dateString = `${new Date().toISOString().slice(0, 10)}T00:00`;
+    const dateString = this.settings.toIonicDateString(new Date());
     if(!this.promotion.startDate) { this.promotion.startDate = dateString; }
     if(!this.promotion.endDate)   { this.promotion.endDate = dateString; }
   }

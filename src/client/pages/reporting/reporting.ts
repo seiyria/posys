@@ -13,13 +13,22 @@ import { AllReportConfigurations } from './configurations';
 
 const Papa = require('papaparse');
 const { saveAs } = require('file-saver');
-const formatDate = require('date-fns/format');
+const dateFunctions = require('date-fns');
 
 @Component({
   selector: 'my-page-reporting',
   templateUrl: 'reporting.html'
 })
 export class ReportingPageComponent implements OnInit {
+
+  datePeriods = [{ name: 'Current', sub: 0 }, { name: 'Previous', sub: 1 }];
+  dateDenominations = [
+    { name: 'Day' },
+    { name: 'Week' },
+    { name: 'Month' },
+    { name: 'Quarter' },
+    { name: 'Year' }
+  ];
 
   ous: OrganizationalUnit[];
   currentReport: ReportConfiguration;
@@ -40,6 +49,25 @@ export class ReportingPageComponent implements OnInit {
       });
   }
 
+  updateDatesBasedOnPeriodAndDenomination() {
+    const now = new Date();
+    const modified = dateFunctions[`sub${this.currentReport.dateDenomination}s`](now, this.currentReport.datePeriod);
+
+    const modifiedStart = dateFunctions[`startOf${this.currentReport.dateDenomination}`](modified);
+    const modifiedEnd = dateFunctions[`endOf${this.currentReport.dateDenomination}`](modified);
+
+    this.currentReport.startDate = this.settings.toIonicDateString(modifiedStart);
+
+    this.currentReport.endDate = this.settings.toIonicDateString(modifiedEnd);
+  }
+
+  updateOptionValues() {
+    this.currentReport.optionValues = _.reduce(this.currentReport.options, (prev, cur) => {
+      prev[cur.short] = cur.checked;
+      return prev;
+    }, {});
+  }
+
   groupBys() {
     return _.filter(this.currentReport.columns, 'allowGroup');
   }
@@ -49,6 +77,10 @@ export class ReportingPageComponent implements OnInit {
     _.each(this.currentReport.columnChecked, col => {
       _.find(this.currentReport.columns, { name: col }).checked = true;
     });
+
+    if(!_.isUndefined(reportConfig.dateDenomination) && !_.isUndefined(reportConfig.datePeriod)) {
+      this.updateDatesBasedOnPeriodAndDenomination();
+    }
   }
 
   reorderColumns({ from, to }) {
@@ -106,7 +138,7 @@ export class ReportingPageComponent implements OnInit {
           if(!value) {
             prev[cur.name] = 'Never';
           } else {
-            prev[cur.name] = formatDate(new Date(value), 'YYYY-MM-DD');
+            prev[cur.name] = dateFunctions.format(new Date(value), 'YYYY-MM-DD');
           }
         }
 

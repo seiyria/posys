@@ -12,9 +12,13 @@ export class ReportConfiguration {
   reportRoute: ReportRoute;
   hasDateFilter?: boolean;
   singleDateFilter?: boolean;
+
   startDate?: string;
   endDate?: string;
+  datePeriod?: number;
+  dateDenomination?: string;
   dateText?: string = 'Date Range';
+
   columnOrder?: string[];
   columnChecked?: string[];
   columns: any[];

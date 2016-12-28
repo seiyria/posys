@@ -47,18 +47,44 @@
             </ion-item>
           </ion-col>
 
-          <ion-col width-20 *ngIf="currentReport.filters.multiDateFilter">
-            <ion-item list-header shrunk-item-checkbox no-border-bottom>
-              <ion-label stacked>{{ currentReport.dateText || 'Start Date' }}</ion-label>
-              <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="currentReport.startDate"></ion-datetime>
-            </ion-item>
-          </ion-col>
+          <ion-col width-40 *ngIf="currentReport.filters.multiDateFilter">
 
-          <ion-col width-20 *ngIf="currentReport.filters.multiDateFilter">
-            <ion-item list-header shrunk-item-checkbox no-border-bottom>
-              <ion-label stacked>{{ currentReport.dateText || 'End Date' }}</ion-label>
-              <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="currentReport.endDate"></ion-datetime>
-            </ion-item>
+            <ion-row no-padding *ngIf="!currentReport.optionValues?.useCustomDatePicker">
+              <ion-col width-50 no-padding>
+                <ion-item list-header shrunk-item-checkbox no-border-bottom>
+                  <ion-label stacked>Time Period</ion-label>
+                  <ion-select [(ngModel)]="currentReport.datePeriod" (ionChange)="updateDatesBasedOnPeriodAndDenomination()">
+                    <ion-option *ngFor="let per of datePeriods" [value]="per.sub">{{ per.name }}</ion-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+
+              <ion-col width-50 no-padding>
+                <ion-item list-header shrunk-item-checkbox no-border-bottom>
+                  <ion-label stacked>Time Denomination</ion-label>
+                  <ion-select [(ngModel)]="currentReport.dateDenomination" (ionChange)="updateDatesBasedOnPeriodAndDenomination()">
+                    <ion-option *ngFor="let den of dateDenominations">{{ den.name }}</ion-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <ion-row no-padding *ngIf="currentReport.optionValues?.useCustomDatePicker">
+              <ion-col width-50 no-padding>
+                <ion-item list-header shrunk-item-checkbox no-border-bottom>
+                  <ion-label stacked>{{ currentReport.dateText || 'Start Date' }}</ion-label>
+                  <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="currentReport.startDate"></ion-datetime>
+                </ion-item>
+              </ion-col>
+
+              <ion-col width-50 no-padding>
+                <ion-item list-header shrunk-item-checkbox no-border-bottom>
+                  <ion-label stacked>{{ currentReport.dateText || 'End Date' }}</ion-label>
+                  <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="currentReport.endDate"></ion-datetime>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
           </ion-col>
 
           <ion-col width-20 *ngIf="currentReport.filters.sortBy">
@@ -115,7 +141,7 @@
                 <ion-list scroll-list>
                   <ion-item *ngFor="let item of currentReport.options">
                     <ion-label>{{ item.name }}</ion-label>
-                    <ion-checkbox [(ngModel)]="item.checked"></ion-checkbox>
+                    <ion-checkbox [(ngModel)]="item.checked" (ionChange)="updateOptionValues()"></ion-checkbox>
                   </ion-item>
                 </ion-list>
               </ion-col>

@@ -95,6 +95,10 @@ export class ApplicationSettingsService {
     return str;
   }
 
+  toIonicDateString(date: Date): string {
+    return `${date.toISOString().slice(0, 10)}T00:00`
+  }
+
   isValidConfiguration(): boolean {
     return this.settings.isValid;
   }

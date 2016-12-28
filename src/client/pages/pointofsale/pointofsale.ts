@@ -47,8 +47,8 @@ export class PointOfSalePageComponent implements OnInit {
           discountGrouping: 'SKU',
           numItemsRequired: 1,
           discountValue: 0,
-          startDate: `${new Date().toISOString().slice(0, 10)}T00:00`,
-          endDate: `${new Date().toISOString().slice(0, 10)}T00:00`,
+          startDate: this.settings.toIonicDateString(new Date()),
+          endDate: this.settings.toIonicDateString(new Date()),
           temporary: true,
           promoItems: [
             new PromoItem(item)
@@ -57,6 +57,7 @@ export class PointOfSalePageComponent implements OnInit {
       }, { enableBackdropDismiss: false });
 
       modal.onDidDismiss(promo => {
+        if(!promo) { return; }
         this.prService
           .createTemporary(promo, item)
           .toPromise()
