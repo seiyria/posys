@@ -88,8 +88,6 @@ export default (app) => {
         } else {
           qb.where('lastSoldAt', '<', config.startDate);
         }
-
-        console.log(qb.toString());
       })
       .fetchAll({ columns, withRelated })
       .then(collection => {
