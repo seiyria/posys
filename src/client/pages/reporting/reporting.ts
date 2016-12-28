@@ -105,7 +105,6 @@ export class ReportingPageComponent implements OnInit {
         this.runningReport = false;
         if(!data || !data.length) { return; }
         const transformedData = this.transformData(data);
-        console.log(transformedData);
         const reportWindow = window.open('', this.formattedReportName, 'height=500&width=500');
         reportWindow.document.write(this.reportAggregate(transformedData));
 
