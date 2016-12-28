@@ -1,3 +1,4 @@
+/* tslint:disable:only-arrow-functions no-invalid-this */
 
 import * as _ from 'lodash';
 
