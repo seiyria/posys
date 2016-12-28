@@ -69,7 +69,7 @@ export default (app) => {
 
     const { columns, withRelated } = getColumnsAndRelated(_.map(config.columns, 'key'));
 
-    if(!config.optionValues.startDate) {
+    if(!config.startDate) {
       return res.status(500).json({ flash: 'You must specify a date to filter by.' });
     }
 
@@ -79,6 +79,17 @@ export default (app) => {
         if(config.ouFilter) {
           qb.where('organizationalunitId', '=', config.ouFilter);
         }
+
+
+        if(config.optionValues.includeUnsold) {
+          qb
+            .orWhere('lastSoldAt', '<', config.startDate)
+            .orWhere('lastSoldAt', 'is', null);
+        } else {
+          qb.where('lastSoldAt', '<', config.startDate);
+        }
+
+        console.log(qb.toString());
       })
       .fetchAll({ columns, withRelated })
       .then(collection => {

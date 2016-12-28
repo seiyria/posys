@@ -12,8 +12,8 @@ export class ReportConfiguration {
   reportRoute: ReportRoute;
   hasDateFilter?: boolean;
   singleDateFilter?: boolean;
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: string;
+  endDate?: string;
   dateText?: string = 'Date Range';
   columnOrder?: string[];
   columnChecked?: string[];

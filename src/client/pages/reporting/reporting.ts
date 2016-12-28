@@ -11,6 +11,7 @@ import { ReportConfiguration } from '../../models/reportconfiguration';
 
 const Papa = require('papaparse');
 const { saveAs } = require('file-saver');
+const formatDate = require('date-fns/format');
 
 const stockItemColumns = [
   { name: 'Name',             key: 'name' },
@@ -19,6 +20,7 @@ const stockItemColumns = [
   { name: 'Taxable',          key: 'taxable' },
   { name: 'Cost',             key: 'cost' },
   { name: 'Quantity',         key: 'quantity' },
+  { name: 'Last Sold',        key: 'lastSoldAt' },
   { name: 'Reorder Alert',    key: 'reorderThreshold' },
   { name: 'Reorder Up To',    key: 'reorderUpToAmount' },
   { name: 'Vendor Name',      key: 'vendors[0].name', allowGroup: true },
@@ -59,11 +61,13 @@ export class ReportingPageComponent implements OnInit {
     { name: 'Inventory (Old)',     reportRoute: 'base/inventory/old',     columns: stockItemColumns,
       filters: { singleDateFilter: true, sortBy: true, groupBy: true, ouFilter: true }, sortBy: 'Name',
       dateText: 'Items Not Sold Since',
+      startDate: `${new Date().toISOString().slice(0, 10)}T00:00`,
       options: [
         { name: 'Reverse Sort',         short: 'reverseSort' },
+        { name: 'Include Unsold',       short: 'includeUnsold' },
         { name: 'Show Totals',          short: 'showTotals' }
       ],
-      columnChecked: ['Name', 'SKU', 'OU', 'Cost', 'Quantity' ] },
+      columnChecked: ['Name', 'SKU', 'OU', 'Cost', 'Quantity', 'Last Sold' ] },
     { name: 'Inventory (Reorder)', reportRoute: 'base/inventory/reorder', columns: stockItemColumns,
       filters: { sortBy: true }, sortBy: 'Name',
       columnChecked: ['Name', 'Quantity', 'Vendor Name', 'Vendor SKU', 'Vendor Cost'] },
@@ -146,7 +150,21 @@ export class ReportingPageComponent implements OnInit {
       return _.reduce(this.currentReport.columns, (prev, cur) => {
         if(!cur.checked) { return prev; }
         const value = _.get(item, cur.key, '');
-        prev[cur.name] = _.isNull(value) ? '' : value;
+
+        prev[cur.name] = value;
+
+        if(_.isNull(value)) {
+          prev[cur.name] = '';
+        }
+
+        if(cur.name === 'Last Sold') {
+          if(!value) {
+            prev[cur.name] = 'Never';
+          } else {
+            prev[cur.name] = formatDate(new Date(value), 'YYYY-MM-DD');
+          }
+        }
+
         return prev;
       }, {});
     });
@@ -244,8 +262,8 @@ export class ReportingPageComponent implements OnInit {
 
   private reportRunPeriod(): string {
     if(!this.currentReport.startDate) { return ''; }
-    if(this.currentReport.startDate && !this.currentReport.endDate) { return this.currentReport.startDate.toDateString(); }
-    return `${this.currentReport.startDate.toDateString()} - ${this.currentReport.endDate.toDateString()}`;
+    if(this.currentReport.startDate && !this.currentReport.endDate) { return new Date(this.currentReport.startDate).toDateString(); }
+    return `${new Date(this.currentReport.startDate).toDateString()} - ${new Date(this.currentReport.endDate).toDateString()}`;
   }
 
   private reportStyles() {
