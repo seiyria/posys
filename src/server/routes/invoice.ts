@@ -26,16 +26,22 @@ const incrementItems = (items, transaction?) => {
   });
 };
 
-const decrementItems = (items, transaction?) => {
+const decrementItems = (items, transaction?, updateLastSoldAt?) => {
   return _.map(items, (v: number, k: string) => {
     let base = knex('stockitem');
     if(transaction) { base = base.transacting(transaction); }
+
+    const updateOptions: any = {
+      quantity: knex.raw(`quantity - ${v}`)
+    };
+
+    if(updateLastSoldAt) {
+      updateOptions.lastSoldAt = new Date();
+    }
+
     const query = base
       .where('sku', '=', k)
-      .update({
-        quantity: knex.raw(`quantity - ${v}`),
-        lastSoldAt: new Date()
-      });
+      .update(updateOptions);
 
     return query;
   });
@@ -116,7 +122,7 @@ export default (app) => {
         if(invoice.isReturned) {
           otherPromises = incrementItems(countMap, t);
         } else {
-          otherPromises = decrementItems(countMap, t);
+          otherPromises = decrementItems(countMap, t, true);
         }
       }
 
