@@ -80,7 +80,6 @@ export default (app) => {
           qb.where('organizationalunitId', '=', config.ouFilter);
         }
 
-
         if(config.optionValues.includeUnsold) {
           qb
             .orWhere('lastSoldAt', '<', config.startDate)
