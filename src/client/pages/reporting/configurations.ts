@@ -28,7 +28,7 @@ const invoiceColumns = [
 ];
 
 export const AllReportConfigurations: ReportConfiguration[] = [
-  { name: 'Inventory (Current)', reportRoute: 'base/inventory/current', columns: stockItemColumns,
+  { internalId: 1, name: 'Inventory (Current)', reportRoute: 'base/inventory/current', columns: stockItemColumns,
     filters: { sortBy: true, groupBy: true, ouFilter: true }, sortBy: 'Name',
     options: [
       { name: 'Reverse Sort',         short: 'reverseSort' },
@@ -37,7 +37,7 @@ export const AllReportConfigurations: ReportConfiguration[] = [
     ],
     columnChecked: ['Name', 'SKU', 'OU', 'Cost', 'Quantity' ] },
 
-  { name: 'Inventory (Old)',     reportRoute: 'base/inventory/old',     columns: stockItemColumns,
+  { internalId: 2, name: 'Inventory (Old)',     reportRoute: 'base/inventory/old',     columns: stockItemColumns,
     filters: { singleDateFilter: true, sortBy: true, groupBy: true, ouFilter: true }, sortBy: 'Name',
     dateText: 'Items Not Sold Since',
     startDate: `${new Date().toISOString().slice(0, 10)}T00:00`,
@@ -48,7 +48,7 @@ export const AllReportConfigurations: ReportConfiguration[] = [
     ],
     columnChecked: ['Name', 'SKU', 'OU', 'Cost', 'Quantity', 'Last Sold' ] },
 
-  { name: 'Inventory (Reorder)', reportRoute: 'base/inventory/reorder', columns: stockItemColumns,
+  { internalId: 3, name: 'Inventory (Reorder)', reportRoute: 'base/inventory/reorder', columns: stockItemColumns,
     filters: { sortBy: true, groupBy: true, ouFilter: true }, sortBy: 'Name',
     options: [
       { name: 'Reverse Sort',         short: 'reverseSort' },
@@ -58,7 +58,7 @@ export const AllReportConfigurations: ReportConfiguration[] = [
     modifyData:    (item) => item['Reorder Quantity'] = item['Reorder Up To'] - item.Quantity,
     columnChecked: ['Name', 'Quantity', 'Reorder Alert', 'Reorder Up To', 'Vendor Name', 'Vendor SKU', 'Vendor Cost'] },
 
-  { name: 'Sales (Completed)',   reportRoute: 'base/sales/completed',   columns: invoiceColumns,
+  { internalId: 4, name: 'Sales (Completed)',   reportRoute: 'base/sales/completed',   columns: invoiceColumns,
     filters: { multiDateFilter: true, sortBy: true, groupBy: true },
     datePeriod: 0, dateDenomination: 'Day',
     options: [
@@ -68,7 +68,7 @@ export const AllReportConfigurations: ReportConfiguration[] = [
     ],
     columnChecked: ['Purchase Time', 'Purchase Method', 'Purchase Price', 'Tax Collected', 'Subtotal', '# Items'] },
 
-  { name: 'Sales (Voided)',      reportRoute: 'base/sales/voided',      columns: invoiceColumns,
+  { internalId: 5, name: 'Sales (Voided)',      reportRoute: 'base/sales/voided',      columns: invoiceColumns,
     filters: { multiDateFilter: true },
     datePeriod: 0, dateDenomination: 'Day',
     options: [
@@ -78,7 +78,7 @@ export const AllReportConfigurations: ReportConfiguration[] = [
     ],
     columnChecked: ['Purchase Time', 'Purchase Method', 'Purchase Price', '# Items']  },
 
-  { name: 'Sales (Tax)',         reportRoute: 'base/sales/completed',   columns: invoiceColumns,
+  { internalId: 6, name: 'Sales (Tax)',         reportRoute: 'base/sales/completed',   columns: invoiceColumns,
     filters: { multiDateFilter: true },
     datePeriod: 0, dateDenomination: 'Day',
     options: [

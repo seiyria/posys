@@ -4,6 +4,8 @@ import * as _ from 'lodash';
 
 import { StockItem } from '../orm/stockitem';
 import { Invoice } from '../orm/invoice';
+import { ReportConfiguration } from '../orm/reportconfiguration';
+
 import { ReportConfiguration as ReportConfigurationModel } from '../../client/models/reportconfiguration';
 import { Logger } from '../logger';
 
@@ -30,6 +32,12 @@ const getColumnsAndRelated = (columns) => {
   });
 
   return { columns, withRelated };
+};
+
+const fixReport = (config) => {
+  config.columnChecked = JSON.stringify(config.columnChecked);
+  config.columnOrder = JSON.stringify(config.columnOrder);
+  config.options = JSON.stringify(config.options);
 };
 
 export default (app) => {
@@ -260,6 +268,66 @@ export default (app) => {
       })
       .catch(e => {
         res.status(500).json(Logger.browserError(Logger.error('Route:Sales/Completed:POST', e)));
+      });
+  });
+
+  app.get('/report', (req, res) => {
+    ReportConfiguration
+      .forge()
+      .orderBy('name')
+      .fetchAll()
+      .then(collection => {
+        res.json(collection);
+      })
+      .catch(e => {
+        res.status(500).json(Logger.browserError(Logger.error('Route:Report:GET', e)));
+      });
+  });
+
+  app.put('/report', (req, res) => {
+
+    const config = req.body;
+    fixReport(config);
+
+    ReportConfiguration
+      .forge()
+      .save(req.body)
+      .then(newReport => {
+        res.json({ flash: `Created new report successfully`, data: newReport });
+      })
+      .catch(e => {
+        res.status(500).json({ formErrors: e.data || [] });
+      });
+  });
+
+  app.patch('/report/:id', (req, res) => {
+    console.log('update', req.body, req.params.id);
+
+    const config = req.body;
+    fixReport(config);
+
+    ReportConfiguration
+      .forge({ id: req.params.id })
+      .save(req.body, { patch: true })
+      .then(newReport => {
+        res.json({ flash: `Updated report successfully`, data: newReport });
+      })
+      .catch(e => {
+        console.error(e);
+        res.status(500).json({ formErrors: e.data || [] });
+      });
+  });
+
+  app.delete('/report/:id', (req, res) => {
+    ReportConfiguration
+      .forge({ id: req.params.id })
+      .destroy()
+      .then(item => {
+        res.json(item);
+      })
+      .catch(e => {
+        const errorMessage = Logger.parseDatabaseError(e, 'ReportConfiguration');
+        res.status(500).json({ flash: errorMessage });
       });
   });
 };

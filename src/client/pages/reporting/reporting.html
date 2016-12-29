@@ -7,10 +7,15 @@
 <ion-content>
   <ion-grid full-height>
     <ion-row full-height>
-      <ion-col width-25 full-height>
-        <ion-list>
+      <ion-col width-25 full-height scroll-list-container>
+        <ion-list scroll-list>
           <ion-list-header no-border-top>Base Reports</ion-list-header>
           <button ion-item *ngFor="let report of baseReports" (click)="selectNewReport(report)" [disabled]="runningReport">
+            {{ report.name }}
+          </button>
+
+          <ion-list-header no-border-top *ngIf="customReports && customReports.length > 0">Custom Reports</ion-list-header>
+          <button ion-item *ngFor="let report of customReports" (click)="loadReport(report)" [disabled]="runningReport">
             {{ report.name }}
           </button>
         </ion-list>
@@ -22,16 +27,18 @@
         </ion-row>
 
         <ion-row *ngIf="currentReport" header-row>
-          <ion-col text-center width-67>
-            <h1>{{ currentReport.name }}</h1>
+          <ion-col text-center width-50>
+            <h1>{{ currentReport.name }} <span *ngIf="!currentReport.internalId">(custom)</span></h1>
           </ion-col>
 
-          <ion-col vertical-center text-right width-33>
-            <button ion-button icon-left color="secondary" disabled>
+          <ion-col vertical-center text-right width-50>
+            <remove-button *ngIf="!currentReport.internalId" (click)="removeReport()"></remove-button>
+            <update-button *ngIf="!currentReport.internalId" (click)="updateReport()"></update-button>
+            <button ion-button icon-left color="primary" *ngIf="currentReport.internalId" (click)="saveReport()">
               <ion-icon name="bookmark"></ion-icon>
               Save Report As...
             </button>
-            <button ion-button icon-left color="primary" (click)="runReport()" [disabled]="runningReport">
+            <button ion-button icon-left color="secondary" (click)="runReport()" [disabled]="runningReport">
               <ion-icon name="clipboard"></ion-icon>
               {{ runningReport ? 'Running report...' : 'Run Report' }}
             </button>

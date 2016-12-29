@@ -1,7 +1,7 @@
 
 import * as _ from 'lodash';
 
-import { ReportConfiguration } from '../models/reportconfiguration';
+import { LimitedReportConfiguration, ReportConfiguration } from '../models/reportconfiguration';
 
 import { LoggerService } from './logger.service';
 import { ApplicationSettingsService } from './settings.service';
@@ -22,6 +22,30 @@ export class ReportService {
 
   runReport(item: ReportConfiguration): Observable<any> {
     return this.http.post(this.settings.buildAPIURL(`${this.url}/${item.reportRoute}`), item)
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
+      .catch(e => this.logger.observableError(e));
+  }
+
+  getAll(): Observable<LimitedReportConfiguration[]> {
+    return this.http.get(this.settings.buildAPIURL(this.url))
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
+      .catch(e => this.logger.observableError(e));
+  }
+
+  create(item: LimitedReportConfiguration): Observable<LimitedReportConfiguration> {
+    return this.http.put(this.settings.buildAPIURL(this.url), item)
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
+      .catch(e => this.logger.observableError(e));
+  }
+
+  update(item: LimitedReportConfiguration): Observable<LimitedReportConfiguration> {
+    return this.http.patch(this.settings.buildAPIURL(this.url, item.id), item)
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
+      .catch(e => this.logger.observableError(e));
+  }
+
+  remove(item: LimitedReportConfiguration): Observable<LimitedReportConfiguration> {
+    return this.http.delete(this.settings.buildAPIURL(this.url, item.id))
       .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }

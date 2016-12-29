@@ -15,20 +15,20 @@ my-page-reporting {
       flex: 7;
       display: flex;
       flex-direction: row;
+    }
+  }
 
-      [scroll-list-container] {
-        display: flex;
-        flex-direction: column;
+  [scroll-list-container] {
+    display: flex;
+    flex-direction: column;
 
-        [scroll-list-header] {
-          flex: 1;
-        }
+    [scroll-list-header] {
+      flex: 1;
+    }
 
-        [scroll-list] {
-          flex: 6;
-          overflow: auto;
-        }
-      }
+    [scroll-list] {
+      flex: 6;
+      overflow: auto;
     }
   }
 }

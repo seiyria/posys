@@ -1,13 +1,14 @@
 import * as _ from 'lodash';
 
 import { Component, OnInit } from '@angular/core';
+import { AlertController } from 'ionic-angular';
 
 import { ReportService } from '../../services/report.service';
 import { ApplicationSettingsService } from '../../services/settings.service';
 import { OrganizationalUnitService } from '../../services/organizationalunit.service';
 
 import { OrganizationalUnit } from '../../models/organizationalunit';
-import { ReportConfiguration } from '../../models/reportconfiguration';
+import { LimitedReportConfiguration, ReportConfiguration } from '../../models/reportconfiguration';
 
 import { AllReportConfigurations } from './configurations';
 
@@ -31,21 +32,33 @@ export class ReportingPageComponent implements OnInit {
   ];
 
   ous: OrganizationalUnit[];
+  customReports: LimitedReportConfiguration[];
   currentReport: ReportConfiguration;
   runningReport: boolean;
 
   baseReports: ReportConfiguration[] = AllReportConfigurations;
 
   constructor(public reportService: ReportService,
+              private alertCtrl: AlertController,
               private ouService: OrganizationalUnitService,
               private settings: ApplicationSettingsService) {}
 
   ngOnInit() {
+    this.updateReportList();
     this.ouService
       .getAll()
       .toPromise()
       .then(ous => {
         this.ous = ous;
+      });
+  }
+
+  updateReportList() {
+    this.reportService
+      .getAll()
+      .toPromise()
+      .then(data => {
+        this.customReports = data;
       });
   }
 
@@ -62,7 +75,7 @@ export class ReportingPageComponent implements OnInit {
 
   updateOptionValues() {
     this.currentReport.optionValues = _.reduce(this.currentReport.options, (prev, cur) => {
-      prev[cur.short] = cur.checked;
+      prev[cur.short] = !!cur.checked;
       return prev;
     }, {});
   }
@@ -71,15 +84,109 @@ export class ReportingPageComponent implements OnInit {
     return _.filter(this.currentReport.columns, 'allowGroup');
   }
 
+  removeReport() {
+    const confirm = this.alertCtrl.create({
+      title: 'Remove Custom Report?',
+      message: `Removing this report is irreversible, so you will have to recreate it if you want it back.`,
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            this.reportService
+              .remove(this.currentReport)
+              .toPromise()
+              .then(() => {
+                this.currentReport = null;
+                this.updateReportList();
+              });
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  updateReport() {
+    this.reportService
+      .update(new LimitedReportConfiguration(this.currentReport))
+      .toPromise()
+      .then(() => {
+        this.updateReportList();
+      });
+  }
+
+  saveReport() {
+    let alert = this.alertCtrl.create({
+      title: 'New Report Name',
+      inputs: [
+        {
+          name: 'name',
+          type: 'text',
+          placeholder: 'New Name'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Confirm',
+          handler: ({ name }) => {
+            if(!name) { return; }
+            name = _.truncate(name, { length: 50, omission: '' });
+            const saveConfig = new LimitedReportConfiguration(this.currentReport);
+            saveConfig.basedOn = this.currentReport.internalId;
+            saveConfig.name = name;
+
+            this.reportService
+              .create(saveConfig)
+              .toPromise()
+              .then(() => {
+                this.updateReportList();
+              });
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  loadReport(reportConfig: ReportConfiguration) {
+    const newReport = _.merge(
+      _.cloneDeep(_.find(AllReportConfigurations, { internalId: reportConfig.basedOn })),
+      _.cloneDeep(reportConfig)
+    );
+
+    delete newReport.internalId;
+
+    this.selectNewReport(newReport);
+  }
+
   selectNewReport(reportConfig: ReportConfiguration) {
     this.currentReport = _.cloneDeep(reportConfig);
     _.each(this.currentReport.columnChecked, col => {
       _.find(this.currentReport.columns, { name: col }).checked = true;
     });
 
+    if(this.currentReport.columnOrder && this.currentReport.columnOrder.length > 0) {
+      this.currentReport.columns = _.sortBy(this.currentReport.columns, item => {
+        const index = _.indexOf(this.currentReport.columnOrder, item.name);
+        if(index === -1) { return this.currentReport.columnOrder.length; }
+        return index;
+      });
+    }
+
     this.updateOptionValues();
 
-    if(!_.isUndefined(reportConfig.dateDenomination) && !_.isUndefined(reportConfig.datePeriod)) {
+    if(!_.isUndefined(this.currentReport.dateDenomination)
+    && !_.isUndefined(this.currentReport.datePeriod)
+
+        // redundancy here ensures that the key exists (ie, it's a report that uses time)
+        // and that it's set to false explicitly
+    && this.currentReport.optionValues.useCustomDatePicker === false) {
       this.updateDatesBasedOnPeriodAndDenomination();
     }
   }
@@ -88,6 +195,8 @@ export class ReportingPageComponent implements OnInit {
     let element = this.currentReport.columns[from];
     this.currentReport.columns.splice(from, 1);
     this.currentReport.columns.splice(to, 0, element);
+
+    this.currentReport.columnOrder = <string[]>_.map(this.currentReport.columns, 'name');
   }
 
   get formattedReportName() {
