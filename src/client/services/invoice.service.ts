@@ -54,4 +54,10 @@ export class InvoiceService {
       .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }
+
+  print(item: Invoice): Observable<Invoice> {
+    return this.http.post(this.settings.buildAPIURL(`${this.url}/print`, item.id), item)
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
+      .catch(e => this.logger.observableError(e));
+  }
 }

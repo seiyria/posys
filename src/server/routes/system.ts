@@ -1,19 +1,16 @@
 
 import * as _ from 'lodash';
+import { readSettings, writeSettings } from './_settings';
 
-const fs = require('fs');
-const appRoot = require('app-root-path');
-
-const readSettings = (callback) => {
-  fs.readFile(`${appRoot}/server.config.json`, 'utf8', (err, data) => {
-    if(err) { throw err; }
-    callback(JSON.parse(data));
-  });
-};
+const nodePrinter = require('printer');
 
 export default (app) => {
   app.get('/system', (req, res) => {
     readSettings(data => res.json(data));
+  });
+
+  app.get('/system/printers', (req, res) => {
+    res.json(nodePrinter.getPrinters());
   });
 
   app.patch('/system', (req, res) => {
@@ -22,8 +19,7 @@ export default (app) => {
     req.body.application.locationName = _.truncate(req.body.application.locationName, { length: 50, omission: '' });
     req.body.application.terminalId = _.truncate(req.body.application.terminalId, { length: 50, omission: '' });
 
-    fs.writeFile(`${appRoot}/server.config.json`, JSON.stringify(req.body, null, 4), (err) => {
-      if(err) { throw err; }
+    writeSettings(JSON.stringify(req.body, null, 4), () => {
       res.json({ flash: 'Settings updated successfully.', data: req.body });
     });
   });

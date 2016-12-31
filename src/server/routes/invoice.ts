@@ -2,12 +2,15 @@
 
 import * as _ from 'lodash';
 
+import { readSettings } from './_settings';
+
 import { bookshelf, knex } from '../server';
 
 import { Invoice } from '../orm/invoice';
 import { InvoiceItem } from '../orm/invoiceitem';
 import { InvoicePromo } from '../orm/invoicepromo';
 
+import { Invoice as InvoiceModel } from '../../client/models/invoice';
 import { StockItem as StockItemModel } from '../../client/models/stockitem';
 import { Promotion as PromotionModel } from '../../client/models/promotion';
 import { InvoiceItem as InvoiceItemModel } from '../../client/models/invoiceitem';
@@ -15,6 +18,10 @@ import { InvoicePromo as InvoicePromoModel } from '../../client/models/invoicepr
 
 import { Logger } from '../logger';
 import Settings from './_settings';
+
+const dateFunctions = require('date-fns');
+const thermalPrinter = require('node-thermal-printer');
+const nodePrinter = require('printer');
 
 const incrementItems = (items, transaction?) => {
   return _.map(items, (v: number, k: string) => {
@@ -250,6 +257,109 @@ export default (app) => {
       .catch(e => {
         res.status(500).json(Logger.browserError(Logger.error('Route:Invoice/:id/void:POST', e)));
       });
+  });
+
+  app.post('/invoice/print/:id', (req, res) => {
+
+    readSettings(data => {
+
+      const { name, header, footer } = data.printer;
+
+      if(!name) {
+        return res.status(500).json({ flash: 'No printer is set up.' });
+      }
+
+      const cleanName = (name, length = 22) => {
+        return _.truncate(name, { length, omission: '' }).toUpperCase();
+      };
+
+      const invoiceItemData = (item) => {
+        if(!_.isEmpty(item.stockitemData)) { return item.stockitemData; }
+        return item._stockitemData;
+      };
+
+      const invoicePromoData = (item) => {
+        if(!_.isEmpty(item.promoData)) { return item.promoData; }
+        return item._promoData;
+      };
+
+      const printInvoice = (invoice: InvoiceModel, copy = 'Merchant') => {
+
+        thermalPrinter.init({});
+
+        thermalPrinter.openCashDrawer();
+
+        if(header) {
+          thermalPrinter.alignCenter();
+          thermalPrinter.println(header);
+        }
+
+        thermalPrinter.println(`Invoice #${invoice.id}`);
+        thermalPrinter.leftRight('Purchase Method', invoice.purchaseMethod);
+        thermalPrinter.leftRight('Purchase Time', dateFunctions.format(new Date(invoice.purchaseTime), 'YYYY-MM-DD HH:MM A'));
+
+        _.each(invoice.stockitems, item => {
+          thermalPrinter.alignLeft();
+          thermalPrinter.println(cleanName(item.realData.name, 40));
+          thermalPrinter.leftRight(item.realData.sku, item.cost);
+        });
+
+        _.each(invoice.promotions, item => {
+          thermalPrinter.leftRight(cleanName(item.realData.name), item.cost);
+        });
+
+        thermalPrinter.newLine();
+
+        thermalPrinter.bold(true);
+        thermalPrinter.leftRight('Subtotal', invoice.subtotal);
+        thermalPrinter.leftRight('Tax', invoice.taxCollected);
+        thermalPrinter.leftRight('Total', invoice.purchasePrice);
+
+        thermalPrinter.newLine();
+        thermalPrinter.leftRight('# Items', invoice.stockitems.length);
+        thermalPrinter.bold(false);
+
+        thermalPrinter.newLine();
+
+        if(footer) {
+          thermalPrinter.alignCenter();
+          thermalPrinter.println(footer);
+        }
+
+        thermalPrinter.newLine();
+        thermalPrinter.alignCenter();
+        thermalPrinter.println(`${copy} Copy`);
+        thermalPrinter.newLine();
+
+        thermalPrinter.cut();
+      };
+
+      Invoice
+        .forge({ id: req.params.id })
+        .fetch({
+          withRelated: ['stockitems', 'promotions', 'stockitems._stockitemData', 'promotions._promoData']
+        })
+        .then(item => {
+          const unwrappedItem = item.toJSON();
+          _.each(unwrappedItem.stockitems, item => item.realData = invoiceItemData(item));
+          _.each(unwrappedItem.promotions, item => item.realData = invoicePromoData(item));
+
+          printInvoice(unwrappedItem, 'Guest');
+          printInvoice(unwrappedItem, 'Merchant');
+
+          nodePrinter.printDirect({
+            printer: name,
+            data: thermalPrinter.getBuffer(),
+            type: 'RAW',
+            success: () => res.json({ flash: 'Print successful.' }),
+            error: (e) => res.json({ flash: `Print failure: ${e.message}` })
+          });
+
+        })
+        .catch(e => {
+          res.status(500).json(Logger.browserError(Logger.error('Route:Invoice/:id/print:POST', e)));
+        });
+    });
   });
 
 };

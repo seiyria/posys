@@ -13,10 +13,22 @@ export class EditSettingsComponent implements OnInit {
   public settings: Settings = new Settings({});
   public currencyCodes = cc.codes();
 
+  public printers: any[];
+
   constructor(public viewCtrl: ViewController, public settingsService: ApplicationSettingsService) {}
 
   ngOnInit() {
     this.settings = new Settings(this.settingsService.settings);
+    this.refreshPrinters();
+  }
+
+  refreshPrinters() {
+    this.settingsService
+      .getAllPrinters()
+      .toPromise()
+      .then(printers => {
+        this.printers = printers;
+      });
   }
 
   saveSettings() {

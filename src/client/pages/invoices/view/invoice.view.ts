@@ -28,6 +28,12 @@ export class InvoiceViewComponent {
     _.each(this.invoice.promotions, item => item.realData = this.invoicePromoData(item));
   }
 
+  printReceipt() {
+    this.ivService
+      .print(this.invoice)
+      .toPromise();
+  }
+
   invoiceItemData(item) {
     if(!_.isEmpty(item.stockitemData)) { return item.stockitemData; }
     return item._stockitemData;

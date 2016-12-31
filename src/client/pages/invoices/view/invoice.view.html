@@ -22,6 +22,10 @@
           </ion-item>
 
           <ion-item *ngIf="!invoice.isOnHold">
+            <print-button (click)="printReceipt()" [disabled]="!settings.canPrint"></print-button>
+          </ion-item>
+
+          <ion-item *ngIf="!invoice.isOnHold">
             <ion-icon name="calendar" item-left></ion-icon>
             Purchase Date
             <ion-note item-right>{{ invoice.purchaseTime | date:'medium' }}</ion-note>

@@ -41,7 +41,7 @@ export class PointOfSalePageComponent implements OnInit {
 
       let modal = this.modalCtrl.create(PromotionsManagerComponent, {
         promotion: new Promotion({
-          name: `${item.name} Discount`,
+          name: `Discount: ${item.name}`,
           discountType: 'Percent',
           itemReductionType: 'All',
           discountGrouping: 'SKU',

@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { LoggerService } from './logger.service';
 
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { URLSearchParams, Response } from '@angular/http';
 import { LocalStorageService } from 'ng2-webstorage';
 import { HttpClient } from './http.custom';
@@ -12,12 +13,14 @@ const CONNECTION_URL = 'http://localhost:8080';
 
 export class Settings {
   application: any;
+  printer: any;
   db: any;
   server: any;
 
   constructor(initializer) {
     _.merge(this, initializer);
     if(!this.application) { this.application = {}; }
+    if(!this.printer)     { this.printer = {}; }
     if(!this.db)          { this.db = {}; }
     if(!this.server)      { this.server = {}; }
   }
@@ -53,6 +56,10 @@ export class ApplicationSettingsService {
 
   private safeify(str: string): string {
     return str.split(' ').join('');
+  }
+
+  get canPrint(): boolean {
+    return this.settings.printer.name;
   }
 
   get terminalId(): string {
@@ -128,6 +135,12 @@ export class ApplicationSettingsService {
         this.mergeSettings(data);
         return this.settings;
       });
+  }
+
+  getAllPrinters(): Observable<any[]> {
+    return this.http.get(this.buildAPIURL(`${this.url}/printers`))
+      .map((res: Response) => this.logger.observableUnwrap(res.json()))
+      .catch(e => this.logger.observableError(e));
   }
 
   buildAPIURL(fragment: string, id?: number): string {

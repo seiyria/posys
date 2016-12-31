@@ -39,6 +39,25 @@
       </ion-select>
     </ion-item>
 
+    <ion-list-header>Printer Settings</ion-list-header>
+    <ion-item>
+      <ion-label stacked>Printer</ion-label>
+      <ion-select [(ngModel)]="settings.printer.name">
+        <ion-option *ngFor="let printer of printers" [value]="printer.name">{{ printer.name }} ({{ printer.status }})</ion-option>
+      </ion-select>
+      <refresh-button item-right (click)="refreshPrinters()"></refresh-button>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Header</ion-label>
+      <ion-textarea [(ngModel)]="settings.printer.header"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Footer</ion-label>
+      <ion-textarea [(ngModel)]="settings.printer.footer"></ion-textarea>
+    </ion-item>
+
     <ion-list-header>Database Settings</ion-list-header>
     <ion-item>
       <ion-label stacked>Hostname</ion-label>

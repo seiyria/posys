@@ -38,6 +38,8 @@ import { EditButtonComponent } from '../components/edit-button';
 import { ExportButtonComponent } from '../components/export-button';
 import { ResetButtonComponent } from '../components/reset-button';
 import { ImportButtonComponent } from '../components/import-button';
+import { PrintButtonComponent } from '../components/print-button';
+import { RefreshButtonComponent } from '../components/refresh-button';
 import { RemoveButtonComponent } from '../components/remove-button';
 import { ResumeTransactionButtonComponent } from '../components/resume-button';
 import { UpdateButtonComponent } from '../components/update-button';
@@ -105,8 +107,10 @@ import { TruncatePipe } from '../pipes/truncate';
     ConfirmButtonComponent,
     EditButtonComponent,
     ExportButtonComponent,
+    RefreshButtonComponent,
     ResetButtonComponent,
     ImportButtonComponent,
+    PrintButtonComponent,
     RemoveButtonComponent,
     ResumeTransactionButtonComponent,
     UpdateButtonComponent,
