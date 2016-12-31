@@ -263,7 +263,7 @@ export default (app) => {
 
     readSettings(data => {
 
-      const { name, header, footer } = data.printer;
+      const { name, header, footer, characterWidth } = data.printer;
 
       if(!name) {
         return res.status(500).json({ flash: 'No printer is set up.' });
@@ -285,7 +285,7 @@ export default (app) => {
 
       const printInvoice = (invoice: InvoiceModel, copy = 'Merchant') => {
 
-        thermalPrinter.init({});
+        thermalPrinter.init({ width: characterWidth });
 
         thermalPrinter.openCashDrawer();
 
