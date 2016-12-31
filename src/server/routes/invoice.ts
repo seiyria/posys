@@ -295,8 +295,10 @@ export default (app) => {
         }
 
         thermalPrinter.println(`Invoice #${invoice.id}`);
-        thermalPrinter.leftRight('Purchase Method', invoice.purchaseMethod);
-        thermalPrinter.leftRight('Purchase Time', dateFunctions.format(new Date(invoice.purchaseTime), 'YYYY-MM-DD HH:MM A'));
+        thermalPrinter.newLine();
+
+        thermalPrinter.leftRight('Method', invoice.purchaseMethod);
+        thermalPrinter.leftRight('Time', dateFunctions.format(new Date(invoice.purchaseTime), 'YYYY-MM-DD HH:MM A'));
 
         _.each(invoice.stockitems, item => {
           thermalPrinter.alignLeft();
