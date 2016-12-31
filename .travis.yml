@@ -4,6 +4,7 @@ addons:
   apt:
     packages:
       - libcups2-dev
+      - cups
 
 node_js:
   - "stable"
