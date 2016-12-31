@@ -21,7 +21,13 @@ import Settings from './_settings';
 
 const dateFunctions = require('date-fns');
 const thermalPrinter = require('node-thermal-printer');
-const nodePrinter = require('printer');
+
+let nodePrinter = null;
+try {
+  nodePrinter = require('printer');
+} catch(e) {
+  console.error('Could not load node-printer.');
+}
 
 const incrementItems = (items, transaction?) => {
   return _.map(items, (v: number, k: string) => {
@@ -260,6 +266,10 @@ export default (app) => {
   });
 
   app.post('/invoice/print/:id', (req, res) => {
+
+    if(!nodePrinter) {
+      return res.status(500).json({ flash: 'Printer driver is not installed on the server.' });
+    }
 
     readSettings(data => {
 
