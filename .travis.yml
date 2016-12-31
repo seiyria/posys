@@ -5,6 +5,7 @@ addons:
     packages:
       - libcups2-dev
       - cups
+      - cups-ppdc
 
 node_js:
   - "stable"
