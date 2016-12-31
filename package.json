@@ -75,7 +75,7 @@
     "electron-packager": "^7.3.0",
     "electron-prebuilt": "^1.2.6",
     "nodemon": "^1.11.0",
-    "ts-node": "^1.7.0",
+    "ts-node": "1.7.0",
     "tslint": "^3.15.1",
     "typescript": "2.0.6"
   },

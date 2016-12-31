@@ -3,7 +3,8 @@
     "experimentalDecorators": true,
     "module": "commonjs",
     "target": "es6",
-    "outDir": "../../www/server"
+    "outDir": "../../www/server",
+    "types": ["node"]
   },
   "exclude": [
     "node_modules",

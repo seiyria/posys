@@ -269,8 +269,8 @@ export default (app) => {
         return res.status(500).json({ flash: 'No printer is set up.' });
       }
 
-      const cleanName = (name, length = 22) => {
-        return _.truncate(name, { length, omission: '' }).toUpperCase();
+      const cleanName = (printName, length = 22) => {
+        return _.truncate(printName, { length, omission: '' }).toUpperCase();
       };
 
       const invoiceItemData = (item) => {
@@ -341,8 +341,8 @@ export default (app) => {
         })
         .then(item => {
           const unwrappedItem = item.toJSON();
-          _.each(unwrappedItem.stockitems, item => item.realData = invoiceItemData(item));
-          _.each(unwrappedItem.promotions, item => item.realData = invoicePromoData(item));
+          _.each(unwrappedItem.stockitems, innerItem => innerItem.realData = invoiceItemData(innerItem));
+          _.each(unwrappedItem.promotions, innerItem => innerItem.realData = invoicePromoData(innerItem));
 
           printInvoice(unwrappedItem, 'Guest');
           printInvoice(unwrappedItem, 'Merchant');
