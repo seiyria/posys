@@ -1,5 +1,10 @@
 language: node_js
 
+addons:
+  apt:
+    packages:
+      - libcups2-dev
+
 node_js:
   - "stable"
   - "6.5"
