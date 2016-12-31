@@ -22,7 +22,7 @@ export default (app) => {
     }
 
     if(req.body.printer) {
-      req.body.printer.characterWidth = +req.body.application.characterWidth;
+      req.body.printer.characterWidth = +req.body.printer.characterWidth;
     }
 
     writeSettings(JSON.stringify(req.body, null, 4), () => {
