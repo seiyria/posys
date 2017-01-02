@@ -18,6 +18,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styles: [`
     button[top-icon] {
       white-space: pre;
+      min-height: 250px;
     }
   
     button[top-icon] .icon-large .icon {
