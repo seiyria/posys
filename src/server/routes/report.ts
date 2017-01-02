@@ -64,7 +64,11 @@ export default (app) => {
           if(!item.vendors || !item.vendors.length) { return; }
           item.vendors = [_.find(item.vendors, { isPreferred: true })];
         });
-        res.json(items);
+        const resObj: any = { data: items };
+        if(!items.length) {
+          resObj.flash = 'No data matched your query.';
+        }
+        res.json(resObj);
       })
       .catch(e => {
         res.status(500).json(Logger.browserError(Logger.error('Route:Report/base/inventory/current:POST', e)));
