@@ -46,7 +46,7 @@ ion-grid[vertical-center] {
   border-bottom: none !important;
 
   & .item-inner {
-    border-bottom: none !important;
+    b: none !important;
   }
 }
 
@@ -153,7 +153,7 @@ ion-item[no-margin] .label {
   height: 100%;
 
   [scroll-row] {
-    overflow: scroll;
+    overflow: auto;
     flex: 1;
   }
 }
@@ -178,4 +178,8 @@ ion-item[no-margin] .label {
 [width-40] {
   flex: 0 0 40%;
   max-width: 40%;
+}
+
+.scroll-content {
+  overflow-y: auto;
 }
