@@ -9,8 +9,6 @@ import { URLSearchParams, Response } from '@angular/http';
 import { LocalStorageService } from 'ng2-webstorage';
 import { HttpClient } from './http.custom';
 
-const CONNECTION_URL = 'http://localhost:8080';
-
 export class Settings {
   application: any;
   printer: any;
@@ -54,6 +52,10 @@ export class ApplicationSettingsService {
     this.getAllSettings();
   }
 
+  private get CONNECTION_URL() {
+    return `http://${window.location.hostname}:8080`;
+  }
+
   private safeify(str: string): string {
     return str.split(' ').join('');
   }
@@ -95,7 +97,7 @@ export class ApplicationSettingsService {
   }
 
   get connectionUrl(): string {
-    let str = CONNECTION_URL;
+    let str = this.CONNECTION_URL;
     if(_.endsWith(str, '/')) {
       str = _.trimEnd(str, '/');
     }
