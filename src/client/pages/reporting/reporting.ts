@@ -215,6 +215,11 @@ export class ReportingPageComponent implements OnInit {
         if(!data || !data.length) { return; }
         const transformedData = this.transformData(data);
         const reportWindow = window.open('', this.formattedReportName, 'height=500&width=500');
+
+        if(!reportWindow) {
+          throw new Error('Report window could not be opened. Probably, something is blocking popups?');
+        }
+
         reportWindow.document.write(this.reportAggregate(transformedData));
 
         const csvButton = reportWindow.document.getElementById('csv-button');
