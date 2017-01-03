@@ -88,22 +88,25 @@ export class PointOfSalePageComponent implements OnInit {
   ];
 
   public promotionItemButtons = [
-    /*{ text: 'Remove', callback: (item) => {
+    { text: 'Remove', callback: (item) => {
       const confirm = this.alertCtrl.create({
         title: `Remove "${item.realData.name}"?`,
-        message: 'This promotion will be removed from the current transaction.',
+        message: 'This promotion will be removed from the current transaction. ' +
+          'If it is part of an existing promotion, just remove and re-add the item to get it back. ' +
+          'Additionally, it may be re-added when adding new items, so make sure you do this last.',
         buttons: [
           { text: 'Cancel' },
           {
             text: 'Confirm',
             handler: () => {
               this.currentPromotions = _.reject(this.currentPromotions, i => i === item);
+              this.temporaryPromotions = _.reject(this.temporaryPromotions, i => i === item);
             }
           }
         ]
       });
       confirm.present();
-    } }*/
+    } }
   ];
 
   constructor(public modalCtrl: ModalController,
