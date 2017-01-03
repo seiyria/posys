@@ -267,6 +267,8 @@ export default (app) => {
 
   app.post('/invoice/print/:id', (req, res) => {
 
+    const printCustomer = !!+req.query.printCustomer;
+
     if(!nodePrinter) {
       return res.status(500).json({ flash: 'Printer driver is not installed on the server.' });
     }
@@ -345,7 +347,7 @@ export default (app) => {
         thermalPrinter.newLine();
 
         thermalPrinter.alignCenter();
-        thermalPrinter.code128(invoice.id);
+        thermalPrinter.code128(invoice.id, { width: 'MEDIUM', text: 1 });
         thermalPrinter.println(`Invoice #${invoice.id}`);
         thermalPrinter.alignLeft();
 

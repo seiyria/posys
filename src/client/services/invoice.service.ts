@@ -55,8 +55,8 @@ export class InvoiceService {
       .catch(e => this.logger.observableError(e));
   }
 
-  print(item: Invoice): Observable<Invoice> {
-    return this.http.post(this.settings.buildAPIURL(`${this.url}/print`, item.id), item)
+  print(item: Invoice, printCustomer: boolean): Observable<Invoice> {
+    return this.http.post(`${this.settings.buildAPIURL(`${this.url}/print`, item.id)}?printCustomer=${+printCustomer}`, item)
       .map((res: Response) => this.logger.observableUnwrap(res.json()))
       .catch(e => this.logger.observableError(e));
   }

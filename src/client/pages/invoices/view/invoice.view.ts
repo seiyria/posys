@@ -30,7 +30,7 @@ export class InvoiceViewComponent {
 
   printReceipt() {
     this.ivService
-      .print(this.invoice)
+      .print(this.invoice, true)
       .toPromise();
   }
 

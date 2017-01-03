@@ -293,10 +293,32 @@ export class PointOfSalePageComponent implements OnInit {
       invoice.previousId = this.prevTransaction.id;
     }
 
+    const printReceipt = (printInvoice, printCustomer: boolean) => {
+      this.ivService
+        .print(printInvoice, printCustomer)
+        .toPromise();
+    };
+
     this.ivService
       .create(invoice)
       .toPromise()
       .then(newInvoice => {
+        const confirm = this.alertCtrl.create({
+          title: 'Print Customer Receipt?',
+          message: `Would you like to print a customer receipt?`,
+          buttons: [
+            {
+              text: 'Cancel',
+              handler: () => printReceipt(newInvoice, false)
+            },
+            {
+              text: 'Confirm',
+              handler: () => printReceipt(newInvoice, true)
+            }
+          ]
+        });
+        confirm.present();
+
         this.clearTransaction();
       });
   }
