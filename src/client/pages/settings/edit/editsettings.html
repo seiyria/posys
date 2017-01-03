@@ -13,7 +13,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
+  <ion-list no-lines>
 
     <ion-list-header>Regional Settings</ion-list-header>
     <ion-item>
@@ -61,6 +61,11 @@
     <ion-item>
       <ion-label stacked>Footer</ion-label>
       <ion-textarea [(ngModel)]="settings.printer.footer"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Print Merchant Receipts</ion-label>
+      <ion-checkbox [(ngModel)]="settings.printer.printMerchantReceipts"></ion-checkbox>
     </ion-item>
 
     <ion-list-header>Database Settings</ion-list-header>

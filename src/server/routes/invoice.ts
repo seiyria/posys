@@ -273,7 +273,7 @@ export default (app) => {
 
     readSettings(data => {
 
-      const { name, header, footer, characterWidth } = data.printer;
+      const { name, header, footer, characterWidth, printMerchantReceipts } = data.printer;
 
       if(!name) {
         return res.status(500).json({ flash: 'No printer is set up.' });
@@ -363,7 +363,10 @@ export default (app) => {
           _.each(unwrappedItem.promotions, innerItem => innerItem.realData = invoicePromoData(innerItem));
 
           printInvoice(unwrappedItem, 'Guest');
-          printInvoice(unwrappedItem, 'Merchant');
+
+          if(printMerchantReceipts) {
+            printInvoice(unwrappedItem, 'Merchant');
+          }
 
           nodePrinter.printDirect({
             printer: name,
