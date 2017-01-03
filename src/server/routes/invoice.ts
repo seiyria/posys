@@ -304,9 +304,6 @@ export default (app) => {
           thermalPrinter.println(header);
         }
 
-        thermalPrinter.println(`Invoice #${invoice.id}`);
-        thermalPrinter.newLine();
-
         thermalPrinter.leftRight('Method', invoice.purchaseMethod);
         thermalPrinter.leftRight('Time', dateFunctions.format(new Date(invoice.purchaseTime), 'YYYY-MM-DD HH:MM A'));
         thermalPrinter.newLine();
@@ -346,6 +343,11 @@ export default (app) => {
         thermalPrinter.alignCenter();
         thermalPrinter.println(`${copy} Copy`);
         thermalPrinter.newLine();
+
+        thermalPrinter.alignCenter();
+        thermalPrinter.code128(invoice.id);
+        thermalPrinter.println(`Invoice #${invoice.id}`);
+        thermalPrinter.alignLeft();
 
         thermalPrinter.cut();
       };
