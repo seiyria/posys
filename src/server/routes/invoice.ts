@@ -326,7 +326,10 @@ export default (app) => {
         thermalPrinter.bold(true);
         thermalPrinter.leftRight('Subtotal', invoice.subtotal);
         thermalPrinter.leftRight('Tax', invoice.taxCollected);
-        thermalPrinter.leftRight('Total', invoice.purchasePrice);
+
+        thermalPrinter.setTextDoubleHeight();
+        thermalPrinter.leftRight('Grand Total', invoice.purchasePrice);
+        thermalPrinter.setTextNormal();
 
         thermalPrinter.newLine();
         thermalPrinter.leftRight('# Items', invoice.stockitems.length);
