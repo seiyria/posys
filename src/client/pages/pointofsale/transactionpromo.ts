@@ -16,7 +16,7 @@ import { InvoicePromo } from '../../models/invoicepromo';
             <ion-icon name="more"></ion-icon>
           </button>
         </ion-col>
-        <ion-col width-50 no-padding>
+        <ion-col no-padding>
           <ion-row>
             <ion-col no-padding>{{ item.realData.name | truncate:50 }}</ion-col>
           </ion-row>
@@ -28,8 +28,8 @@ import { InvoicePromo } from '../../models/invoicepromo';
         </ion-col>
         <ion-col width-10 no-padding vertical-center>
         </ion-col>
-        <ion-col width-10 no-padding vertical-center>
-          <ion-item shrunk-item-checkbox no-border-bottom>
+        <ion-col width-20 no-padding vertical-center>
+          <ion-item shrunk-item-checkbox no-border-bottom label-right tax-cost-entry>
             <ion-label text-right>{{ item.cost | currencyFromSettings }}</ion-label>
           </ion-item>
         </ion-col>

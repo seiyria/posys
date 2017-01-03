@@ -24,4 +24,19 @@ my-page-pointofsale {
   [total-area] {
     height: 100px;
   }
+
+  [tax-cost-header] {
+    display: flex;
+    align-content: space-between;
+  }
+
+  [tax-cost-entry] {
+    .item-inner {
+      padding-right: 0 !important;
+    }
+  }
+
+  #transaction-list > .item > .item-inner > .input-wrapper > .label {
+    margin-right: 0 !important;
+  }
 }

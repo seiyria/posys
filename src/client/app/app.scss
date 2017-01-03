@@ -109,6 +109,14 @@ ion-item[no-margin] .label {
       margin-left: 5px !important;
     }
   }
+
+  &[label-right] {
+    .item-inner {
+      .label {
+        text-align: right;
+      }
+    }
+  }
 }
 
 [form-item] {
