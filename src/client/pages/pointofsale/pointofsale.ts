@@ -141,6 +141,7 @@ export class PointOfSalePageComponent implements OnInit {
   }
 
   addToTransaction($event): void {
+    if(!$event) { return; }
     this.addTransactionItem($event);
     this.omniCancelControl.next();
   }
