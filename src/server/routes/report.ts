@@ -31,7 +31,7 @@ const getColumnsAndRelated = (columns) => {
     columns = _.reject(columns, testCol => testCol === col);
   });
 
-  return { columns, withRelated };
+  return { columns: _.uniq(columns), withRelated };
 };
 
 const fixReport = (config) => {

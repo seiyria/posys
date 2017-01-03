@@ -242,7 +242,7 @@ export class ReportingPageComponent implements OnInit {
   private transformData(data): any[] {
     let baseData = _.map(data, item => {
       return _.reduce(this.currentReport.columns, (prev, cur) => {
-        if(!cur.checked) { return prev; }
+        if(!cur.checked && !cur.always) { return prev; }
         const value = _.get(item, cur.key, '');
 
         prev[cur.name] = value;
