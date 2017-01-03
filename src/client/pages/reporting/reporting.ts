@@ -24,6 +24,7 @@ export class ReportingPageComponent implements OnInit {
 
   datePeriods = [{ name: 'Current', sub: 0 }, { name: 'Previous', sub: 1 }];
   dateDenominations = [
+    { name: 'Hour' },
     { name: 'Day' },
     { name: 'Week' },
     { name: 'Month' },
