@@ -50,7 +50,7 @@
           <ion-col width-20 *ngIf="currentReport.filters.singleDateFilter">
             <ion-item list-header shrunk-item-checkbox no-border-bottom>
               <ion-label stacked>{{ currentReport.dateText || 'Single Date' }}</ion-label>
-              <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="currentReport.startDate"></ion-datetime>
+              <ion-datetime displayFormat="MM/DD/YYYY HH:mm" [(ngModel)]="currentReport.startDate"></ion-datetime>
             </ion-item>
           </ion-col>
 
@@ -80,14 +80,14 @@
               <ion-col width-50 no-padding>
                 <ion-item list-header shrunk-item-checkbox no-border-bottom>
                   <ion-label stacked>{{ currentReport.dateText || 'Start Date' }}</ion-label>
-                  <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="currentReport.startDate"></ion-datetime>
+                  <ion-datetime displayFormat="MM/DD/YYYY HH:mm" [(ngModel)]="currentReport.startDate"></ion-datetime>
                 </ion-item>
               </ion-col>
 
               <ion-col width-50 no-padding>
                 <ion-item list-header shrunk-item-checkbox no-border-bottom>
                   <ion-label stacked>{{ currentReport.dateText || 'End Date' }}</ion-label>
-                  <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="currentReport.endDate"></ion-datetime>
+                  <ion-datetime displayFormat="MM/DD/YYYY HH:mm" [(ngModel)]="currentReport.endDate"></ion-datetime>
                 </ion-item>
               </ion-col>
             </ion-row>
