@@ -11,7 +11,7 @@
       <ion-col width-20 vertical-center>
         <ion-item list-header shrunk-item-checkbox no-border-bottom>
           <ion-label stacked>Earliest Date</ion-label>
-          <ion-datetime displayFormat="MM/DD/YYYY HH:mm" [(ngModel)]="earliestDate" (ionChange)="toggleFilter()"></ion-datetime>
+          <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM DD YYYY HH mm" minuteValues="0,15,30,45" [(ngModel)]="earliestDate" (ionChange)="toggleFilter()"></ion-datetime>
         </ion-item>
       </ion-col>
 
@@ -24,7 +24,7 @@
       <ion-col width-20 vertical-center>
         <ion-item list-header shrunk-item-checkbox no-border-bottom>
           <ion-label stacked>Latest Date</ion-label>
-          <ion-datetime displayFormat="MM/DD/YYYY HH:mm" [(ngModel)]="latestDate" (ionChange)="toggleFilter()"></ion-datetime>
+          <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM DD YYYY HH mm" minuteValues="0,15,30,45" [(ngModel)]="latestDate" (ionChange)="toggleFilter()"></ion-datetime>
         </ion-item>
       </ion-col>
 

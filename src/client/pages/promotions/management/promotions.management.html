@@ -37,7 +37,7 @@
 
           <ion-item form-item required>
             <ion-label stacked>Start Date</ion-label>
-            <ion-datetime displayFormat="MM/DD/YYYY HH:mm" [(ngModel)]="promotion.startDate" [min]="today" [max]="futureToday"></ion-datetime>
+            <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM DD YYYY HH mm" minuteValues="0,15,30,45" [(ngModel)]="promotion.startDate" [min]="today" [max]="futureToday"></ion-datetime>
           </ion-item>
           <ion-item small-item>
             <form-error [errorObj]="formErrors | async" key="startDate"></form-error>
@@ -45,7 +45,7 @@
 
           <ion-item form-item required>
             <ion-label stacked>End Date</ion-label>
-            <ion-datetime displayFormat="MM/DD/YYYY HH:mm" [(ngModel)]="promotion.endDate" [min]="today" [max]="futureToday"></ion-datetime>
+            <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM DD YYYY HH mm" minuteValues="0,15,30,45" [(ngModel)]="promotion.endDate" [min]="today" [max]="futureToday"></ion-datetime>
           </ion-item>
           <ion-item small-item>
             <form-error [errorObj]="formErrors | async" key="endDate"></form-error>
