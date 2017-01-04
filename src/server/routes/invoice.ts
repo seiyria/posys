@@ -318,10 +318,14 @@ export default (app) => {
           thermalPrinter.alignLeft();
           thermalPrinter.println(cleanName(item.realData.name, 40));
           thermalPrinter.leftRight(item.realData.sku, item.cost);
-        });
 
-        _.each(invoice.promotions, item => {
-          thermalPrinter.leftRight(cleanName(item.realData.name), item.cost);
+          _.each(invoice.promotions, promo => {
+            if(item.promoApplyId !== promo.applyId) {
+              return;
+            }
+
+            thermalPrinter.leftRight(cleanName(promo.realData.name), promo.cost);
+          });
         });
 
         thermalPrinter.newLine();
