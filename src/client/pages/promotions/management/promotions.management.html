@@ -147,7 +147,7 @@
           <ion-row form-item radio-group [(ngModel)]="promotion.discountGrouping" (ionChange)="changeGrouping()">
             <ion-col no-padding>
               <ion-item>
-                <ion-label>By OU</ion-label>
+                <ion-label>By Category</ion-label>
                 <ion-radio value="OU"></ion-radio>
               </ion-item>
             </ion-col>
@@ -164,7 +164,7 @@
           </ion-item>
 
           <ion-item form-item required *ngIf="promotion.discountGrouping === 'OU'">
-            <ion-label stacked>Organizational Unit</ion-label>
+            <ion-label stacked>Category</ion-label>
             <ion-select [(ngModel)]="promotion.organizationalunitId">
               <ion-option *ngFor="let ou of allOU | async" value="{{ou.id}}">{{ou.name}}</ion-option>
             </ion-select>

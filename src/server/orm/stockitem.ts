@@ -23,7 +23,7 @@ export const StockItem = bookshelf.Model.extend({
       {
         method: 'isLength',
         args: { min: 1, max: 50 },
-        error: 'Your OU name must be between 1 and 50 characters.'
+        error: 'Your category name must be between 1 and 50 characters.'
       }
     ],
     sku: [

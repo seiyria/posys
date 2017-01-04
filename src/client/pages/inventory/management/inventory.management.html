@@ -44,7 +44,7 @@
           </ion-item>
 
           <ion-item form-item required>
-            <ion-label stacked>Organizational Unit</ion-label>
+            <ion-label stacked>Category</ion-label>
             <ion-select [(ngModel)]="stockItem.organizationalunitId">
               <ion-option *ngFor="let ou of allOU | async" value="{{ou.id}}">{{ou.name}}</ion-option>
             </ion-select>

@@ -43,8 +43,8 @@ export class OUManagerComponent implements OnInit {
   removeOU(ou: OrganizationalUnit) {
 
     const confirm = this.alertCtrl.create({
-      title: `Remove Organizational Unit "${ou.name}"?`,
-      message: 'Exercise caution when doing this. You may receive errors if you still have items assigned to this OU.',
+      title: `Remove Category "${ou.name}"?`,
+      message: 'Exercise caution when doing this. You may receive errors if you still have items assigned to this category.',
       buttons: [
         {
           text: 'Cancel'

@@ -115,7 +115,7 @@
 
           <ion-col width-20 *ngIf="currentReport.filters.ouFilter">
             <ion-item list-header shrunk-item-checkbox>
-              <ion-label stacked>OU Filter</ion-label>
+              <ion-label stacked>Category Filter</ion-label>
               <ion-select [(ngModel)]="currentReport.ouFilter" placeholder="Nothing">
                 <ion-option selected="true" value="">Nothing</ion-option>
                 <ion-option *ngFor="let ou of ous" [value]="ou.id">{{ ou.name }}</ion-option>

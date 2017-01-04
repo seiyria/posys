@@ -26,7 +26,7 @@ export class InventoryMassManagementComponent implements OnInit {
       format: (x) => x },
     { name: 'Description',  column: 'description',              alias: 'Description',   shouldUse: false,
       format: (x) => x },
-    { name: 'OU Name',      column: 'organizationalunit.name',  alias: 'OU',            shouldUse: true,
+    { name: 'Category',     column: 'organizationalunit.name',  alias: 'Category',      shouldUse: true,
       format: (x) => x },
     { name: 'Taxable',      column: 'taxable',                  alias: 'Taxable',       shouldUse: true,
       format: (x) => +x },

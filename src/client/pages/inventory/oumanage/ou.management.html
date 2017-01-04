@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Manage Organizational Units
+      Manage Categories
     </ion-title>
     <ion-buttons start>
       <button ion-button (click)="dismiss()">
@@ -17,11 +17,11 @@
       <ion-col width-67>
         <ion-list>
           <ion-item form-item *ngIf="!ou.id">
-            <ion-label stacked>New Organizational Unit Name</ion-label>
+            <ion-label stacked>New Category Name</ion-label>
             <ion-input type="text" [(ngModel)]="ou.name" maxlength="50" (keyup.enter)="addNewOU()"></ion-input>
           </ion-item>
           <ion-item form-item *ngIf="ou.id">
-            <ion-label stacked>Organizational Unit Name</ion-label>
+            <ion-label stacked>Category Name</ion-label>
             <ion-input type="text" [(ngModel)]="ou.name" maxlength="50" (keyup.enter)="updateOU(ou)"></ion-input>
           </ion-item>
           <ion-item small-item>
@@ -38,7 +38,7 @@
     <ion-row *ngIf="allOU.length === 0">
       <ion-col>
         <div full-height true-center text-center big-text background-text>
-          You don't have any Organizational Units. You'll need to create some to add inventory.
+          You don't have any Categories. You'll need to create some to add inventory.
         </div>
       </ion-col>
     </ion-row>

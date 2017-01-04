@@ -4,7 +4,7 @@ import { ReportConfiguration } from '../../models/reportconfiguration';
 const stockItemColumns = [
   { name: 'Name',             key: 'name' },
   { name: 'SKU',              key: 'sku' },
-  { name: 'OU',               key: 'organizationalunit.name', allowGroup: true },
+  { name: 'Category',         key: 'organizationalunit.name', allowGroup: true },
   { name: 'Taxable',          key: 'taxable' },
   { name: 'Cost',             key: 'cost', always: true },
   { name: 'Quantity',         key: 'quantity', always: true },
