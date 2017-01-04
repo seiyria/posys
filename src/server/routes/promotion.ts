@@ -42,7 +42,7 @@ const calculatePromotionDiscount = (promo: PromotionModel, validItems: StockItem
       discount = promo.discountValue;
 
     } else {
-      discount = Math.min(priceComparator.cost, otherItems[0].cost * (promo.discountValue / 100));
+      discount = Math.min(priceComparator.cost, _.last(otherItems).cost * (promo.discountValue / 100));
     }
 
     affectedSKUs = _.map(affectedItems, 'sku');

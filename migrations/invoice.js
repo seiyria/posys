@@ -24,6 +24,7 @@ exports.up = (knex) => {
       table.increments('id').primary();
       table.integer('invoiceId').unsigned().references('invoice.id');
       table.integer('promoId').unsigned().references('promo.id');
+      table.string('applyId');
       table.decimal('cost', TOTAL_DIGITS, CENT_DIGITS);
       table.jsonb('promoData');
       table.timestamps();
@@ -33,6 +34,7 @@ exports.up = (knex) => {
       table.integer('invoiceId').unsigned().references('invoice.id');
       table.integer('stockitemId').unsigned().references('stockitem.id');
       table.integer('quantity').unsigned();
+      table.string('promoApplyId');
       table.decimal('cost', TOTAL_DIGITS, CENT_DIGITS);
       table.boolean('taxable');
       table.jsonb('stockitemData');

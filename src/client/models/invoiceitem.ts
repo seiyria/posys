@@ -14,6 +14,7 @@ export class InvoiceItem {
   cost?: number;
 
   realData?: any;
+  promoApplyId?: string;
 
   constructor(initializer?: InvoiceItem) {
     if(!initializer) { return; }
@@ -24,5 +25,6 @@ export class InvoiceItem {
     this.cost = initializer.cost;
     this.taxable = initializer.taxable;
     this.quantity = initializer.quantity;
+    this.promoApplyId = initializer.promoApplyId;
   }
 }
