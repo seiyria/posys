@@ -303,6 +303,11 @@ export class PointOfSalePageComponent implements OnInit {
       .create(invoice)
       .toPromise()
       .then(newInvoice => {
+
+        if(!this.settings.canPrint) {
+          return;
+        }
+
         const confirm = this.alertCtrl.create({
           title: 'Print Customer Receipt?',
           message: `Would you like to print a customer receipt?`,
