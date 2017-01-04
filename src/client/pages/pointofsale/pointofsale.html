@@ -98,6 +98,11 @@
                   <top-icon-button text="Debit" icon="card" size="medium" (subClick)="finalize('Debit')" [disabled]="currentTransaction.length === 0"></top-icon-button>
                 </ion-col>
               </ion-row>
+              <ion-row>
+                <ion-col width-50 main-button *ngIf="settings.hasCustomCurrency">
+                  <top-icon-button [text]="settings.settings.application.customBusinessCurrency" icon="card" size="medium" (subClick)="finalize('Custom')" [disabled]="currentTransaction.length === 0"></top-icon-button>
+                </ion-col>
+              </ion-row>
             </ion-col>
           </ion-row>
         </ion-grid>

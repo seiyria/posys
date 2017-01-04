@@ -40,7 +40,7 @@
           <ion-item *ngIf="!invoice.isOnHold">
             <ion-icon name="card" item-left></ion-icon>
             Purchase Method
-            <ion-note item-right>{{ invoice.purchaseMethod }}</ion-note>
+            <ion-note item-right>{{ settings.invoiceMethodDisplay(invoice.purchaseMethod) }}</ion-note>
           </ion-item>
 
           <ion-item *ngIf="invoice.purchaseMethod === 'Cash'">

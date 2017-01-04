@@ -1,6 +1,7 @@
 
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
+import { ApplicationSettingsService } from '../../services/settings.service';
 import { Invoice } from '../../models/invoice';
 
 @Component({
@@ -15,7 +16,7 @@ import { Invoice } from '../../models/invoice';
           {{ item.purchaseTime | date:'medium' }}
         </ion-col>
         <ion-col width-10 no-padding vertical-center>
-          {{ item.purchaseMethod }}
+          {{ settings.invoiceMethodDisplay(item.purchaseMethod) | truncate:10 }}
         </ion-col>
         <ion-col width-10 no-padding vertical-center>
           {{ invoiceStatus(item) }}
@@ -36,6 +37,8 @@ import { Invoice } from '../../models/invoice';
 export class InvoiceItemComponent {
   @Input() item: Invoice;
   @Output() view = new EventEmitter();
+
+  constructor(public settings: ApplicationSettingsService) {}
 
   invoiceStatus(invoice: Invoice) {
     if(invoice.isOnHold)   { return 'On Hold'; }

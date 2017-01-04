@@ -260,7 +260,8 @@ export class PointOfSalePageComponent implements OnInit {
   finalize(purchaseMethod: PurchaseMethod, cashGiven?: number) {
     const confirm = this.alertCtrl.create({
       title: 'Complete Transaction?',
-      message: `You are doing a ${purchaseMethod} transaction with a value of ${this.currencyFromSettings.transform(this.total)} across 
+      message: `You are doing a/n ${this.settings.invoiceMethodDisplay(purchaseMethod)} transaction with a value of 
+                ${this.currencyFromSettings.transform(this.total)} across 
                 ${this.currentTransaction.length} items with ${this.allPromotions.length} promotions.`,
       buttons: [
         {

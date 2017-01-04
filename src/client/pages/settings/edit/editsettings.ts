@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewController } from 'ionic-angular';
 
-import { ApplicationSettingsService, Settings } from '../../../services/settings.service';
+import { ApplicationSettingsService } from '../../../services/settings.service';
+import { Settings } from '../../../models/settings';
 
 const cc = require('currency-codes');
 

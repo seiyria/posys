@@ -9,35 +9,8 @@ import { URLSearchParams, Response } from '@angular/http';
 import { LocalStorageService } from 'ng2-webstorage';
 import { HttpClient } from './http.custom';
 
-export class Settings {
-  application: any;
-  printer: any;
-  db: any;
-  server: any;
-
-  constructor(initializer) {
-    _.merge(this, initializer);
-    if(!this.application) { this.application = {}; }
-    if(!this.printer)     { this.printer = {}; }
-    if(!this.db)          { this.db = {}; }
-    if(!this.server)      { this.server = {}; }
-  }
-
-  get isValid(): boolean {
-    const { application, db } = this;
-
-    return !_.isUndefined(application.currencyCode) && application.currencyCode.length > 0
-        && application.taxRate >= 0
-        && application.businessName
-        && application.locationName
-        && application.terminalId
-
-        && !_.isUndefined(db.hostname) && db.hostname.length > 0
-        && !_.isUndefined(db.username) && db.username.length > 0
-        && !_.isUndefined(db.password)
-        && !_.isUndefined(db.database) && db.database.length > 0;
-  }
-}
+import { PurchaseMethod } from '../models/invoice';
+import { Settings } from '../models/settings';
 
 @Injectable()
 export class ApplicationSettingsService {
@@ -58,6 +31,10 @@ export class ApplicationSettingsService {
 
   private safeify(str: string): string {
     return str.split(' ').join('');
+  }
+
+  get hasCustomCurrency(): boolean {
+    return this.settings.application.customBusinessCurrency;
   }
 
   get canPrint(): boolean {
@@ -102,6 +79,14 @@ export class ApplicationSettingsService {
       str = _.trimEnd(str, '/');
     }
     return str;
+  }
+
+  invoiceMethodDisplay(type: PurchaseMethod|string) {
+    if(type === 'Custom') {
+      return this.settings.application.customBusinessCurrency;
+    }
+
+    return type;
   }
 
   toIonicDateString(date: Date): string {

@@ -277,6 +277,10 @@ export default (app) => {
 
       const { name, header, footer, characterWidth, printMerchantReceipts } = data.printer;
 
+      if(!printCustomer && !printMerchantReceipts) {
+        return;
+      }
+
       if(!name) {
         return res.status(500).json({ flash: 'No printer is set up.' });
       }

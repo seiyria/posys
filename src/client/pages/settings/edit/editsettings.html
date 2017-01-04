@@ -38,6 +38,10 @@
         <ion-option *ngFor="let code of currencyCodes" [value]="code">{{ code }}</ion-option>
       </ion-select>
     </ion-item>
+    <ion-item>
+      <ion-label stacked>Custom Business Currency</ion-label>
+      <ion-input type="text" [(ngModel)]="settings.application.customBusinessCurrency" maxlength="25"></ion-input>
+    </ion-item>
 
     <ion-list-header>Printer Settings</ion-list-header>
     <ion-item>

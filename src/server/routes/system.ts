@@ -19,6 +19,7 @@ export default (app) => {
       req.body.application.businessName = _.truncate(req.body.application.businessName, { length: 50, omission: '' });
       req.body.application.locationName = _.truncate(req.body.application.locationName, { length: 50, omission: '' });
       req.body.application.terminalId = _.truncate(req.body.application.terminalId, { length: 50, omission: '' });
+      req.body.application.customBusinessCurrency = _.truncate(req.body.application.customBusinessCurrency, { length: 25, omission: '' });
     }
 
     if(req.body.printer) {

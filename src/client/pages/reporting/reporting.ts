@@ -259,6 +259,10 @@ export class ReportingPageComponent implements OnInit {
           }
         }
 
+        if(cur.name === 'Purchase Method') {
+          prev[cur.name] = this.settings.invoiceMethodDisplay(value);
+        }
+
         return prev;
       }, {});
     });
