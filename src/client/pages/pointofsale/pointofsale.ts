@@ -20,6 +20,8 @@ import { Promotion } from '../../models/promotion';
 import { InvoicePromo } from '../../models/invoicepromo';
 import { PurchaseMethod, Invoice } from '../../models/invoice';
 
+const uuid = require('uuid/v4');
+
 @Component({
   selector: 'my-page-pointofsale',
   templateUrl: 'pointofsale.html',
@@ -126,11 +128,18 @@ export class PointOfSalePageComponent implements OnInit {
     }
   }
 
+  itemPromos(item: StockItem): any[] {
+    return _.filter(this.allPromotions, promo => {
+      return promo.applyId === item.promoApplyId;
+    });
+  }
+
   addTransactionItem(item: StockItem): void {
 
     // clone so we can set the quantity to 1
     const newItem = _.cloneDeep(item);
     newItem.quantity = 1;
+    newItem.promoApplyId = uuid();
 
     this.currentTransaction.push(newItem);
 
@@ -355,7 +364,7 @@ export class PointOfSalePageComponent implements OnInit {
 
       let itemValue = +item.cost;
 
-      const applicablePromo = _.find(promoClones, promo => _.includes(promo.skus, item.sku));
+      const applicablePromo = _.find(promoClones, promo => promo.applyId === item.promoApplyId);
       if(applicablePromo) {
         itemValue += applicablePromo.cost;
         promoClones = _.reject(promoClones, promo => promo === applicablePromo);

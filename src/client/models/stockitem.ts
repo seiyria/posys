@@ -22,6 +22,7 @@ export class StockItem {
   vendors?: StockItemVendor[];
 
   temporary?: boolean;
+  promoApplyId?: string;
 
   constructor(initializer?: StockItem) {
     _.assign(this, initializer);

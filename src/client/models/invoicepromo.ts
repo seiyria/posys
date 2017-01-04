@@ -13,6 +13,8 @@ export class InvoicePromo {
 
   realData?: any;
 
+  applyId?: string;
+
   constructor(initializer?: InvoicePromo) {
     if(!initializer) { return; }
     this.id = initializer.id;
@@ -21,5 +23,6 @@ export class InvoicePromo {
     this.promoData = initializer.promoData;
     this.cost = initializer.cost;
     this.skus = initializer.skus;
+    this.applyId = initializer.applyId;
   }
 }

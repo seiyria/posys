@@ -10,8 +10,6 @@ import { InvoicePromo } from '../../models/invoicepromo';
     <ion-grid no-padding>
       <ion-row>
         <ion-col width-10 no-padding vertical-center space-between-col>
-          #{{ index }}
-          
           <button ion-button icon-only clear color="dark" (click)="moreOptions($event)">
             <ion-icon name="more"></ion-icon>
           </button>

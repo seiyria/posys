@@ -18,6 +18,7 @@ const calculatePromotionDiscount = (promo: PromotionModel, validItems: StockItem
   let discount = 0;
   let affectedSKUs = [];
   let affectedItems = [];
+  let applyId = '';
   const itemsSortedByPrice = _.sortBy(validItems, 'cost').reverse();
 
   if(promo.itemReductionType === 'All') {
@@ -46,7 +47,10 @@ const calculatePromotionDiscount = (promo: PromotionModel, validItems: StockItem
 
     affectedSKUs = _.map(affectedItems, 'sku');
   }
-  return { discount, affectedSKUs, affectedItems };
+
+  applyId = _.last(affectedItems).promoApplyId;
+
+  return { discount, affectedSKUs, affectedItems, applyId };
 };
 
 const numPromoApplications = (promo: PromotionModel, transactionItems: StockItemModel[]) => {
@@ -153,12 +157,13 @@ export default (app) => {
 
   app.post('/promotion/temporary', (req, res) => {
     const { promo, item } = req.body;
-    const { discount } = calculatePromotionDiscount(promo, [item]);
+    const { discount, applyId } = calculatePromotionDiscount(promo, [item]);
 
     res.json({
       promo: new PromotionModel(promo),
       skus: [item.sku],
-      totalDiscount: -discount
+      totalDiscount: -discount,
+      applyId
     });
 
   });
@@ -185,11 +190,11 @@ export default (app) => {
           const { numApplications, validItems } = numPromoApplications(promo, items);
           if(numApplications < 1) { return []; }
 
-          const allPromos = _.map(new Array(numApplications), () => ({ promo, skus: [], totalDiscount: 0 }));
+          const allPromos = _.map(new Array(numApplications), () => ({ promo, skus: [], totalDiscount: 0, applyId: '' }));
           let itemClone = _.cloneDeep(validItems);
 
           _.each(allPromos, promoContainer => {
-            const { discount, affectedItems, affectedSKUs } = calculatePromotionDiscount(promoContainer.promo, itemClone);
+            const { discount, affectedItems, affectedSKUs, applyId } = calculatePromotionDiscount(promoContainer.promo, itemClone);
 
             if(affectedItems.length > 0) {
               itemClone = _.reject(itemClone, item => _.includes(affectedItems, item));
@@ -197,6 +202,7 @@ export default (app) => {
 
             promoContainer.skus = affectedSKUs;
             promoContainer.totalDiscount = -discount;
+            promoContainer.applyId = applyId;
           });
 
           return allPromos;
