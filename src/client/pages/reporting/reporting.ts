@@ -323,14 +323,14 @@ export class ReportingPageComponent implements OnInit {
             'Purchase Method': 'Unknown'
           };
 
-          _.each(AGGREGATE_KEYS, key => baseObj[key] = 0);
+          _.each(AGGREGATE_KEYS, aggKey => baseObj[aggKey] = 0);
 
           const aggregateObject = _.reduce(dateGroup, (prev, cur) => {
-            _.each(AGGREGATE_KEYS, key => prev[key] += (+cur[key] || 0));
+            _.each(AGGREGATE_KEYS, aggKey => prev[aggKey] += (+cur[aggKey] || 0));
             return prev;
           }, baseObj);
 
-          _.each(AGGREGATE_KEYS, key => aggregateObject[key] = aggregateObject[key].toFixed(2));
+          _.each(AGGREGATE_KEYS, aggKey => aggregateObject[aggKey] = aggregateObject[aggKey].toFixed(2));
 
           dataGroups[key].push(aggregateObject);
         });
