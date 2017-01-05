@@ -311,7 +311,7 @@ export default (app) => {
         }
 
         thermalPrinter.leftRight('Method', invoice.purchaseMethod);
-        thermalPrinter.leftRight('Time', dateFunctions.format(new Date(invoice.purchaseTime), 'YYYY-MM-DD HH:mm A'));
+        thermalPrinter.leftRight('Time', dateFunctions.format(new Date(invoice.purchaseTime), 'YYYY-MM-DD hh:mm A'));
         thermalPrinter.newLine();
 
         _.each(invoice.stockitems, item => {

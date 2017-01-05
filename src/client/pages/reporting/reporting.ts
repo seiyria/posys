@@ -259,7 +259,7 @@ export class ReportingPageComponent implements OnInit {
           if(!value) {
             prev[cur.name] = 'Never';
           } else {
-            prev[cur.name] = dateFunctions.format(new Date(value), 'YYYY-MM-DD HH:mm A');
+            prev[cur.name] = dateFunctions.format(new Date(value), 'YYYY-MM-DD hh:mm A');
           }
         }
 
@@ -315,8 +315,8 @@ export class ReportingPageComponent implements OnInit {
             dateFunctions.setMinutes(date, 0);
           });
 
-          const startDateFormatted = dateFunctions.format(startDateValue, 'YYYY-MM-DD HH:mm A');
-          const endDateFormatted = dateFunctions.format(endDateValue, 'YYYY-MM-DD HH:mm A');
+          const startDateFormatted = dateFunctions.format(startDateValue, 'YYYY-MM-DD hh:mm A');
+          const endDateFormatted = dateFunctions.format(endDateValue, 'YYYY-MM-DD hh:mm A');
 
           const baseObj = {
             'Purchase Time': `${startDateFormatted} - ${endDateFormatted}`,
