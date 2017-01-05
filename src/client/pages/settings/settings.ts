@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { ModalController } from 'ionic-angular';
+import { ModalController, NavController } from 'ionic-angular';
 
 import { AboutComponent } from './about/about';
 import { EditSettingsComponent } from './edit/editsettings';
+import { AuditPageComponent } from './audit/audit';
 
 @Component({
   selector: 'my-page-settings',
@@ -10,7 +11,7 @@ import { EditSettingsComponent } from './edit/editsettings';
 })
 export class SettingsPageComponent {
 
-  constructor(public modalCtrl: ModalController) {}
+  constructor(public modalCtrl: ModalController, public navCtrl: NavController) {}
 
   openEdit() {
     let modal = this.modalCtrl.create(EditSettingsComponent, { enableBackdropDismiss: false });
@@ -20,6 +21,10 @@ export class SettingsPageComponent {
   openAbout() {
     let modal = this.modalCtrl.create(AboutComponent, { enableBackdropDismiss: false });
     modal.present();
+  }
+
+  openAuditLog() {
+    this.navCtrl.push(AuditPageComponent);
   }
 
 }

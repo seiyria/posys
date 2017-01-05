@@ -7,6 +7,7 @@ import inventory from './inventory';
 import location from './location';
 import system from './system';
 import report from './report';
+import audit from './audit';
 
 export default (app) => {
   stockitem(app);
@@ -17,4 +18,5 @@ export default (app) => {
   location(app);
   system(app);
   report(app);
+  audit(app);
 };

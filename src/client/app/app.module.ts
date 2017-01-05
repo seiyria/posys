@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 
 import { IonicApp, IonicModule } from 'ionic-angular';
-import { Ng2Webstorage, LocalStorageService } from 'ng2-webstorage';
+import { Ng2Webstorage } from 'ng2-webstorage';
 
 import { MyAppComponent } from './app.component';
 import { HomePageComponent } from '../pages/home/home';
@@ -14,6 +14,7 @@ import { OUManagerComponent } from '../pages/inventory/oumanage/ou.management';
 import { QuickComponent } from '../pages/inventory/quick/quick';
 
 import { AboutComponent } from '../pages/settings/about/about';
+import { AuditPageComponent } from '../pages/settings/audit/audit';
 import { EditSettingsComponent } from '../pages/settings/edit/editsettings';
 import { SettingsPageComponent } from '../pages/settings/settings';
 import { LocationManagerComponent } from '../pages/settings/locationmanage/location.management';
@@ -54,8 +55,10 @@ import { TransactionPromoComponent, TransactionPromoPopoverComponent } from '../
 import { InventoryItemComponent } from '../pages/inventory/inventoryitem';
 import { PromotionDisplayComponent } from '../pages/promotions/promotiondisplay';
 import { InvoiceItemComponent } from '../pages/invoices/invoiceitem';
+import { AuditItemComponent } from '../pages/settings/audit/audititem';
 
 import { ApplicationSettingsService } from '../services/settings.service';
+import { AuditService } from '../services/audit.service';
 import { LoggerService } from '../services/logger.service';
 import { PromotionService } from '../services/promotion.service';
 import { StockItemService } from '../services/stockitem.service';
@@ -83,6 +86,7 @@ import { TruncatePipe } from '../pipes/truncate';
     QuickComponent,
 
     SettingsPageComponent,
+    AuditPageComponent,
     EditSettingsComponent,
     AboutComponent,
     LocationManagerComponent,
@@ -107,6 +111,7 @@ import { TruncatePipe } from '../pipes/truncate';
     PromotionDisplayComponent,
     QueryItemComponent,
     InvoiceItemComponent,
+    AuditItemComponent,
 
     AddButtonComponent,
     ConfirmButtonComponent,
@@ -144,6 +149,7 @@ import { TruncatePipe } from '../pipes/truncate';
     OUManagerComponent,
     QuickComponent,
     SettingsPageComponent,
+    AuditPageComponent,
     EditSettingsComponent,
     LocationManagerComponent,
     AboutComponent,
@@ -160,6 +166,7 @@ import { TruncatePipe } from '../pipes/truncate';
   ],
   providers: [
     ApplicationSettingsService,
+    AuditService,
     LoggerService,
     StockItemService,
     PromotionService,
