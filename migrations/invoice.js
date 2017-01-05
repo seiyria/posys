@@ -8,7 +8,7 @@ exports.up = (knex) => {
       table.increments('id').primary();
       table.dateTime('purchaseTime');
       table.dateTime('deleted_at');
-      table.string('locationName').notNullable();
+      table.string('locationId').unsigned().references('location.id');
       table.string('terminalId').notNullable();
       table.string('purchaseMethod');
       table.decimal('purchasePrice', TOTAL_DIGITS, CENT_DIGITS);

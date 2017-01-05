@@ -13,7 +13,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-list no-lines>
+  <ion-list>
 
     <ion-list-header>Regional Settings</ion-list-header>
     <ion-item>
@@ -21,8 +21,11 @@
       <ion-input type="text" [(ngModel)]="settings.application.businessName" maxlength="50"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label stacked>Location Name</ion-label>
-      <ion-input type="text" [(ngModel)]="settings.application.locationName" maxlength="50"></ion-input>
+      <ion-label stacked>Location</ion-label>
+      <ion-select [(ngModel)]="settings.application.locationName">
+        <ion-option *ngFor="let location of locations" [value]="location.id">{{ location.name }}</ion-option>
+      </ion-select>
+      <manage-button item-right (click)="manageLocations()"></manage-button>
     </ion-item>
     <ion-item>
       <ion-label stacked>Terminal Identifier</ion-label>
@@ -47,7 +50,7 @@
     <ion-item>
       <ion-label stacked>Printer</ion-label>
       <ion-select [(ngModel)]="settings.printer.name">
-        <ion-option *ngFor="let printer of printers" [value]="printer.name">{{ printer.name }} ({{ printer.status }})</ion-option>
+        <ion-option *ngFor="let printer of printers" [value]="printer.name">{{ printer.name }} ({{ printer.status || 'Unknown' }})</ion-option>
       </ion-select>
       <refresh-button item-right (click)="refreshPrinters()"></refresh-button>
     </ion-item>

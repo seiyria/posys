@@ -16,6 +16,7 @@ import { QuickComponent } from '../pages/inventory/quick/quick';
 import { AboutComponent } from '../pages/settings/about/about';
 import { EditSettingsComponent } from '../pages/settings/edit/editsettings';
 import { SettingsPageComponent } from '../pages/settings/settings';
+import { LocationManagerComponent } from '../pages/settings/locationmanage/location.management';
 
 import { PointOfSalePageComponent } from '../pages/pointofsale/pointofsale';
 import { CashPayComponent } from '../pages/pointofsale/cashpay/pointofsale.cashpay';
@@ -38,6 +39,7 @@ import { EditButtonComponent } from '../components/edit-button';
 import { ExportButtonComponent } from '../components/export-button';
 import { ResetButtonComponent } from '../components/reset-button';
 import { ImportButtonComponent } from '../components/import-button';
+import { ManageButtonComponent } from '../components/manage-button';
 import { PrintButtonComponent } from '../components/print-button';
 import { RefreshButtonComponent } from '../components/refresh-button';
 import { RemoveButtonComponent } from '../components/remove-button';
@@ -59,6 +61,7 @@ import { PromotionService } from '../services/promotion.service';
 import { StockItemService } from '../services/stockitem.service';
 import { InvoiceService } from '../services/invoice.service';
 import { InventoryService } from '../services/inventory.service';
+import { LocationService } from '../services/location.service';
 import { OrganizationalUnitService } from '../services/organizationalunit.service';
 import { ReportService } from '../services/report.service';
 
@@ -82,6 +85,8 @@ import { TruncatePipe } from '../pipes/truncate';
     SettingsPageComponent,
     EditSettingsComponent,
     AboutComponent,
+    LocationManagerComponent,
+
     PointOfSalePageComponent,
     CashPayComponent,
     InvoicesPageComponent,
@@ -110,6 +115,7 @@ import { TruncatePipe } from '../pipes/truncate';
     RefreshButtonComponent,
     ResetButtonComponent,
     ImportButtonComponent,
+    ManageButtonComponent,
     PrintButtonComponent,
     RemoveButtonComponent,
     ResumeTransactionButtonComponent,
@@ -139,6 +145,7 @@ import { TruncatePipe } from '../pipes/truncate';
     QuickComponent,
     SettingsPageComponent,
     EditSettingsComponent,
+    LocationManagerComponent,
     AboutComponent,
     PointOfSalePageComponent,
     CashPayComponent,
@@ -158,6 +165,7 @@ import { TruncatePipe } from '../pipes/truncate';
     PromotionService,
     InvoiceService,
     InventoryService,
+    LocationService,
     OrganizationalUnitService,
     ReportService,
     CurrencyPipe,
