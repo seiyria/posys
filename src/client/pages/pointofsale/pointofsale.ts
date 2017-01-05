@@ -314,7 +314,7 @@ export class PointOfSalePageComponent implements OnInit {
       .toPromise()
       .then(newInvoice => {
 
-        if(!this.settings.canPrint) {
+        if(!this.settings.canPrint || invoice.purchaseMethod === 'Void') {
           return;
         }
 

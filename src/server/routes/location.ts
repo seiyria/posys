@@ -3,6 +3,7 @@ import { Location } from '../orm/location';
 import { Logger } from '../logger';
 
 import { Location as LocationModel } from '../../client/models/location';
+import { recordAuditMessage, AUDIT_CATEGORIES } from './_audit';
 
 export default (app) => {
   app.get('/location', (req, res) => {
@@ -25,6 +26,7 @@ export default (app) => {
       .forge(loca)
       .save()
       .then(item => {
+        recordAuditMessage(req, AUDIT_CATEGORIES.LOCATION, `A new location was added (${loca.name}).`, { id: item.id });
         res.json(item);
       })
       .catch(e => {
@@ -39,6 +41,7 @@ export default (app) => {
       .forge({ id: req.params.id })
       .save(loca, { patch: true })
       .then(item => {
+        recordAuditMessage(req, AUDIT_CATEGORIES.LOCATION, `A location was changed (${loca.name}).`, { id: item.id });
         res.json(item);
       })
       .catch(e => {
@@ -56,6 +59,7 @@ export default (app) => {
       .forge({ id: req.params.id })
       .destroy()
       .then(item => {
+        recordAuditMessage(req, AUDIT_CATEGORIES.LOCATION, `A location was removed.`, { id: +req.params.id, oldId: +req.params.id });
         res.json(item);
       })
       .catch(e => {

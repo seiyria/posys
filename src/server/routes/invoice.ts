@@ -19,6 +19,8 @@ import { InvoicePromo as InvoicePromoModel } from '../../client/models/invoicepr
 import { Logger } from '../logger';
 import Settings from './_settings';
 
+import { recordAuditMessage, AUDIT_CATEGORIES } from './_audit';
+
 const dateFunctions = require('date-fns');
 const thermalPrinter = require('node-thermal-printer');
 
@@ -152,6 +154,7 @@ export default (app) => {
             .all(itemPromises(item).concat(promoPromises(item)).concat(otherPromises))
             .then(t.commit, t.rollback)
             .then(() => {
+              recordAuditMessage(req, AUDIT_CATEGORIES.INVOICE, `A new ${invoice.purchaseMethod} invoice was created for ${(+invoice.purchasePrice).toFixed(2)}.`, { id: item.id });
               res.json({ flash: `Transaction completed successfully.`, data: item });
             })
             .catch(errorHandler);
@@ -238,9 +241,13 @@ export default (app) => {
         const inventoryHash = itemsFromInvoiceToStockable(items);
         let inventoryPromises = [];
 
+        let type = '';
+
         if(unwrappedItem.isVoided) {
+          type = 'unvoided';
           inventoryPromises = incrementItems(inventoryHash);
         } else {
+          type = 'voided';
           inventoryPromises = decrementItems(inventoryHash);
         }
 
@@ -257,6 +264,7 @@ export default (app) => {
         Promise.all([savePromise].concat(inventoryPromises))
           .then(resolvedPromises => {
             // [0] is the saved item
+            recordAuditMessage(req, AUDIT_CATEGORIES.INVOICE, `An invoice was ${type}.`, { id: +req.params.id });
             res.json(resolvedPromises[0]);
           });
       })

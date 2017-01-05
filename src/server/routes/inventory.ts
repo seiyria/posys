@@ -8,6 +8,8 @@ import { OrganizationalUnit } from '../orm/organizationalunit';
 import { OrganizationalUnit as OrganizationalUnitModel } from '../../client/models/organizationalunit';
 import { Logger } from '../logger';
 
+import { recordAuditMessage, AUDIT_CATEGORIES } from './_audit';
+
 const getColumnsAndRelated = (columns) => {
   const withRelated = [];
 
@@ -29,6 +31,7 @@ export default (app) => {
       .collection()
       .fetch({ columns, withRelated })
       .then(collection => {
+        recordAuditMessage(req, AUDIT_CATEGORIES.INVENTORY, `All inventory was exported.`);
         res.json(collection.toJSON());
       })
       .catch(e => {
@@ -79,6 +82,7 @@ export default (app) => {
               .all(insertPromises)
               .then(t.commit, t.rollback)
               .then(() => {
+                recordAuditMessage(req, AUDIT_CATEGORIES.INVENTORY, `New inventory was imported.`);
                 res.json({ flash: `Import successful.`, data: item });
               })
               .catch(errorHandler);

@@ -8,6 +8,7 @@ import { ReportConfiguration } from '../orm/reportconfiguration';
 
 import { ReportConfiguration as ReportConfigurationModel } from '../../client/models/reportconfiguration';
 import { Logger } from '../logger';
+import { recordAuditMessage, AUDIT_CATEGORIES } from './_audit';
 
 const getColumnsAndRelated = (columns) => {
   const withRelated = [];
@@ -74,6 +75,7 @@ export default (app) => {
         if(!items.length) {
           resObj.flash = 'No data matched your query.';
         }
+        recordAuditMessage(req, AUDIT_CATEGORIES.REPORT, `A current inventory report was run.`);
         res.json(resObj);
       })
       .catch(e => {
@@ -119,6 +121,7 @@ export default (app) => {
         if(!data.length) {
           resObj.flash = 'No data matched your query.';
         }
+        recordAuditMessage(req, AUDIT_CATEGORIES.REPORT, `An old inventory report was run.`);
         res.json(resObj);
       })
       .catch(e => {
@@ -156,6 +159,7 @@ export default (app) => {
         if(!data.length) {
           resObj.flash = 'No data matched your query.';
         }
+        recordAuditMessage(req, AUDIT_CATEGORIES.REPORT, `A reorder inventory report was run.`);
         res.json(resObj);
       })
       .catch(e => {
@@ -198,6 +202,7 @@ export default (app) => {
         if(resObj.promotions) {
           resObj.promotions = { length: resObj.promotions.length };
         }
+        recordAuditMessage(req, AUDIT_CATEGORIES.REPORT, `A completed sales report was run.`);
         res.json(resObj);
       })
       .catch(e => {
@@ -243,6 +248,7 @@ export default (app) => {
         if(resObj.promotions) {
           resObj.promotions = { length: resObj.promotions.length };
         }
+        recordAuditMessage(req, AUDIT_CATEGORIES.REPORT, `A voided sales report was run.`);
         res.json(resObj);
       })
       .catch(e => {
@@ -272,6 +278,7 @@ export default (app) => {
       .forge()
       .save(req.body)
       .then(newReport => {
+        recordAuditMessage(req, AUDIT_CATEGORIES.REPORT, `A new report configuration was created (${newReport.name}).`, { id: newReport.id });
         res.json({ flash: `Created new report successfully`, data: newReport });
       })
       .catch(e => {
@@ -287,6 +294,7 @@ export default (app) => {
       .forge({ id: req.params.id })
       .save(req.body, { patch: true })
       .then(newReport => {
+        recordAuditMessage(req, AUDIT_CATEGORIES.REPORT, `A report configuration was updated (${newReport.name}).`, { id: newReport.id });
         res.json({ flash: `Updated report successfully`, data: newReport });
       })
       .catch(e => {
@@ -300,6 +308,7 @@ export default (app) => {
       .forge({ id: req.params.id })
       .destroy()
       .then(item => {
+        recordAuditMessage(req, AUDIT_CATEGORIES.REPORT, `A report configuration was removed.`, { id: +req.params.id, oldId: +req.params.id });
         res.json(item);
       })
       .catch(e => {

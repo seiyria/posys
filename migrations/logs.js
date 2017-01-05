@@ -4,14 +4,17 @@ exports.up = (knex) => {
     .createTable('errormessage', (table) => {
       table.increments('id').primary();
       table.string('message');
+      table.string('foundAt'); // client or server
       table.string('stack', 5000);
       table.timestamps();
     })
     .createTable('auditmessage', (table) => {
       table.increments('id').primary();
-      table.string('message');
+      table.integer('locationId').unsigned().references('location.id');
+      table.string('terminalId');
       table.string('module');
-      table.jsonb('object');
+      table.string('message');
+      table.jsonb('refObject');
       table.timestamps();
     });
 };
