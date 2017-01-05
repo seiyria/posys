@@ -6,8 +6,10 @@ import { AlertController } from 'ionic-angular';
 import { ReportService } from '../../services/report.service';
 import { ApplicationSettingsService } from '../../services/settings.service';
 import { OrganizationalUnitService } from '../../services/organizationalunit.service';
+import { LocationService } from '../../services/location.service';
 
 import { OrganizationalUnit } from '../../models/organizationalunit';
+import { Location } from '../../models/location';
 import { LimitedReportConfiguration, ReportConfiguration } from '../../models/reportconfiguration';
 
 import { AllReportConfigurations } from './configurations';
@@ -33,6 +35,7 @@ export class ReportingPageComponent implements OnInit {
   ];
 
   ous: OrganizationalUnit[];
+  locations: Location[];
   customReports: LimitedReportConfiguration[];
   currentReport: ReportConfiguration;
   runningReport: boolean;
@@ -42,6 +45,7 @@ export class ReportingPageComponent implements OnInit {
   constructor(public reportService: ReportService,
               private alertCtrl: AlertController,
               private ouService: OrganizationalUnitService,
+              private locaService: LocationService,
               private settings: ApplicationSettingsService) {}
 
   ngOnInit() {
@@ -51,6 +55,12 @@ export class ReportingPageComponent implements OnInit {
       .toPromise()
       .then(ous => {
         this.ous = ous;
+      });
+    this.locaService
+      .getAll()
+      .toPromise()
+      .then(locas => {
+        this.locations = locas;
       });
   }
 
@@ -399,7 +409,7 @@ export class ReportingPageComponent implements OnInit {
 <table>
   <caption class="main-title">${this.settings.businessName}</caption>
   <caption class="sub-title">${this.currentReport.name}</caption>
-  <caption class="info-title">Run at ${this.settings.locationName} - ${this.settings.terminalId} on ${new Date()}</caption>
+  <caption class="info-title">Run on ${new Date()}</caption>
   <caption class="info-title">Report Period: ${this.reportRunPeriod()}</caption>
   <caption>&nbsp;</caption>
   

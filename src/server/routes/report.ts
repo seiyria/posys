@@ -18,6 +18,12 @@ const getColumnsAndRelated = (columns) => {
     columns = _.reject(columns, testCol => testCol === 'organizationalunit.name');
   }
 
+  if(_.includes(columns, 'location.name')) {
+    columns.push('locationId');
+    withRelated.push('location');
+    columns = _.reject(columns, testCol => testCol === 'location.name');
+  }
+
   const vendorKeys = ['vendors[0].name', 'vendors[0].stockId', 'vendors[0].cost'];
 
   if(_.some(vendorKeys, key => _.includes(columns, key))) {
@@ -157,54 +163,20 @@ export default (app) => {
       });
   });
 
-  app.post('/report/base/invoice/reorder', (req, res) => {
-
-    const config: ReportConfigurationModel = req.body;
-
-    const { columns, withRelated } = getColumnsAndRelated(_.map(config.columns, 'key'));
-
-    StockItem
-      .forge()
-      .where(qb => {
-        if(config.ouFilter) {
-          qb.where('organizationalunitId', '=', config.ouFilter);
-        }
-
-        qb.andWhere('reorderThreshold', '>', 0);
-        qb.andWhere('reorderUpToAmount', '>', 0);
-        qb.whereRaw('quantity <= "reorderThreshold"');
-      })
-      .fetchAll({ columns, withRelated })
-      .then(collection => {
-        const items = collection.toJSON();
-        _.each(items, item => {
-          if(!item.vendors || !item.vendors.length) { return; }
-          item.vendors = [_.find(item.vendors, { isPreferred: true })];
-        });
-
-        const data = collection.toJSON();
-        const resObj: any = { data: items };
-        if(!data.length) {
-          resObj.flash = 'No data matched your query.';
-        }
-        res.json(resObj);
-      })
-      .catch(e => {
-        res.status(500).json(Logger.browserError(Logger.error('Route:Report/base/inventory/reorder:POST', e)));
-      });
-  });
-
   app.post('/report/base/sales/completed', (req, res) => {
 
     const config: ReportConfigurationModel = req.body;
 
     const { columns, withRelated } = getColumnsAndRelated(_.map(config.columns, 'key'));
     columns.push('id');
-    withRelated.push(...['stockitems', 'promotions']);
+    withRelated.push(...['stockitems', 'promotions', 'location']);
 
     Invoice
       .forge()
       .query(qb => {
+        if(config.locationFilter) {
+          qb.where('locationId', '=', config.locationFilter);
+        }
         qb
           .andWhere('purchaseTime', '>=', config.startDate)
           .andWhere('purchaseTime', '<', config.endDate)
@@ -239,11 +211,14 @@ export default (app) => {
 
     const { columns, withRelated } = getColumnsAndRelated(_.map(config.columns, 'key'));
     columns.push('id');
-    withRelated.push(...['stockitems', 'promotions']);
+    withRelated.push(...['stockitems', 'promotions', 'location']);
 
     Invoice
       .forge()
       .query(qb => {
+        if(config.locationFilter) {
+          qb.where('locationId', '=', config.locationFilter);
+        }
         qb
           .andWhere('purchaseTime', '>=', config.startDate)
           .andWhere('purchaseTime', '<', config.endDate)

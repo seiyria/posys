@@ -1,9 +1,15 @@
 
 import * as _ from 'lodash';
 
+class Location {
+  id: number;
+  name: string;
+}
+
 class ApplicationSettings {
   businessName: string;
-  locationName: string;
+  locationName: number;
+  location?: Location;
   terminalId: string;
   taxRate: number;
   currencyCode: string;

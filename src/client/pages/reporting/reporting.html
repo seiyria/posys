@@ -54,7 +54,7 @@
             </ion-item>
           </ion-col>
 
-          <ion-col width-40 *ngIf="currentReport.filters.multiDateFilter">
+          <ion-col width-20 *ngIf="currentReport.filters.multiDateFilter">
 
             <ion-row no-padding *ngIf="!currentReport.optionValues?.useCustomDatePicker">
               <ion-col width-50 no-padding>
@@ -94,16 +94,6 @@
 
           </ion-col>
 
-          <ion-col width-20 *ngIf="currentReport.filters.groupByDate">
-            <ion-item list-header shrunk-item-checkbox>
-              <ion-label stacked>Group By Date</ion-label>
-              <ion-select [(ngModel)]="currentReport.groupByDate" placeholder="Nothing">
-                <ion-option selected="true" value="">Nothing</ion-option>
-                <ion-option *ngFor="let den of dateDenominations">{{ den.name }}</ion-option>
-              </ion-select>
-            </ion-item>
-          </ion-col>
-
           <ion-col width-20 *ngIf="currentReport.filters.sortBy">
             <ion-item list-header shrunk-item-checkbox>
               <ion-label stacked>Sort By</ion-label>
@@ -114,12 +104,22 @@
             </ion-item>
           </ion-col>
 
-          <ion-col width-20 *ngIf="currentReport.filters.groupBy && !currentReport.filters.groupByDate">
+          <ion-col width-20 *ngIf="currentReport.filters.groupBy">
             <ion-item list-header shrunk-item-checkbox>
               <ion-label stacked>Group By</ion-label>
               <ion-select [(ngModel)]="currentReport.groupBy" placeholder="Nothing">
                 <ion-option selected="true" value="">Nothing</ion-option>
                 <ion-option *ngFor="let col of groupBys()" [disabled]="!col.checked">{{ col.name }}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col width-20 *ngIf="currentReport.filters.groupByDate">
+            <ion-item list-header shrunk-item-checkbox>
+              <ion-label stacked>Group By Date</ion-label>
+              <ion-select [(ngModel)]="currentReport.groupByDate" placeholder="Nothing">
+                <ion-option selected="true" value="">Nothing</ion-option>
+                <ion-option *ngFor="let den of dateDenominations">{{ den.name }}</ion-option>
               </ion-select>
             </ion-item>
           </ion-col>
@@ -130,6 +130,16 @@
               <ion-select [(ngModel)]="currentReport.ouFilter" placeholder="Nothing">
                 <ion-option selected="true" value="">Nothing</ion-option>
                 <ion-option *ngFor="let ou of ous" [value]="ou.id">{{ ou.name }}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col width-20 *ngIf="currentReport.filters.locationFilter">
+            <ion-item list-header shrunk-item-checkbox>
+              <ion-label stacked>Location Filter</ion-label>
+              <ion-select [(ngModel)]="currentReport.locationFilter" placeholder="Nothing">
+                <ion-option selected="true" value="">Nothing</ion-option>
+                <ion-option *ngFor="let loca of locations" [value]="loca.id">{{ loca.name }}</ion-option>
               </ion-select>
             </ion-item>
           </ion-col>

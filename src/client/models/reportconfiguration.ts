@@ -24,7 +24,9 @@ export class LimitedReportConfiguration {
   sortBy?: string;
   groupBy?: string;
   groupByDate?: string;
+
   ouFilter?: number;
+  locationFilter?: number;
 
   constructor(initializer: LimitedReportConfiguration) {
     this.id = initializer.id;
@@ -41,6 +43,7 @@ export class LimitedReportConfiguration {
     this.groupBy = initializer.groupBy;
     this.groupByDate = initializer.groupByDate;
     this.ouFilter = initializer.ouFilter;
+    this.locationFilter = initializer.locationFilter;
   }
 }
 

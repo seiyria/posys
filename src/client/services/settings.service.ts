@@ -54,7 +54,7 @@ export class ApplicationSettingsService {
   }
 
   get safeLocationName(): string {
-    return this.safeify(this.locationName);
+    return this.locationName;
   }
 
   get businessName(): string {

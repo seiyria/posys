@@ -20,6 +20,7 @@ exports.up = (knex) => {
       table.string('groupBy');
       table.string('groupByDate');
       table.integer('ouFilter').unsigned().references('organizationalunit.id');
+      table.integer('locationFilter').unsigned().references('location.id');
 
       table.dateTime('deleted_at');
       table.timestamps();

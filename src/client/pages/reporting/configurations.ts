@@ -20,6 +20,8 @@ const invoiceColumns = [
   { name: 'Purchase Time',    key: 'purchaseTime' },
   { name: 'Purchase Method',  key: 'purchaseMethod', allowGroup: true },
   { name: 'Purchase Price',   key: 'purchasePrice' },
+  { name: 'Location',         key: 'location.name', allowGroup: true },
+  { name: 'Terminal',         key: 'terminalId', allowGroup: true },
   { name: 'Tax Collected',    key: 'taxCollected' },
   { name: 'Cash Given',       key: 'cashGiven' },
   { name: 'Subtotal',         key: 'subtotal' },
@@ -59,7 +61,7 @@ export const AllReportConfigurations: ReportConfiguration[] = [
     columnChecked: ['Name', 'Quantity', 'Reorder Alert', 'Reorder Up To', 'Vendor Name', 'Vendor SKU', 'Vendor Cost'] },
 
   { internalId: 4, name: 'Sales (Completed)',   reportRoute: 'base/sales/completed',   columns: invoiceColumns,
-    filters: { multiDateFilter: true, sortBy: true, groupBy: true, groupByDate: true },
+    filters: { multiDateFilter: true, sortBy: true, groupBy: true, groupByDate: true, locationFilter: true },
     datePeriod: 0, dateDenomination: 'Day',
     options: [
       { name: 'Reverse Sort',         short: 'reverseSort' },
@@ -69,7 +71,7 @@ export const AllReportConfigurations: ReportConfiguration[] = [
     columnChecked: ['Purchase Time', 'Purchase Method', 'Purchase Price', 'Tax Collected', 'Subtotal', '# Items'] },
 
   { internalId: 5, name: 'Sales (Voided)',      reportRoute: 'base/sales/voided',      columns: invoiceColumns,
-    filters: { multiDateFilter: true, sortBy: true, groupBy: true, groupByDate: true },
+    filters: { multiDateFilter: true, sortBy: true, groupBy: true, groupByDate: true, locationFilter: true },
     datePeriod: 0, dateDenomination: 'Day',
     options: [
       { name: 'Reverse Sort',         short: 'reverseSort' },
@@ -79,7 +81,7 @@ export const AllReportConfigurations: ReportConfiguration[] = [
     columnChecked: ['Purchase Time', 'Purchase Method', 'Purchase Price', '# Items']  },
 
   { internalId: 6, name: 'Sales (Tax)',         reportRoute: 'base/sales/completed',   columns: invoiceColumns,
-    filters: { multiDateFilter: true, sortBy: true, groupBy: true, groupByDate: true },
+    filters: { multiDateFilter: true, sortBy: true, groupBy: true, groupByDate: true, locationFilter: true },
     datePeriod: 0, dateDenomination: 'Day',
     options: [
       { name: 'Reverse Sort',         short: 'reverseSort' },

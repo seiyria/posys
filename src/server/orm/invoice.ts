@@ -4,6 +4,7 @@ import { bookshelf } from '../server';
 
 import { InvoiceItem } from './invoiceitem';
 import { InvoicePromo } from './invoicepromo';
+import { Location } from './location';
 
 export const Invoice = bookshelf.Model.extend({
   tableName: 'invoice',
@@ -14,6 +15,9 @@ export const Invoice = bookshelf.Model.extend({
   },
   promotions: function() {
     return this.hasMany(InvoicePromo, 'invoiceId');
+  },
+  location: function() {
+    return this.belongsTo(Location, 'locationId');
   },
   validations: {
     purchaseTime: [
