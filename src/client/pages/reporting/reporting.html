@@ -94,16 +94,27 @@
 
           </ion-col>
 
+          <ion-col width-20 *ngIf="currentReport.filters.groupByDate">
+            <ion-item list-header shrunk-item-checkbox>
+              <ion-label stacked>Group By Date</ion-label>
+              <ion-select [(ngModel)]="currentReport.groupByDate" placeholder="Nothing">
+                <ion-option selected="true" value="">Nothing</ion-option>
+                <ion-option *ngFor="let den of dateDenominations">{{ den.name }}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
           <ion-col width-20 *ngIf="currentReport.filters.sortBy">
             <ion-item list-header shrunk-item-checkbox>
               <ion-label stacked>Sort By</ion-label>
               <ion-select [(ngModel)]="currentReport.sortBy" placeholder="Nothing">
+                <ion-option selected="true" value="">Nothing</ion-option>
                 <ion-option *ngFor="let col of currentReport.columns" [disabled]="!col.checked">{{ col.name }}</ion-option>
               </ion-select>
             </ion-item>
           </ion-col>
 
-          <ion-col width-20 *ngIf="currentReport.filters.groupBy">
+          <ion-col width-20 *ngIf="currentReport.filters.groupBy && !currentReport.filters.groupByDate">
             <ion-item list-header shrunk-item-checkbox>
               <ion-label stacked>Group By</ion-label>
               <ion-select [(ngModel)]="currentReport.groupBy" placeholder="Nothing">

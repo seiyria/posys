@@ -305,8 +305,6 @@ export default (app) => {
   });
 
   app.patch('/report/:id', (req, res) => {
-    console.log('update', req.body, req.params.id);
-
     const config = req.body;
     fixReport(config);
 

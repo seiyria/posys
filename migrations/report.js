@@ -18,6 +18,7 @@ exports.up = (knex) => {
 
       table.string('sortBy');
       table.string('groupBy');
+      table.string('groupByDate');
       table.integer('ouFilter').unsigned().references('organizationalunit.id');
 
       table.dateTime('deleted_at');

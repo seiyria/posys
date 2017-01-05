@@ -169,7 +169,9 @@ export class ReportingPageComponent implements OnInit {
   selectNewReport(reportConfig: ReportConfiguration) {
     this.currentReport = _.cloneDeep(reportConfig);
     _.each(this.currentReport.columnChecked, col => {
-      _.find(this.currentReport.columns, { name: col }).checked = true;
+      const checkCol =  _.find(this.currentReport.columns, { name: col });
+      if(!checkCol) { return; }
+      checkCol.checked = true;
     });
 
     if(this.currentReport.columnOrder && this.currentReport.columnOrder.length > 0) {
@@ -240,6 +242,8 @@ export class ReportingPageComponent implements OnInit {
   }
 
   private transformData(data): any[] {
+    const AGGREGATE_KEYS = ['Purchase Price', 'Tax Collected', 'Subtotal', 'Cash Given', '# Items', '# Promos'];
+
     let baseData = _.map(data, item => {
       return _.reduce(this.currentReport.columns, (prev, cur) => {
         if(!cur.checked && !cur.always) { return prev; }
@@ -255,7 +259,7 @@ export class ReportingPageComponent implements OnInit {
           if(!value) {
             prev[cur.name] = 'Never';
           } else {
-            prev[cur.name] = dateFunctions.format(new Date(value), 'YYYY-MM-DD HH:MM A');
+            prev[cur.name] = dateFunctions.format(new Date(value), 'YYYY-MM-DD HH:mm A');
           }
         }
 
@@ -291,6 +295,48 @@ export class ReportingPageComponent implements OnInit {
       dataGroups = _.groupBy(baseData, this.currentReport.groupBy);
     }
 
+    if(this.currentReport.groupByDate) {
+      const DATE_KEY = 'Purchase Time';
+      const dateGroupBy = this.currentReport.groupByDate;
+
+      _.each(dataGroups, (group, key) => {
+
+        dataGroups[key] = [];
+
+        const groupedByDate = _.groupBy(group, purchase => dateFunctions[`startOf${this.currentReport.groupByDate}`](purchase[DATE_KEY]));
+
+        _.each(groupedByDate, (dateGroup: any[]) => {
+
+          const startDateValue = dateFunctions[`startOf${dateGroupBy}`](dateGroup[0][DATE_KEY]);
+          const endDateValue = dateFunctions[`endOf${dateGroupBy}`](dateGroup[0][DATE_KEY]);
+
+          _.each([startDateValue, endDateValue], date => {
+            dateFunctions.setSeconds(date, 0);
+            dateFunctions.setMinutes(date, 0);
+          });
+
+          const startDateFormatted = dateFunctions.format(startDateValue, 'YYYY-MM-DD HH:mm A');
+          const endDateFormatted = dateFunctions.format(endDateValue, 'YYYY-MM-DD HH:mm A');
+
+          const baseObj = {
+            'Purchase Time': `${startDateFormatted} - ${endDateFormatted}`,
+            'Purchase Method': 'Unknown'
+          };
+
+          _.each(AGGREGATE_KEYS, key => baseObj[key] = 0);
+
+          const aggregateObject = _.reduce(dateGroup, (prev, cur) => {
+            _.each(AGGREGATE_KEYS, key => prev[key] += (+cur[key] || 0));
+            return prev;
+          }, baseObj);
+
+          _.each(AGGREGATE_KEYS, key => aggregateObject[key] = aggregateObject[key].toFixed(2));
+
+          dataGroups[key].push(aggregateObject);
+        });
+      });
+    }
+
     if(this.currentReport.optionValues.showTotals) {
       _.each(dataGroups, (group) => {
         const baseObj: any = { Name: 'Totals', doBold: true, 'Purchase Time': 'Totals' };
@@ -303,9 +349,8 @@ export class ReportingPageComponent implements OnInit {
           }, 0)).toFixed(2);
 
         } else if(_.some(group, (item: any) => item['Purchase Time'])) {
-          const keys = ['Purchase Price', 'Tax Collected', 'Subtotal', '# Items', '# Promos'];
 
-          _.each(keys, key => {
+          _.each(AGGREGATE_KEYS, key => {
             baseObj[key] = (_.reduce(group, (prev, cur: any) => prev + (+cur[key] || 0), 0)).toFixed(2);
           });
         }
