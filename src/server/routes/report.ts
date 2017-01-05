@@ -278,7 +278,10 @@ export default (app) => {
       .forge()
       .save(req.body)
       .then(newReport => {
-        recordAuditMessage(req, AUDIT_CATEGORIES.REPORT, `A new report configuration was created (${newReport.name}).`, { id: newReport.id });
+        recordAuditMessage(req,
+          AUDIT_CATEGORIES.REPORT,
+          `A new report configuration was created (${newReport.name}).`,
+          { id: newReport.id });
         res.json({ flash: `Created new report successfully`, data: newReport });
       })
       .catch(e => {
@@ -308,7 +311,10 @@ export default (app) => {
       .forge({ id: req.params.id })
       .destroy()
       .then(item => {
-        recordAuditMessage(req, AUDIT_CATEGORIES.REPORT, `A report configuration was removed.`, { id: +req.params.id, oldId: +req.params.id });
+        recordAuditMessage(req,
+          AUDIT_CATEGORIES.REPORT,
+          `A report configuration was removed.`,
+          { id: +req.params.id, oldId: +req.params.id });
         res.json(item);
       })
       .catch(e => {

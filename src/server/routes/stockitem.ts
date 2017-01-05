@@ -78,7 +78,10 @@ export default (app) => {
         .increment('quantity', v);
     }))
       .then(() => {
-        recordAuditMessage(req, AUDIT_CATEGORIES.STOCKITEM, `A stockitem import has completed (${_.keys(req.body).length} items, ${numItems} total).`, { items: req.body });
+        recordAuditMessage(req,
+          AUDIT_CATEGORIES.STOCKITEM,
+          `A stockitem import has completed (${_.keys(req.body).length} items, ${numItems} total).`,
+          { items: req.body });
         res.json({ flash: `Updated quantities for ${_.keys(req.body).length} stock items (${numItems} total imported)` });
       })
       .catch(e => {
@@ -97,7 +100,10 @@ export default (app) => {
         .decrement('quantity', v);
     }))
       .then(() => {
-        recordAuditMessage(req, AUDIT_CATEGORIES.STOCKITEM, `A stockitem export has completed (${_.keys(req.body).length} items, ${numItems} total).`, { items: req.body });
+        recordAuditMessage(req,
+          AUDIT_CATEGORIES.STOCKITEM,
+          `A stockitem export has completed (${_.keys(req.body).length} items, ${numItems} total).`,
+          { items: req.body });
         res.json({ flash: `Updated quantities for ${_.keys(req.body).length} stock items (${numItems} total exported)` });
       })
       .catch(e => {

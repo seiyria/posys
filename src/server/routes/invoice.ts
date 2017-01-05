@@ -154,7 +154,10 @@ export default (app) => {
             .all(itemPromises(item).concat(promoPromises(item)).concat(otherPromises))
             .then(t.commit, t.rollback)
             .then(() => {
-              recordAuditMessage(req, AUDIT_CATEGORIES.INVOICE, `A new ${invoice.purchaseMethod} invoice was created for ${(+invoice.purchasePrice).toFixed(2)}.`, { id: item.id });
+              recordAuditMessage(req,
+                AUDIT_CATEGORIES.INVOICE,
+                `A new ${invoice.purchaseMethod} invoice was created for ${(+invoice.purchasePrice).toFixed(2)}.`,
+                { id: item.id });
               res.json({ flash: `Transaction completed successfully.`, data: item });
             })
             .catch(errorHandler);

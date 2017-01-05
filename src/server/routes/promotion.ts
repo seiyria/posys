@@ -168,7 +168,10 @@ export default (app) => {
       applyId
     };
 
-    recordAuditMessage(req, AUDIT_CATEGORIES.PROMOTION, `A temporary promotion was added (${tempPromo.promo.name}).`, { id: item.id, item: tempPromo });
+    recordAuditMessage(req,
+      AUDIT_CATEGORIES.PROMOTION,
+      `A temporary promotion was added (${tempPromo.promo.name}).`,
+      { id: item.id, item: tempPromo });
 
     res.json(tempPromo);
 
@@ -292,7 +295,10 @@ export default (app) => {
             .destroy({ transacting: t })
               .then(t.commit, t.rollback)
               .then(() => {
-                recordAuditMessage(req, AUDIT_CATEGORIES.PROMOTION, `A promotion was removed.`, { id: +req.params.id, oldId: +req.params.id });
+                recordAuditMessage(req,
+                  AUDIT_CATEGORIES.PROMOTION,
+                  `A promotion was removed.`,
+                  { id: +req.params.id, oldId: +req.params.id });
                 res.json({ flash: `Removed promotion successfully.` });
             });
         })
