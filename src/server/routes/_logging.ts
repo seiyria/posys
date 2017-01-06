@@ -23,15 +23,6 @@ export const recordAuditMessage = (req, module, message, refObject?) => {
     .save();
 };
 
-export const recordErrorMessageFromClient = (req, errorMessage) => {
-  recordErrorMessage(req, 'Unknown', errorMessage.message, errorMessage.stack, 'Client');
-};
-
-export const recordErrorMessageFromServer = (req, module, error) => {
-  if(error.data) { return; }
-  recordErrorMessage(req, module, error.message, error.stack, 'Server');
-};
-
 export const recordErrorMessage = (req, module, message, stack, foundAt = 'Server') => {
   const insertRecord: any = { module, message, stack, foundAt };
   insertRecord.locationId = +req.header('X-Location');
@@ -40,4 +31,13 @@ export const recordErrorMessage = (req, module, message, stack, foundAt = 'Serve
   ErrorMessage
     .forge(insertRecord)
     .save();
+};
+
+export const recordErrorMessageFromClient = (req, errorMessage) => {
+  recordErrorMessage(req, 'Unknown', errorMessage.message, errorMessage.stack, 'Client');
+};
+
+export const recordErrorMessageFromServer = (req, module, error) => {
+  if(error.data) { return; }
+  recordErrorMessage(req, module, error.message, error.stack, 'Server');
 };
