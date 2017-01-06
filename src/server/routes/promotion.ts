@@ -61,7 +61,7 @@ const numPromoApplications = (promo: PromotionModel, transactionItems: StockItem
 
   let validItems: StockItemModel[] = [];
 
-  if(promo.discountGrouping === 'OU') {
+  if(promo.discountGrouping === 'Category') {
     validItems = _.filter(transactionItems, item => item.organizationalunitId === promo.organizationalunitId);
   } else {
     validItems = _.filter(transactionItems, item => _.includes(promoItemSKU, item.sku));
