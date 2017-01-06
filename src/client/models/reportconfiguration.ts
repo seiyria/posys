@@ -3,6 +3,8 @@ export type ReportRoute =
   'base/inventory/current'
 | 'base/inventory/old'
 | 'base/inventory/reorder'
+| 'base/promotions/all'
+| 'base/promotions/pos'
 | 'base/sales/completed'
 | 'base/sales/voided';
 

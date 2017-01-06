@@ -1,4 +1,6 @@
 
+import * as _ from 'lodash';
+
 import { AuditMessage } from '../orm/auditmessage';
 import { ErrorMessage } from '../orm/errormessage';
 
@@ -24,6 +26,9 @@ export const recordAuditMessage = (req, module, message, refObject?) => {
 };
 
 export const recordErrorMessage = (req, module, message, stack, foundAt = 'Server') => {
+
+  message = _.truncate(message, { length: 500, omission: '' });
+
   const insertRecord: any = { module, message, stack, foundAt };
   insertRecord.locationId = +req.header('X-Location');
   insertRecord.terminalId = req.header('X-Terminal');

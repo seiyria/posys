@@ -3,11 +3,15 @@
 import { bookshelf } from '../server';
 import { PromoItem } from './promoitem';
 import { OrganizationalUnit } from './organizationalunit';
+import { InvoicePromo } from './invoicepromo';
 
 export const Promotion = bookshelf.Model.extend({
   tableName: 'promo',
   hasTimestamps: true,
   softDelete: false,
+  invoicePromos: function() {
+    return this.hasMany(InvoicePromo, 'promoId');
+  },
   promoItems: function() {
     return this.hasMany(PromoItem, 'promoId');
   },

@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 
 import { OrganizationalUnit } from './organizationalunit';
 import { PromoItem } from './promoitem';
+import { InvoicePromo } from './invoicepromo';
 
 export type DiscountType =
   'Dollar' | 'Percent';
@@ -31,6 +32,7 @@ export class Promotion {
   organizationalunit?: OrganizationalUnit;
 
   promoItems?: PromoItem[];
+  invoicePromos?: InvoicePromo[];
 
   temporary?: boolean;
 

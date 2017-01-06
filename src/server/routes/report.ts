@@ -4,6 +4,8 @@ import * as _ from 'lodash';
 
 import { StockItem } from '../orm/stockitem';
 import { Invoice } from '../orm/invoice';
+import { Promotion } from '../orm/promotion';
+import { InvoicePromo } from '../orm/invoicepromo';
 import { ReportConfiguration } from '../orm/reportconfiguration';
 
 import { ReportConfiguration as ReportConfigurationModel } from '../../client/models/reportconfiguration';
@@ -167,6 +169,69 @@ export default (app) => {
       .catch(e => {
         recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
         res.status(500).json(Logger.browserError(Logger.error('Route:Report/base/inventory/reorder:POST', e)));
+      });
+  });
+
+  app.post('/report/base/promotions/all', (req, res) => {
+
+    const config: ReportConfigurationModel = req.body;
+
+    const { columns, withRelated } = getColumnsAndRelated(_.map(config.columns, 'key'));
+    columns.push('id');
+    withRelated.push(...['invoicePromos']);
+
+    Promotion
+      .forge()
+      .query(qb => {
+        qb
+          .andWhere('startDate', '>=', config.startDate)
+          .andWhere('startDate', '<', config.endDate);
+      })
+      .fetchAll({ columns, withRelated })
+      .then(collection => {
+        const data = collection.toJSON();
+        const resObj: any = { data };
+        if(!data.length) {
+          resObj.flash = 'No data matched your query.';
+        }
+        if(resObj.promoItems) {
+          resObj.promoItems = { length: resObj.promoItems.length };
+        }
+        recordAuditMessage(req, MESSAGE_CATEGORIES.REPORT, `A promotions report was run.`);
+        res.json(resObj);
+      })
+      .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
+        res.status(500).json(Logger.browserError(Logger.error('Route:Promotions/All:POST', e)));
+      });
+  });
+
+  app.post('/report/base/promotions/pos', (req, res) => {
+
+    const config: ReportConfigurationModel = req.body;
+
+    InvoicePromo
+      .forge()
+      .query(qb => {
+        qb
+          .whereNotNull('promoData')
+          .andWhereRaw(`"promoData" ->> 'startDate' >= ?`, [config.startDate])
+          .andWhereRaw(`"promoData" ->> 'startDate' < ?`, [config.endDate]);
+      })
+      .fetchAll()
+      .then(collection => {
+        const data = _.map(collection.toJSON(), 'promoData');
+        _.each(data, (item: any) => item.invoicePromos = { length: 1 });
+        const resObj: any = { data };
+        if(!data.length) {
+          resObj.flash = 'No data matched your query.';
+        }
+        recordAuditMessage(req, MESSAGE_CATEGORIES.REPORT, `A PoS promotions report was run.`);
+        res.json(resObj);
+      })
+      .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
+        res.status(500).json(Logger.browserError(Logger.error('Route:Promotions/PoS:POST', e)));
       });
   });
 
