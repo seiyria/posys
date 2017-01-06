@@ -188,6 +188,11 @@ ion-item[no-margin] .label {
   max-width: 40%;
 }
 
+[width-30] {
+  flex: 0 0 30%;
+  max-width: 30%;
+}
+
 .scroll-content {
   overflow-y: auto;
 }

@@ -15,6 +15,7 @@ import { QuickComponent } from '../pages/inventory/quick/quick';
 
 import { AboutComponent } from '../pages/settings/about/about';
 import { AuditPageComponent } from '../pages/settings/audit/audit';
+import { ErrorPageComponent } from '../pages/settings/error/error';
 import { EditSettingsComponent } from '../pages/settings/edit/editsettings';
 import { SettingsPageComponent } from '../pages/settings/settings';
 import { LocationManagerComponent } from '../pages/settings/locationmanage/location.management';
@@ -56,6 +57,7 @@ import { InventoryItemComponent } from '../pages/inventory/inventoryitem';
 import { PromotionDisplayComponent } from '../pages/promotions/promotiondisplay';
 import { InvoiceItemComponent } from '../pages/invoices/invoiceitem';
 import { AuditItemComponent } from '../pages/settings/audit/audititem';
+import { ErrorItemComponent } from '../pages/settings/error/erroritem';
 
 import { ApplicationSettingsService } from '../services/settings.service';
 import { AuditService } from '../services/audit.service';
@@ -89,6 +91,7 @@ import { TruncatePipe } from '../pipes/truncate';
 
     SettingsPageComponent,
     AuditPageComponent,
+    ErrorPageComponent,
     EditSettingsComponent,
     AboutComponent,
     LocationManagerComponent,
@@ -114,6 +117,7 @@ import { TruncatePipe } from '../pipes/truncate';
     QueryItemComponent,
     InvoiceItemComponent,
     AuditItemComponent,
+    ErrorItemComponent,
 
     AddButtonComponent,
     ConfirmButtonComponent,
@@ -152,6 +156,7 @@ import { TruncatePipe } from '../pipes/truncate';
     QuickComponent,
     SettingsPageComponent,
     AuditPageComponent,
+    ErrorPageComponent,
     EditSettingsComponent,
     LocationManagerComponent,
     AboutComponent,

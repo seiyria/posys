@@ -7,17 +7,24 @@
 <ion-content>
   <ion-grid vertical-center>
     <ion-row>
-      <ion-col width-20></ion-col>
+      <ion-col width-30></ion-col>
       <ion-col width-20 main-button text-center>
         <top-icon-button text="Technical Settings" icon="pulse" (subClick)="openEdit()"></top-icon-button>
       </ion-col>
       <ion-col width-20 main-button text-center>
+        <top-icon-button text="About Posys" icon="information-circle" (subClick)="openAbout()"></top-icon-button>
+      </ion-col>
+      <ion-col width-30></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col width-30></ion-col>
+      <ion-col width-20 main-button text-center>
         <top-icon-button text="Audit Log" icon="list-box" (subClick)="openAuditLog()"></top-icon-button>
       </ion-col>
       <ion-col width-20 main-button text-center>
-        <top-icon-button text="About Posys" icon="information-circle" (subClick)="openAbout()"></top-icon-button>
+        <top-icon-button text="Error Log" icon="alert" (subClick)="openErrorLog()"></top-icon-button>
       </ion-col>
-      <ion-col width-20></ion-col>
+      <ion-col width-30></ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
