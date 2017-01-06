@@ -12,7 +12,7 @@ export type ItemReductionType =
   'BuyXGetNext' | 'All';
 
 export type DiscountGrouping =
-  'SKU' | 'OU'
+  'SKU' | 'Category'
 
 export class Promotion {
   id?: number;

@@ -163,7 +163,7 @@
             <form-error [errorObj]="formErrors | async" key="discountGrouping"></form-error>
           </ion-item>
 
-          <ion-item form-item required *ngIf="promotion.discountGrouping === 'OU'">
+          <ion-item form-item required *ngIf="promotion.discountGrouping === 'Category'">
             <ion-label stacked>Category</ion-label>
             <ion-select [(ngModel)]="promotion.organizationalunitId">
               <ion-option *ngFor="let ou of allOU | async" value="{{ou.id}}">{{ou.name}}</ion-option>
