@@ -42,6 +42,7 @@
     "@angular/platform-browser": "^2.4.1",
     "@angular/platform-browser-dynamic": "^2.4.1",
     "@angular/platform-server": "^2.4.1",
+    "@ionic/app-scripts": "^1.0.0",
     "@ionic/storage": "1.1.6",
     "app-root-path": "^2.0.1",
     "body-parser": "^1.15.2",
@@ -79,6 +80,7 @@
     "electron-prebuilt": "^1.2.6",
     "git-revision-webpack-plugin": "^2.4.1",
     "nodemon": "^1.11.0",
+    "sw-toolbox": "^3.4.0",
     "ts-node": "1.7.0",
     "tslint": "^3.15.1",
     "typescript": "2.0.6"
