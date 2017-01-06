@@ -19,7 +19,7 @@ import { InvoicePromo as InvoicePromoModel } from '../../client/models/invoicepr
 import { Logger } from '../logger';
 import Settings from './_settings';
 
-import { recordAuditMessage, AUDIT_CATEGORIES } from './_audit';
+import { recordAuditMessage, recordErrorMessageFromServer, MESSAGE_CATEGORIES } from './_logging';
 
 const dateFunctions = require('date-fns');
 const thermalPrinter = require('node-thermal-printer');
@@ -97,6 +97,7 @@ export default (app) => {
 
     const errorHandler = (e) => {
       if(res.headersSent) { return; }
+      recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.INVOICE, e);
       res.status(500).json({ formErrors: e.data || [], flash: 'Transaction failed to complete correctly.' });
     };
 
@@ -155,7 +156,7 @@ export default (app) => {
             .then(t.commit, t.rollback)
             .then(() => {
               recordAuditMessage(req,
-                AUDIT_CATEGORIES.INVOICE,
+                MESSAGE_CATEGORIES.INVOICE,
                 `A new ${invoice.purchaseMethod} invoice was created for ${(+invoice.purchasePrice).toFixed(2)}.`,
                 { id: item.id });
               res.json({ flash: `Transaction completed successfully.`, data: item });
@@ -220,6 +221,7 @@ export default (app) => {
         res.json({ items: collection.toJSON(), pagination: collection.pagination });
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.INVOICE, e);
         res.status(500).json(Logger.browserError(Logger.error('Route:Invoice:GET', e)));
       });
   });
@@ -261,17 +263,19 @@ export default (app) => {
           .forge({ id: req.params.id })
           .save(unwrappedItem, { patch: true })
           .catch(e => {
+            recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.INVOICE, e);
             res.status(500).json(Logger.browserError(Logger.error('Route:Invoice/:id/void:POST', e)));
           });
 
         Promise.all([savePromise].concat(inventoryPromises))
           .then(resolvedPromises => {
             // [0] is the saved item
-            recordAuditMessage(req, AUDIT_CATEGORIES.INVOICE, `An invoice was ${type}.`, { id: +req.params.id });
+            recordAuditMessage(req, MESSAGE_CATEGORIES.INVOICE, `An invoice was ${type}.`, { id: +req.params.id });
             res.json(resolvedPromises[0]);
           });
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.INVOICE, e);
         res.status(500).json(Logger.browserError(Logger.error('Route:Invoice/:id/void:POST', e)));
       });
   });
@@ -394,11 +398,15 @@ export default (app) => {
             data: thermalPrinter.getBuffer(),
             type: 'RAW',
             success: () => res.json({ flash: 'Print successful.' }),
-            error: (e) => res.json({ flash: `Print failure: ${e.message}` })
+            error: (e) => {
+              recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.INVOICE, e);
+              res.json({ flash: `Print failure: ${e.message}`});
+            }
           });
 
         })
         .catch(e => {
+          recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.INVOICE, e);
           res.status(500).json(Logger.browserError(Logger.error('Route:Invoice/:id/print:POST', e)));
         });
     });

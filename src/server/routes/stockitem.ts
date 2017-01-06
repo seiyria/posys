@@ -9,7 +9,7 @@ import { StockItem as StockItemModel } from '../../client/models/stockitem';
 
 import { Logger } from '../logger';
 import Settings from './_settings';
-import { recordAuditMessage, AUDIT_CATEGORIES } from './_audit';
+import { recordAuditMessage, recordErrorMessageFromServer, MESSAGE_CATEGORIES } from './_logging';
 
 const cleanItem = (item) => {
   item.cost = +item.cost;
@@ -38,6 +38,7 @@ export default (app) => {
         res.json({ items: collection.toJSON(), pagination: collection.pagination });
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
         res.status(500).json(Logger.browserError(Logger.error('Route:StockItem:GET', e)));
       });
   });
@@ -63,6 +64,7 @@ export default (app) => {
         res.json(collection.toJSON());
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
         res.status(500).json(Logger.browserError(Logger.error('Route:StockItem/Search:POST', e)));
       });
   });
@@ -79,12 +81,13 @@ export default (app) => {
     }))
       .then(() => {
         recordAuditMessage(req,
-          AUDIT_CATEGORIES.STOCKITEM,
+          MESSAGE_CATEGORIES.STOCKITEM,
           `A stockitem import has completed (${_.keys(req.body).length} items, ${numItems} total).`,
           { items: req.body });
         res.json({ flash: `Updated quantities for ${_.keys(req.body).length} stock items (${numItems} total imported)` });
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
         res.status(500).json(Logger.browserError(Logger.error('Route:StockItem/import:POST', e)));
       });
   });
@@ -101,12 +104,13 @@ export default (app) => {
     }))
       .then(() => {
         recordAuditMessage(req,
-          AUDIT_CATEGORIES.STOCKITEM,
+          MESSAGE_CATEGORIES.STOCKITEM,
           `A stockitem export has completed (${_.keys(req.body).length} items, ${numItems} total).`,
           { items: req.body });
         res.json({ flash: `Updated quantities for ${_.keys(req.body).length} stock items (${numItems} total exported)` });
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
         res.status(500).json(Logger.browserError(Logger.error('Route:StockItem/export:POST', e)));
       });
   });
@@ -128,14 +132,16 @@ export default (app) => {
             }))
             .then(t.commit, t.rollback)
             .then(() => {
-              recordAuditMessage(req, AUDIT_CATEGORIES.STOCKITEM, `A new stockitem was created (${newItem.name}).`, { id: newItem.id });
+              recordAuditMessage(req, MESSAGE_CATEGORIES.STOCKITEM, `A new stockitem was created (${newItem.name}).`, { id: newItem.id });
               res.json({ flash: `Created new item successfully`, data: newItem });
             })
             .catch(e => {
+              recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
               res.status(500).json({ formErrors: e.data || [] });
             });
         })
         .catch(e => {
+          recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
           res.status(500).json({ formErrors: e.data || [] });
         });
     });
@@ -151,6 +157,7 @@ export default (app) => {
         res.json(item);
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
         res.status(500).json(Logger.browserError(Logger.error('Route:StockItem/:id:GET', e)));
       });
   });
@@ -182,15 +189,17 @@ export default (app) => {
                 }))
                 .then(t.commit, t.rollback)
                 .then(() => {
-                  recordAuditMessage(req, AUDIT_CATEGORIES.STOCKITEM, `A stockitem was updated (${realItem.name}).`, { id: realItem.id });
+                  recordAuditMessage(req, MESSAGE_CATEGORIES.STOCKITEM, `A stockitem was updated (${realItem.name}).`, { id: realItem.id });
                   res.json({ flash: `Updated item "${realItem.name}"`, data: realItem });
                 });
             })
             .catch(e => {
+              recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
               res.status(500).json({ formErrors: e.data || [] });
             });
         })
         .catch(e => {
+          recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
           const errorMessage = Logger.parseDatabaseError(e, 'Item');
           res.status(500).json({ flash: errorMessage });
         });
@@ -203,10 +212,11 @@ export default (app) => {
       .destroy()
       .then(item => {
         item = item.toJSON();
-        recordAuditMessage(req, AUDIT_CATEGORIES.STOCKITEM, `A stockitem was removed.`, { id: +req.params.id, oldId: +req.params.id });
+        recordAuditMessage(req, MESSAGE_CATEGORIES.STOCKITEM, `A stockitem was removed.`, { id: +req.params.id, oldId: +req.params.id });
         res.json({ flash: `Removed item successfully.`, data: item });
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
         const errorMessage = Logger.parseDatabaseError(e, 'Item');
         res.status(500).json({ flash: errorMessage });
       });

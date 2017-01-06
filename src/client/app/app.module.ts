@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 
 import { IonicApp, IonicModule } from 'ionic-angular';
@@ -59,6 +59,7 @@ import { AuditItemComponent } from '../pages/settings/audit/audititem';
 
 import { ApplicationSettingsService } from '../services/settings.service';
 import { AuditService } from '../services/audit.service';
+import { ErrorService } from '../services/error.service';
 import { LoggerService } from '../services/logger.service';
 import { PromotionService } from '../services/promotion.service';
 import { StockItemService } from '../services/stockitem.service';
@@ -68,7 +69,8 @@ import { LocationService } from '../services/location.service';
 import { OrganizationalUnitService } from '../services/organizationalunit.service';
 import { ReportService } from '../services/report.service';
 
-import { HttpClient } from '../services/http.custom';
+import { HttpClient } from '../services/override/http.custom';
+import { CustomErrorHandler } from '../services/override/error.custom';
 
 import { PaginationComponent } from 'ionic2-pagination';
 
@@ -167,6 +169,7 @@ import { TruncatePipe } from '../pipes/truncate';
   providers: [
     ApplicationSettingsService,
     AuditService,
+    ErrorService,
     LoggerService,
     StockItemService,
     PromotionService,
@@ -176,7 +179,8 @@ import { TruncatePipe } from '../pipes/truncate';
     OrganizationalUnitService,
     ReportService,
     CurrencyPipe,
-    HttpClient
+    HttpClient,
+    { provide: ErrorHandler, useClass: CustomErrorHandler }
   ]
 })
 export class AppModule {}

@@ -3,7 +3,7 @@ import { OrganizationalUnit } from '../orm/organizationalunit';
 import { Logger } from '../logger';
 
 import { OrganizationalUnit as OrganizationalUnitModel } from '../../client/models/organizationalunit';
-import { recordAuditMessage, AUDIT_CATEGORIES } from './_audit';
+import { recordAuditMessage, recordErrorMessageFromServer, MESSAGE_CATEGORIES } from './_logging';
 
 export default (app) => {
   app.get('/organizationalunit', (req, res) => {
@@ -15,6 +15,7 @@ export default (app) => {
         res.json(collection.toJSON());
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.OU, e);
         res.status(500).json(Logger.browserError(Logger.error('Route:OrganizationalUnit:GET', e)));
       });
   });
@@ -26,10 +27,11 @@ export default (app) => {
       .forge(ou)
       .save()
       .then(item => {
-        recordAuditMessage(req, AUDIT_CATEGORIES.OU, `A category was added (${ou.name}).`, { id: item.id });
+        recordAuditMessage(req, MESSAGE_CATEGORIES.OU, `A category was added (${ou.name}).`, { id: item.id });
         res.json(item);
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.OU, e);
         res.status(500).json({ formErrors: e.data || [] });
       });
   });
@@ -37,14 +39,19 @@ export default (app) => {
   app.patch('/organizationalunit/:id', (req, res) => {
     const ou = new OrganizationalUnitModel(req.body);
 
+    ou.name = '';
+
+    console.log(ou);
+
     OrganizationalUnit
       .forge({ id: req.params.id })
       .save(ou, { patch: true })
       .then(item => {
-        recordAuditMessage(req, AUDIT_CATEGORIES.OU, `A category was changed (${ou.name}).`, { id: item.id });
+        recordAuditMessage(req, MESSAGE_CATEGORIES.OU, `A category was changed (${ou.name}).`, { id: item.id });
         res.json(item);
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.OU, e);
         res.status(500).json({ formErrors: e.data || [] });
       });
   });
@@ -59,10 +66,11 @@ export default (app) => {
       .forge({ id: req.params.id })
       .destroy()
       .then(item => {
-        recordAuditMessage(req, AUDIT_CATEGORIES.OU, `A category was removed.`, { id: +req.params.id, oldId: +req.params.id });
+        recordAuditMessage(req, MESSAGE_CATEGORIES.OU, `A category was removed.`, { id: +req.params.id, oldId: +req.params.id });
         res.json(item);
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.OU, e);
         const errorMessage = Logger.parseDatabaseError(e, 'OU');
         res.status(500).json({ flash: errorMessage });
       });

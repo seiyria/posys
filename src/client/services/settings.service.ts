@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { URLSearchParams, Response } from '@angular/http';
 import { LocalStorageService } from 'ng2-webstorage';
-import { HttpClient } from './http.custom';
+import { HttpClient } from './override/http.custom';
 
 import { PurchaseMethod } from '../models/invoice';
 import { Settings } from '../models/settings';

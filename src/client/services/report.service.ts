@@ -8,7 +8,7 @@ import { ApplicationSettingsService } from './settings.service';
 
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
-import { HttpClient } from './http.custom';
+import { HttpClient } from './override/http.custom';
 import { Observable } from 'rxjs/Rx';
 
 @Injectable()

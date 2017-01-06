@@ -8,6 +8,7 @@ import location from './location';
 import system from './system';
 import report from './report';
 import audit from './audit';
+import error from './error';
 
 export default (app) => {
   stockitem(app);
@@ -19,4 +20,5 @@ export default (app) => {
   system(app);
   report(app);
   audit(app);
+  error(app);
 };

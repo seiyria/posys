@@ -7,6 +7,7 @@ import { ToastController } from 'ionic-angular';
 
 @Injectable()
 export class LoggerService {
+
   constructor(public toastCtrl: ToastController) {}
 
   error(e: Error|Response): void {

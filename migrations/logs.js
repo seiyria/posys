@@ -3,6 +3,8 @@ exports.up = (knex) => {
   return knex.schema
     .createTable('errormessage', (table) => {
       table.increments('id').primary();
+      table.integer('locationId').unsigned().references('location.id');
+      table.string('terminalId');
       table.string('message');
       table.string('foundAt'); // client or server
       table.string('stack', 5000);

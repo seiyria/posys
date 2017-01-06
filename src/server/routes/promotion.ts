@@ -12,7 +12,7 @@ import { StockItem as StockItemModel } from '../../client/models/stockitem';
 
 import { Logger } from '../logger';
 import Settings from './_settings';
-import { recordAuditMessage, AUDIT_CATEGORIES } from './_audit';
+import { recordAuditMessage, recordErrorMessageFromServer, MESSAGE_CATEGORIES } from './_logging';
 
 const calculatePromotionDiscount = (promo: PromotionModel, validItems: StockItemModel[]) => {
 
@@ -122,6 +122,7 @@ export default (app) => {
         res.json({ items: collection.toJSON(), pagination: collection.pagination });
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.PROMOTION, e);
         res.status(500).json(Logger.browserError(Logger.error('Route:Promotion:GET', e)));
       });
   });
@@ -144,14 +145,16 @@ export default (app) => {
             }))
             .then(t.commit, t.rollback)
             .then(() => {
-              recordAuditMessage(req, AUDIT_CATEGORIES.PROMOTION, `A new promotion was added (${newPromo.name}).`, { id: newPromo.id });
+              recordAuditMessage(req, MESSAGE_CATEGORIES.PROMOTION, `A new promotion was added (${newPromo.name}).`, { id: newPromo.id });
               res.json({ flash: `Created new promotion successfully`, data: newPromo });
             })
             .catch(e => {
+              recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.PROMOTION, e);
               res.status(500).json({ formErrors: e.data || [] });
             });
         })
         .catch(e => {
+          recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.PROMOTION, e);
           res.status(500).json({ formErrors: e.data || [] });
         });
     });
@@ -169,7 +172,7 @@ export default (app) => {
     };
 
     recordAuditMessage(req,
-      AUDIT_CATEGORIES.PROMOTION,
+      MESSAGE_CATEGORIES.PROMOTION,
       `A temporary promotion was added (${tempPromo.promo.name}).`,
       { id: item.id, item: tempPromo });
 
@@ -220,6 +223,7 @@ export default (app) => {
         res.json(promoApplicationData);
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.PROMOTION, e);
         res.status(500).json(Logger.browserError(Logger.error('Route:Promotion/check:POST', e)));
       });
   });
@@ -234,6 +238,7 @@ export default (app) => {
         res.json(item);
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.PROMOTION, e);
         res.status(500).json(Logger.browserError(Logger.error('Route:Promotion/:id:GET', e)));
       });
   });
@@ -265,15 +270,17 @@ export default (app) => {
                 }))
                 .then(t.commit, t.rollback)
                 .then(() => {
-                  recordAuditMessage(req, AUDIT_CATEGORIES.PROMOTION, `A promotion was changed (${promo.name}).`, { id: +req.params.id });
+                  recordAuditMessage(req, MESSAGE_CATEGORIES.PROMOTION, `A promotion was changed (${promo.name}).`, { id: +req.params.id });
                   res.json({ flash: `Updated promotion "${promo.name}"`, data: item });
                 });
             })
             .catch(e => {
+              recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.PROMOTION, e);
               res.status(500).json({ formErrors: e.data || [] });
             });
         })
         .catch(e => {
+          recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.PROMOTION, e);
           const errorMessage = Logger.parseDatabaseError(e, 'Item');
           res.status(500).json({ flash: errorMessage });
         });
@@ -296,13 +303,14 @@ export default (app) => {
               .then(t.commit, t.rollback)
               .then(() => {
                 recordAuditMessage(req,
-                  AUDIT_CATEGORIES.PROMOTION,
+                  MESSAGE_CATEGORIES.PROMOTION,
                   `A promotion was removed.`,
                   { id: +req.params.id, oldId: +req.params.id });
                 res.json({ flash: `Removed promotion successfully.` });
             });
         })
         .catch(e => {
+          recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.PROMOTION, e);
           const errorMessage = Logger.parseDatabaseError(e, 'Item');
           res.status(500).json({ flash: errorMessage });
         });

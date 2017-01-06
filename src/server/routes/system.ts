@@ -1,7 +1,7 @@
 
 import * as _ from 'lodash';
 import { readSettings, writeSettings } from './_settings';
-import { recordAuditMessage, AUDIT_CATEGORIES } from './_audit';
+import { recordAuditMessage, MESSAGE_CATEGORIES } from './_logging';
 
 const nodePrinter = require('printer');
 
@@ -28,7 +28,7 @@ export default (app) => {
     }
 
     writeSettings(JSON.stringify(req.body, null, 4), () => {
-      recordAuditMessage(req, AUDIT_CATEGORIES.SYSTEM, `System settings were updated.`, { settings: req.body });
+      recordAuditMessage(req, MESSAGE_CATEGORIES.SYSTEM, `System settings were updated.`, { settings: req.body });
       res.json({ flash: 'Settings updated successfully.', data: req.body });
     });
   });

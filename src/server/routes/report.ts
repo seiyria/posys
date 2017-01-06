@@ -8,7 +8,7 @@ import { ReportConfiguration } from '../orm/reportconfiguration';
 
 import { ReportConfiguration as ReportConfigurationModel } from '../../client/models/reportconfiguration';
 import { Logger } from '../logger';
-import { recordAuditMessage, AUDIT_CATEGORIES } from './_audit';
+import { recordAuditMessage, recordErrorMessageFromServer, MESSAGE_CATEGORIES } from './_logging';
 
 const getColumnsAndRelated = (columns) => {
   const withRelated = [];
@@ -75,10 +75,11 @@ export default (app) => {
         if(!items.length) {
           resObj.flash = 'No data matched your query.';
         }
-        recordAuditMessage(req, AUDIT_CATEGORIES.REPORT, `A current inventory report was run.`);
+        recordAuditMessage(req, MESSAGE_CATEGORIES.REPORT, `A current inventory report was run.`);
         res.json(resObj);
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
         res.status(500).json(Logger.browserError(Logger.error('Route:Report/base/inventory/current:POST', e)));
       });
   });
@@ -121,10 +122,11 @@ export default (app) => {
         if(!data.length) {
           resObj.flash = 'No data matched your query.';
         }
-        recordAuditMessage(req, AUDIT_CATEGORIES.REPORT, `An old inventory report was run.`);
+        recordAuditMessage(req, MESSAGE_CATEGORIES.REPORT, `An old inventory report was run.`);
         res.json(resObj);
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
         res.status(500).json(Logger.browserError(Logger.error('Route:Report/base/inventory/old:POST', e)));
       });
   });
@@ -159,10 +161,11 @@ export default (app) => {
         if(!data.length) {
           resObj.flash = 'No data matched your query.';
         }
-        recordAuditMessage(req, AUDIT_CATEGORIES.REPORT, `A reorder inventory report was run.`);
+        recordAuditMessage(req, MESSAGE_CATEGORIES.REPORT, `A reorder inventory report was run.`);
         res.json(resObj);
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
         res.status(500).json(Logger.browserError(Logger.error('Route:Report/base/inventory/reorder:POST', e)));
       });
   });
@@ -202,10 +205,11 @@ export default (app) => {
         if(resObj.promotions) {
           resObj.promotions = { length: resObj.promotions.length };
         }
-        recordAuditMessage(req, AUDIT_CATEGORIES.REPORT, `A completed sales report was run.`);
+        recordAuditMessage(req, MESSAGE_CATEGORIES.REPORT, `A completed sales report was run.`);
         res.json(resObj);
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
         res.status(500).json(Logger.browserError(Logger.error('Route:Sales/Completed:POST', e)));
       });
   });
@@ -248,10 +252,11 @@ export default (app) => {
         if(resObj.promotions) {
           resObj.promotions = { length: resObj.promotions.length };
         }
-        recordAuditMessage(req, AUDIT_CATEGORIES.REPORT, `A voided sales report was run.`);
+        recordAuditMessage(req, MESSAGE_CATEGORIES.REPORT, `A voided sales report was run.`);
         res.json(resObj);
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
         res.status(500).json(Logger.browserError(Logger.error('Route:Sales/Completed:POST', e)));
       });
   });
@@ -265,6 +270,7 @@ export default (app) => {
         res.json(collection);
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
         res.status(500).json(Logger.browserError(Logger.error('Route:Report:GET', e)));
       });
   });
@@ -279,12 +285,13 @@ export default (app) => {
       .save(req.body)
       .then(newReport => {
         recordAuditMessage(req,
-          AUDIT_CATEGORIES.REPORT,
+          MESSAGE_CATEGORIES.REPORT,
           `A new report configuration was created (${newReport.name}).`,
           { id: newReport.id });
         res.json({ flash: `Created new report successfully`, data: newReport });
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
         res.status(500).json({ formErrors: e.data || [] });
       });
   });
@@ -297,11 +304,11 @@ export default (app) => {
       .forge({ id: req.params.id })
       .save(req.body, { patch: true })
       .then(newReport => {
-        recordAuditMessage(req, AUDIT_CATEGORIES.REPORT, `A report configuration was updated (${newReport.name}).`, { id: newReport.id });
+        recordAuditMessage(req, MESSAGE_CATEGORIES.REPORT, `A report configuration was updated (${newReport.name}).`, { id: newReport.id });
         res.json({ flash: `Updated report successfully`, data: newReport });
       })
       .catch(e => {
-        console.error(e);
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
         res.status(500).json({ formErrors: e.data || [] });
       });
   });
@@ -312,12 +319,13 @@ export default (app) => {
       .destroy()
       .then(item => {
         recordAuditMessage(req,
-          AUDIT_CATEGORIES.REPORT,
+          MESSAGE_CATEGORIES.REPORT,
           `A report configuration was removed.`,
           { id: +req.params.id, oldId: +req.params.id });
         res.json(item);
       })
       .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.REPORT, e);
         const errorMessage = Logger.parseDatabaseError(e, 'ReportConfiguration');
         res.status(500).json({ flash: errorMessage });
       });
