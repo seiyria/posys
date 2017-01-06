@@ -108,15 +108,15 @@ export const reportAggregate = (report, reportName, settings, data) => {
 
 export const transformData = (report, settings, data): any[] => {
   const AGGREGATE_KEYS = [
-    { key: 'Purchase Price',  decimals: 2 },
-    { key: 'Tax Collected',   decimals: 2 },
-    { key: 'Subtotal',        decimals: 2 },
-    { key: 'Cash Given',      decimals: 2 },
-    { key: '# Items',         decimals: 0 },
-    { key: '# Promos',        decimals: 0 },
-    { key: '# Uses',          decimals: 0 },
-    { key: 'Quantity',        decimals: 0 },
-    { key: 'Reorder Quantity',decimals: 0 }
+    { key: 'Purchase Price',    decimals: 2 },
+    { key: 'Tax Collected',     decimals: 2 },
+    { key: 'Subtotal',          decimals: 2 },
+    { key: 'Cash Given',        decimals: 2 },
+    { key: '# Items',           decimals: 0 },
+    { key: '# Promos',          decimals: 0 },
+    { key: '# Uses',            decimals: 0 },
+    { key: 'Quantity',          decimals: 0 },
+    { key: 'Reorder Quantity',  decimals: 0 }
   ];
 
   let baseData = _.map(data, item => {
