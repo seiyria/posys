@@ -354,8 +354,8 @@ export default (app) => {
           const rightSideSpace = 8;
           const skuHalf = `-${item.realData.sku}`;
           const nameLength = characterWidth - skuHalf.length - rightSideSpace;
-          const name = cleanName(item.realData.name, nameLength);
-          thermalPrinter.println(`${name}${skuHalf}`);
+          const cleanedName = cleanName(item.realData.name, nameLength);
+          thermalPrinter.println(`${cleanedName}${skuHalf}`);
           thermalPrinter.leftRight(`${item.quantity} x ${item.cost}`, (+(item.cost * item.quantity)).toFixed(2));
 
           _.each(invoice.promotions, promo => {
