@@ -331,15 +331,21 @@ export default (app) => {
 
         _.each(invoice.stockitems, item => {
           thermalPrinter.alignLeft();
-          thermalPrinter.println(cleanName(item.realData.name, 40));
-          thermalPrinter.leftRight(item.realData.sku, item.cost);
+
+          // space for up to 100$ worth in transaction before the stuff starts to line up
+          const rightSideSpace = 8;
+          const skuHalf = `-${item.realData.sku}`;
+          const nameLength = skuHalf.length - rightSideSpace;
+          const name = cleanName(item.realData.name, nameLength);
+          thermalPrinter.println(name);
+          thermalPrinter.leftRight(`${item.quantity} × ${item.cost}`, item.cost * item.quantity);
 
           _.each(invoice.promotions, promo => {
             if(item.promoApplyId !== promo.applyId) {
               return;
             }
 
-            thermalPrinter.leftRight(cleanName(promo.realData.name), promo.cost);
+            thermalPrinter.leftRight(cleanName(promo.realData.name, characterWidth - rightSideSpace), promo.cost);
           });
         });
 
