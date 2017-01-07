@@ -290,7 +290,11 @@ export default (app) => {
 
     readSettings(data => {
 
-      const { name, header, footer, characterWidth, printMerchantReceipts } = data.printer;
+      let { name, type, header, footer, characterWidth, printMerchantReceipts, printReceiptBarcodes } = data.printer;
+      if(!characterWidth) {
+        characterWidth = 48;
+      }
+      const { businessName } = data.application;
 
       if(!printCustomer && !printMerchantReceipts) {
         return;
@@ -301,7 +305,7 @@ export default (app) => {
       }
 
       const cleanName = (printName, length = 22) => {
-        return _.truncate(printName, { length, omission: '' }).toUpperCase();
+        return _.truncate(printName, { length, omission: '' });
       };
 
       const invoiceItemData = (item) => {
@@ -316,29 +320,43 @@ export default (app) => {
 
       const printInvoice = (invoice: InvoiceModel, copy = 'Merchant') => {
 
-        thermalPrinter.init({ width: characterWidth });
+        thermalPrinter.clear();
+        thermalPrinter.init({ width: characterWidth, type });
 
         thermalPrinter.openCashDrawer();
+
+        if(businessName) {
+          thermalPrinter.alignCenter();
+          thermalPrinter.setTextDoubleHeight();
+          thermalPrinter.println(businessName);
+          thermalPrinter.setTextNormal();
+          thermalPrinter.alignLeft();
+        }
 
         if(header) {
           thermalPrinter.alignCenter();
           thermalPrinter.println(header);
+          thermalPrinter.newLine();
+          thermalPrinter.alignLeft();
         }
 
         thermalPrinter.leftRight('Method', invoice.purchaseMethod);
         thermalPrinter.leftRight('Time', dateFunctions.format(new Date(invoice.purchaseTime), 'YYYY-MM-DD hh:mm A'));
+        thermalPrinter.leftRight('Location', invoice.location.name);
+        thermalPrinter.leftRight('Terminal', invoice.terminalId);
+        thermalPrinter.leftRight('# Items', _.sumBy(invoice.stockitems, 'quantity'));
         thermalPrinter.newLine();
 
         _.each(invoice.stockitems, item => {
           thermalPrinter.alignLeft();
 
-          // space for up to 100$ worth in transaction before the stuff starts to line up
+          // space for up to 100$ worth in transaction before the stuff starts to overlap
           const rightSideSpace = 8;
           const skuHalf = `-${item.realData.sku}`;
-          const nameLength = skuHalf.length - rightSideSpace;
+          const nameLength = characterWidth - skuHalf.length - rightSideSpace;
           const name = cleanName(item.realData.name, nameLength);
-          thermalPrinter.println(name);
-          thermalPrinter.leftRight(`${item.quantity} × ${item.cost}`, item.cost * item.quantity);
+          thermalPrinter.println(`${name}${skuHalf}`);
+          thermalPrinter.leftRight(`${item.quantity} x ${item.cost}`, (+(item.cost * item.quantity)).toFixed(2));
 
           _.each(invoice.promotions, promo => {
             if(item.promoApplyId !== promo.applyId) {
@@ -351,7 +369,6 @@ export default (app) => {
 
         thermalPrinter.newLine();
 
-        thermalPrinter.bold(true);
         thermalPrinter.leftRight('Subtotal', invoice.subtotal);
         thermalPrinter.leftRight('Tax', invoice.taxCollected);
 
@@ -360,8 +377,6 @@ export default (app) => {
         thermalPrinter.setTextNormal();
 
         thermalPrinter.newLine();
-        thermalPrinter.leftRight('# Items', invoice.stockitems.length);
-        thermalPrinter.bold(false);
 
         thermalPrinter.newLine();
 
@@ -376,7 +391,14 @@ export default (app) => {
         thermalPrinter.newLine();
 
         thermalPrinter.alignCenter();
-        thermalPrinter.code128(invoice.id, { width: 'MEDIUM', text: 1 });
+        if(printReceiptBarcodes) {
+          if(type === 'epson') {
+            thermalPrinter.printBarcode(invoice.id, { });
+          } else if(type === 'star') {
+            thermalPrinter.code128(invoice.id, { width: 'MEDIUM', text: 1 });
+          }
+        }
+        thermalPrinter.newLine();
         thermalPrinter.println(`Invoice #${invoice.id}`);
         thermalPrinter.alignLeft();
 
@@ -386,7 +408,7 @@ export default (app) => {
       Invoice
         .forge({ id: req.params.id })
         .fetch({
-          withRelated: ['stockitems', 'promotions', 'stockitems._stockitemData', 'promotions._promoData']
+          withRelated: ['stockitems', 'promotions', 'stockitems._stockitemData', 'promotions._promoData', 'location']
         })
         .then(item => {
           const unwrappedItem = item.toJSON();

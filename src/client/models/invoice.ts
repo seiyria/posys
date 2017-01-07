@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 
 import { InvoiceItem } from './invoiceitem';
 import { InvoicePromo } from './invoicepromo';
+import { Location } from './location';
 
 export type PurchaseMethod =
   'Cash' | 'Check' | 'Debit' | 'Credit' | 'Custom' | 'Return' | 'Void';
@@ -19,8 +20,9 @@ export class Invoice {
   isReturned?: boolean;
   isOnHold?: boolean;
 
-  locationName?: string;
+  locationId?: number;
   terminalId?: string;
+  location?: Location;
 
   previousId?: number;
 

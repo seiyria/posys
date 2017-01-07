@@ -54,6 +54,13 @@
       </ion-select>
       <refresh-button item-right (click)="refreshPrinters()"></refresh-button>
     </ion-item>
+    <ion-item>
+      <ion-label stacked>Printer Type</ion-label>
+      <ion-select [(ngModel)]="settings.printer.type">
+        <ion-option value="epson">Epson-compatible</ion-option>
+        <ion-option value="star">STAR-compatible</ion-option>
+      </ion-select>
+    </ion-item>
 
     <ion-item>
       <ion-label stacked>Character Width</ion-label>
@@ -73,6 +80,11 @@
     <ion-item>
       <ion-label>Print Merchant Receipts</ion-label>
       <ion-checkbox [(ngModel)]="settings.printer.printMerchantReceipts"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Print Receipt Barcodes</ion-label>
+      <ion-checkbox [(ngModel)]="settings.printer.printReceiptBarcodes"></ion-checkbox>
     </ion-item>
 
     <ion-list-header>Database Settings</ion-list-header>

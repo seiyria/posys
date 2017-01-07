@@ -20,6 +20,10 @@ export const recordAuditMessage = (req, module, message, refObject?) => {
   insertRecord.locationId = +req.header('X-Location');
   insertRecord.terminalId = req.header('X-Terminal');
 
+  if(_.isNaN(insertRecord.locationId)) {
+    return;
+  }
+
   AuditMessage
     .forge(insertRecord)
     .save();
@@ -32,6 +36,10 @@ export const recordErrorMessage = (req, module, message, stack, foundAt = 'Serve
   const insertRecord: any = { module, message, stack, foundAt };
   insertRecord.locationId = +req.header('X-Location');
   insertRecord.terminalId = req.header('X-Terminal');
+
+  if(_.isNaN(insertRecord.locationId)) {
+    return;
+  }
 
   ErrorMessage
     .forge(insertRecord)

@@ -6,6 +6,8 @@ class Location {
   name: string;
 }
 
+type PrinterType = 'epson' | 'star';
+
 class ApplicationSettings {
   businessName: string;
   locationName: number;
@@ -18,10 +20,12 @@ class ApplicationSettings {
 
 class PrinterSettings {
   name: string;
+  type: PrinterType;
   characterWidth: number;
   header: string;
   footer: string;
   printMerchantReceipts: boolean;
+  printReceiptBarcodes: boolean;
 }
 
 class DatabaseSettings {
