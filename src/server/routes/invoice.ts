@@ -376,6 +376,11 @@ export default (app) => {
         thermalPrinter.leftRight('Grand Total', invoice.purchasePrice);
         thermalPrinter.setTextNormal();
 
+        if(invoice.purchaseMethod === 'Cash') {
+          thermalPrinter.leftRight('Cash Given', invoice.cashGiven);
+          thermalPrinter.leftRight('Change', invoice.cashGiven - invoice.purchasePrice);
+        }
+
         thermalPrinter.newLine();
 
         thermalPrinter.newLine();
