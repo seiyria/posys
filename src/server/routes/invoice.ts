@@ -172,7 +172,7 @@ export default (app) => {
     const pageOpts = {
       pageSize: +req.query.pageSize || Settings.pagination.pageSize,
       page: +req.query.page || 1,
-      withRelated: ['stockitems', 'promotions', 'stockitems._stockitemData', 'promotions._promoData']
+      withRelated: ['stockitems', 'promotions', 'stockitems._stockitemData', 'promotions._promoData', 'location']
     };
 
     const earliestDate  = req.query.earliestDate;

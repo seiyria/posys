@@ -14,7 +14,7 @@
 
 <ion-content my-modal-invoice-view>
   <ion-grid scroll-grid>
-    <ion-row top-row>
+    <ion-row top-row scroll-row>
       <ion-col>
         <ion-list>
           <ion-item *ngIf="invoice.isOnHold">
@@ -24,17 +24,18 @@
           <ion-item *ngIf="!invoice.isOnHold">
             <print-button (click)="printReceipt()" [disabled]="!settings.canPrint"></print-button>
           </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row info-row scroll-row>
+      <ion-col>
+        <ion-list>
 
           <ion-item *ngIf="!invoice.isOnHold">
             <ion-icon name="calendar" item-left></ion-icon>
             Purchase Date
             <ion-note item-right>{{ invoice.purchaseTime | date:'medium' }}</ion-note>
-          </ion-item>
-
-          <ion-item>
-            <ion-icon name="pricetag" item-left></ion-icon>
-            Total Sale
-            <ion-note item-right>{{ invoice.purchasePrice | currencyFromSettings }}</ion-note>
           </ion-item>
 
           <ion-item *ngIf="!invoice.isOnHold">
@@ -47,6 +48,24 @@
             <ion-icon name="cash" item-left></ion-icon>
             Cash Given
             <ion-note item-right>{{ invoice.cashGiven | currencyFromSettings }}</ion-note>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon name="pricetag" item-left></ion-icon>
+            Total Sale
+            <ion-note item-right>{{ invoice.purchasePrice | currencyFromSettings }}</ion-note>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon name="globe" item-left></ion-icon>
+            Location
+            <ion-note item-right>{{ invoice.location.name }}</ion-note>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon name="desktop" item-left></ion-icon>
+            Terminal
+            <ion-note item-right>{{ invoice.terminalId }}</ion-note>
           </ion-item>
         </ion-list>
       </ion-col>

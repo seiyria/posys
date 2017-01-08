@@ -6,7 +6,7 @@ import { Invoice } from '../models/invoice';
 @Component({
   selector: 'void-button',
   template: `
-    <button ion-button icon-left color="secondary">
+    <button ion-button icon-left color="danger">
       <ion-icon name="contrast"></ion-icon>
       {{ item.isVoided ? 'Un-void' : 'Void' }}
     </button>

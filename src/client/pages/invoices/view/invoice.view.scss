@@ -1,9 +1,13 @@
 [my-modal-invoice-view] {
   [top-row] {
-    flex: 2;
+    flex: 1;
+  }
+
+  [info-row] {
+    flex: 4;
   }
 
   [bottom-row] {
-    flex: 3;
+    flex: 5;
   }
 }
