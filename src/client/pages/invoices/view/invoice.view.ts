@@ -48,13 +48,13 @@ export class InvoiceViewComponent {
     return _.reduce(this.invoice.stockitems, (prev, cur) => prev + cur.quantity, 0);
   }
 
-  resumeTransaction() {
+  resumeTransaction(isReturn = false) {
     const rootNav = this.appCtrl.getRootNav();
     rootNav
       .popToRoot()
       .then(() => {
       this.dismiss();
-        rootNav.push(PointOfSalePageComponent, { prevInvoice: this.invoice });
+        rootNav.push(PointOfSalePageComponent, { prevInvoice: this.invoice, isReturn });
       });
   }
 

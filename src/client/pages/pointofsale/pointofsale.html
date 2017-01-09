@@ -77,36 +77,72 @@
         <ion-grid>
           <ion-row>
             <ion-col main-button>
-              <top-icon-button text="Hold" icon="pause" size="medium" (subClick)="holdTransaction()" [disabled]="currentTransaction.length === 0"></top-icon-button>
+              <top-icon-button text="Hold"
+                               icon="pause"
+                               size="medium"
+                               (subClick)="holdTransaction()"
+                               [disabled]="currentTransaction.length === 0 || isReturn"></top-icon-button>
             </ion-col>
             <ion-col main-button>
-              <top-icon-button text="Return" icon="exit" size="medium" (subClick)="returnItems()" [disabled]="currentTransaction.length === 0"></top-icon-button>
+              <top-icon-button text="Return"
+                               icon="exit"
+                               size="medium"
+                               (subClick)="returnItems()"
+                               [disabled]="currentTransaction.length === 0"></top-icon-button>
             </ion-col>
             <ion-col main-button>
-              <top-icon-button text="Void" icon="close" size="medium" (subClick)="voidTransaction()" [disabled]="currentTransaction.length === 0"></top-icon-button>
+              <top-icon-button text="Void"
+                               icon="close"
+                               size="medium"
+                               *ngIf="!isReturn"
+                               (subClick)="voidTransaction()"
+                               [disabled]="currentTransaction.length === 0"></top-icon-button>
+
+              <top-icon-button text="Cancel"
+                               icon="close"
+                               size="medium"
+                               *ngIf="isReturn"
+                               (subClick)="voidTransaction()"
+                               [disabled]="currentTransaction.length === 0"></top-icon-button>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col>
               <ion-row>
                 <ion-col main-button>
-                  <top-icon-button text="Cash" icon="calculator" size="medium" (subClick)="getCashValue()" [disabled]="currentTransaction.length === 0"></top-icon-button>
+                  <top-icon-button text="Cash"
+                                   icon="calculator"
+                                   size="medium"
+                                   (subClick)="getCashValue()"
+                                   [disabled]="currentTransaction.length === 0 || isReturn"></top-icon-button>
                 </ion-col>
                 <ion-col main-button>
-                  <top-icon-button text="Check" icon="cash" size="medium" (subClick)="finalize('Check')" [disabled]="currentTransaction.length === 0"></top-icon-button>
+                  <top-icon-button text="Check"
+                                   icon="cash"
+                                   size="medium"
+                                   (subClick)="finalize('Check')"
+                                   [disabled]="currentTransaction.length === 0 || isReturn"></top-icon-button>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col main-button>
-                  <top-icon-button text="Credit" icon="card" size="medium" (subClick)="finalize('Credit')" [disabled]="currentTransaction.length === 0"></top-icon-button>
+                  <top-icon-button text="Credit"
+                                   icon="card"
+                                   size="medium"
+                                   (subClick)="finalize('Credit')"
+                                   [disabled]="currentTransaction.length === 0 || isReturn"></top-icon-button>
                 </ion-col>
                 <ion-col main-button>
-                  <top-icon-button text="Debit" icon="card" size="medium" (subClick)="finalize('Debit')" [disabled]="currentTransaction.length === 0"></top-icon-button>
+                  <top-icon-button text="Debit"
+                                   icon="card"
+                                   size="medium"
+                                   (subClick)="finalize('Debit')"
+                                   [disabled]="currentTransaction.length === 0 || isReturn"></top-icon-button>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col width-50 main-button *ngIf="settings.hasCustomCurrency">
-                  <top-icon-button [text]="settings.settings.application.customBusinessCurrency" icon="card" size="medium" (subClick)="finalize('Custom')" [disabled]="currentTransaction.length === 0"></top-icon-button>
+                  <top-icon-button [text]="settings.settings.application.customBusinessCurrency" icon="card" size="medium" (subClick)="finalize('Custom')" [disabled]="currentTransaction.length === 0 || isReturn"></top-icon-button>
                 </ion-col>
               </ion-row>
             </ion-col>

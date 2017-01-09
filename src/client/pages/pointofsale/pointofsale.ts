@@ -35,6 +35,7 @@ export class PointOfSalePageComponent implements OnInit {
   public searchItems: StockItem[] = [];
   public showSearchItems: boolean;
   public omniCancelControl = new EventEmitter();
+  public isReturn: boolean;
 
   public prevTransaction: Invoice;
 
@@ -121,6 +122,7 @@ export class PointOfSalePageComponent implements OnInit {
 
   ngOnInit() {
     this.prevTransaction = this.navParams.get('prevInvoice');
+    this.isReturn = this.navParams.get('isReturn');
     if(this.prevTransaction) {
       _.each(this.prevTransaction.stockitems, item => {
         this.addTransactionItem(item.realData);
@@ -171,6 +173,7 @@ export class PointOfSalePageComponent implements OnInit {
     this.currentTransaction = [];
     this.currentPromotions = [];
     this.prevTransaction = null;
+    this.isReturn = false;
   }
 
   holdTransaction(): void {
@@ -207,6 +210,11 @@ export class PointOfSalePageComponent implements OnInit {
         {
           text: 'Confirm',
           handler: () => {
+            if(this.isReturn) {
+              this.clearTransaction();
+              return;
+            }
+
             this.createInvoice({
               purchaseMethod: 'Void',
               purchasePrice: 0.00,
@@ -300,7 +308,7 @@ export class PointOfSalePageComponent implements OnInit {
     const invoice = new Invoice(opts);
 
     if(this.prevTransaction) {
-      invoice.previousId = this.prevTransaction.id;
+      invoice.invoiceReferenceId = this.prevTransaction.id;
     }
 
     const printReceipt = (printInvoice, printCustomer: boolean) => {
@@ -314,7 +322,7 @@ export class PointOfSalePageComponent implements OnInit {
       .toPromise()
       .then(newInvoice => {
 
-        if(!this.settings.canPrint || invoice.purchaseMethod === 'Void') {
+        if(!newInvoice || !this.settings.canPrint || invoice.purchaseMethod === 'Void') {
           return;
         }
 

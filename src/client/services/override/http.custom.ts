@@ -9,14 +9,8 @@ import { LocalStorageService } from 'ng2-webstorage';
 @Injectable()
 export class HttpClient {
 
-  private locationName: string;
-  private terminalId: string;
-
   constructor(private http: Http,
-              private localStorage: LocalStorageService) {
-    this.localStorage.observe('locationName').subscribe(v => this.locationName = v);
-    this.localStorage.observe('terminalId').subscribe(v => this.terminalId = v);
-  }
+              private localStorage: LocalStorageService) {}
 
   private _setCustomHeaders(options?: RequestOptionsArgs): RequestOptionsArgs {
 
@@ -28,12 +22,15 @@ export class HttpClient {
       options.headers = new Headers();
     }
 
-    if(this.locationName) {
-      options.headers.set('X-Location', this.locationName);
+    const terminalId = this.localStorage.retrieve('terminalId');
+    const locationName = this.localStorage.retrieve('locationName');
+
+    if(locationName) {
+      options.headers.set('X-Location', locationName);
     }
 
-    if(this.terminalId) {
-      options.headers.set('X-Terminal', this.terminalId);
+    if(terminalId) {
+      options.headers.set('X-Terminal', terminalId);
     }
 
     return options;

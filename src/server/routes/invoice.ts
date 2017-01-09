@@ -142,9 +142,13 @@ export default (app) => {
         }
       }
 
-      if(invoice.previousId) {
-        otherPromises.push(Invoice.forge({ id: invoice.previousId }).destroy({ transacting: t }));
-        delete invoice.previousId;
+      if(invoice.invoiceReferenceId) {
+        if(invoice.purchaseMethod === 'Return') {
+
+
+        } else {
+          otherPromises.push(Invoice.forge({ id: invoice.invoiceReferenceId }).destroy({ transacting: t }));
+        }
       }
 
       Invoice
