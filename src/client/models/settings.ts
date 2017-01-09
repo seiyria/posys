@@ -60,7 +60,6 @@ export class Settings {
       && application.taxRate >= 0
       && application.businessName
       && application.locationName
-      && application.terminalId
 
       && !_.isUndefined(db.hostname) && db.hostname.length > 0
       && !_.isUndefined(db.username) && db.username.length > 0

@@ -100,7 +100,7 @@ export class ApplicationSettingsService {
   mergeSettings(newSettings): void {
     _.merge(this.settings, newSettings);
     this.localStorage.store('locationName', this.settings.application.locationName);
-    this.localStorage.store('terminalId', this.settings.application.terminalId);
+    // this.localStorage.store('terminalId', this.settings.application.terminalId);
   }
 
   getAllSettings(): void {

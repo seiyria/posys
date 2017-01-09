@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 
+import { LocalStorageService } from 'ng2-webstorage';
+
 import { ApplicationSettingsService } from '../../services/settings.service';
 
 import { PointOfSalePageComponent } from '../pointofsale/pointofsale';
@@ -17,10 +19,10 @@ import { SettingsPageComponent } from '../settings/settings';
 })
 export class HomePageComponent {
 
-  constructor(public navCtrl: NavController, public settings: ApplicationSettingsService) {}
+  constructor(public navCtrl: NavController, public settings: ApplicationSettingsService, public storage: LocalStorageService) {}
 
   isInvalidSetup() {
-    return !this.settings.isValidConfiguration();
+    return !this.settings.isValidConfiguration() || !this.storage.retrieve('terminalId');
   }
 
   goToInventory() {

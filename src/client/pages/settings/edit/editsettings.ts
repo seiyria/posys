@@ -5,6 +5,8 @@ import { ApplicationSettingsService } from '../../../services/settings.service';
 import { LocationService } from '../../../services/location.service';
 import { Settings } from '../../../models/settings';
 
+import { LocalStorage } from 'ng2-webstorage';
+
 import { LocationManagerComponent } from '../locationmanage/location.management';
 
 const cc = require('currency-codes');
@@ -19,6 +21,9 @@ export class EditSettingsComponent implements OnInit {
 
   public printers: any[];
   public locations: any[];
+
+  @LocalStorage()
+  public terminalId: string;
 
   constructor(public viewCtrl: ViewController,
               public modalCtrl: ModalController,
