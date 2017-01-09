@@ -16,14 +16,14 @@ import { recordAuditMessage, recordErrorMessageFromServer, MESSAGE_CATEGORIES } 
 
 // used when figuring out SetTo promotions
 // thanks http://stackoverflow.com/a/38925164/926845
-const fill = x=> y=> (new Array(y)).fill(x);
+const fill = x => y => (new Array(y)).fill(x);
 
-const quotrem = x=> y=> [Math.floor(y/x), Math.floor(y % x)];
+const quotrem = x => y => [Math.floor(y / x), Math.floor(y % x)];
 
-const distribute = p=> d=> n=> {
-  let e = Math.pow(10,p);
-  let [q,r] = quotrem(d)(n*e);
-  return fill((q+1)/e)(r).concat(fill(q/e)(d-r))
+const distribute = p => d => n => {
+  let e = Math.pow(10, p);
+  let [q, r] = quotrem(d)(n * e);
+  return fill((q + 1) / e)(r).concat(fill(q / e)(d - r));
 };
 
 const calculatePromotionDiscount = (promo: PromotionModel, validItems: StockItemModel[], otherPromos?: any[]) => {
@@ -63,7 +63,7 @@ const calculatePromotionDiscount = (promo: PromotionModel, validItems: StockItem
   } else if(promo.itemReductionType === 'SetTo') {
 
     const itemsAppliedTo = _.filter(validItems, item => {
-      return _.find(otherPromos, promo => promo.applyId === item.promoApplyId);
+      return _.find(otherPromos, checkPromo => checkPromo.applyId === item.promoApplyId);
     });
 
     const nextPrice = itemsAppliedTo.length;
@@ -244,7 +244,10 @@ export default (app) => {
           let itemClone = _.cloneDeep(validItems);
 
           _.each(allPromos, promoContainer => {
-            const { discount, affectedItems, affectedSKUs, applyId } = calculatePromotionDiscount(promoContainer.promo, itemClone, allPromos);
+            const { discount,
+                    affectedItems,
+                    affectedSKUs,
+                    applyId } = calculatePromotionDiscount(promoContainer.promo, itemClone, allPromos);
 
             if(affectedItems.length > 0 && promoContainer.promo.itemReductionType !== 'SetTo') {
               itemClone = _.reject(itemClone, item => _.includes(affectedItems, item));
