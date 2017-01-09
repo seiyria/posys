@@ -145,7 +145,6 @@ export default (app) => {
       if(invoice.invoiceReferenceId) {
         if(invoice.purchaseMethod === 'Return') {
 
-
         } else {
           otherPromises.push(Invoice.forge({ id: invoice.invoiceReferenceId }).destroy({ transacting: t }));
         }

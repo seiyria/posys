@@ -12,7 +12,7 @@ import { Component, Input } from '@angular/core';
 })
 export class ResumeTransactionButtonComponent {
 
-  @Input() isReturn: boolean
+  @Input() isReturn: boolean;
 
   constructor() {}
 
