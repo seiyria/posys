@@ -9,7 +9,7 @@ export type DiscountType =
   'Dollar' | 'Percent';
 
 export type ItemReductionType =
-  'BuyXGetNext' | 'All';
+  'BuyXGetNext' | 'All' | 'SetTo';
 
 export type DiscountGrouping =
   'SKU' | 'Category'

@@ -14,7 +14,19 @@ import { Logger } from '../logger';
 import Settings from './_settings';
 import { recordAuditMessage, recordErrorMessageFromServer, MESSAGE_CATEGORIES } from './_logging';
 
-const calculatePromotionDiscount = (promo: PromotionModel, validItems: StockItemModel[]) => {
+// used when figuring out SetTo promotions
+// thanks http://stackoverflow.com/a/38925164/926845
+const fill = x=> y=> (new Array(y)).fill(x);
+
+const quotrem = x=> y=> [Math.floor(y/x), Math.floor(y % x)];
+
+const distribute = p=> d=> n=> {
+  let e = Math.pow(10,p);
+  let [q,r] = quotrem(d)(n*e);
+  return fill((q+1)/e)(r).concat(fill(q/e)(d-r))
+};
+
+const calculatePromotionDiscount = (promo: PromotionModel, validItems: StockItemModel[], otherPromos?: any[]) => {
 
   let discount = 0;
   let affectedSKUs = [];
@@ -47,6 +59,23 @@ const calculatePromotionDiscount = (promo: PromotionModel, validItems: StockItem
     }
 
     affectedSKUs = _.map(affectedItems, 'sku');
+
+  } else if(promo.itemReductionType === 'SetTo') {
+
+    const itemsAppliedTo = _.filter(validItems, item => {
+      return _.find(otherPromos, promo => promo.applyId === item.promoApplyId);
+    });
+
+    const nextPrice = itemsAppliedTo.length;
+    const basePrices = distribute(2)(promo.numItemsRequired)(promo.discountValue).reverse();
+
+    const allPrices = _.flatten(fill(basePrices)(promo.numItemsRequired));
+
+    const chosenItem = validItems[nextPrice];
+
+    affectedItems = [chosenItem];
+    discount = chosenItem.cost - allPrices[nextPrice];
+    affectedSKUs = [chosenItem.sku];
   }
 
   applyId = _.last(affectedItems).promoApplyId;
@@ -72,7 +101,16 @@ const numPromoApplications = (promo: PromotionModel, transactionItems: StockItem
     return _.map(new Array(item.quantity), () => _.cloneDeep(item));
   }));
 
-  const numApplications = Math.floor(validItems.length / numItemsRequired);
+  let numApplications = 0;
+  const totalGroups = Math.floor(validItems.length / numItemsRequired);
+
+  if(promo.itemReductionType === 'SetTo') {
+    numApplications = totalGroups * numItemsRequired;
+    validItems.length = numApplications;
+
+  } else {
+    numApplications = totalGroups;
+  }
 
   return { numApplications, validItems };
 };
@@ -206,9 +244,9 @@ export default (app) => {
           let itemClone = _.cloneDeep(validItems);
 
           _.each(allPromos, promoContainer => {
-            const { discount, affectedItems, affectedSKUs, applyId } = calculatePromotionDiscount(promoContainer.promo, itemClone);
+            const { discount, affectedItems, affectedSKUs, applyId } = calculatePromotionDiscount(promoContainer.promo, itemClone, allPromos);
 
-            if(affectedItems.length > 0) {
+            if(affectedItems.length > 0 && promoContainer.promo.itemReductionType !== 'SetTo') {
               itemClone = _.reject(itemClone, item => _.includes(affectedItems, item));
             }
 

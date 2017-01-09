@@ -59,7 +59,7 @@
             </ion-col>
           </ion-row>
 
-          <ion-row form-item radio-group [(ngModel)]="promotion.itemReductionType">
+          <ion-row form-item radio-group [(ngModel)]="promotion.itemReductionType" (ionChange)="changeReductionType()">
             <ion-col no-padding>
               <ion-item>
                 <ion-label>All</ion-label>
@@ -70,6 +70,12 @@
               <ion-item>
                 <ion-label>BXGN</ion-label>
                 <ion-radio value="BuyXGetNext"></ion-radio>
+              </ion-item>
+            </ion-col>
+            <ion-col no-padding>
+              <ion-item>
+                <ion-label>Set To</ion-label>
+                <ion-radio value="SetTo"></ion-radio>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -107,7 +113,7 @@
                 <ion-radio value="Dollar"></ion-radio>
               </ion-item>
             </ion-col>
-            <ion-col no-padding>
+            <ion-col no-padding *ngIf="promotion.itemReductionType !== 'SetTo'">
               <ion-item>
                 <ion-label>{{ promotion.discountType === 'Percent' ? promotion.discountValue : '' }}%</ion-label>
                 <ion-radio value="Percent"></ion-radio>

@@ -59,6 +59,17 @@ export class PromotionDisplayComponent {
     if(this.item.itemReductionType === 'All' && this.item.numItemsRequired === 1) {
       return 'All';
     }
-    return this.item.itemReductionType === 'All' ? `After ${this.item.numItemsRequired}, ` : `B${this.item.numItemsRequired}GN`;
+
+    if(this.item.itemReductionType === 'All') {
+      return `After ${this.item.numItemsRequired}, `;
+
+    } else if(this.item.itemReductionType === 'BuyXGetNext') {
+      return `B${this.item.numItemsRequired}GN`;
+
+    } else if(this.item.itemReductionType === 'SetTo') {
+      return `${this.item.numItemsRequired} for `;
+    }
+
+    return 'Unknown';
   }
 }

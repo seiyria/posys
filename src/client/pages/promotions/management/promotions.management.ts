@@ -72,6 +72,12 @@ export class PromotionsManagerComponent implements OnInit {
     });
   }
 
+  changeReductionType() {
+    if(this.promotion.itemReductionType === 'SetTo') {
+      this.promotion.discountType = 'Dollar';
+    }
+  }
+
   changeDiscount() {
     if(this.promotion.discountValue > 100 && this.promotion.discountType === 'Percent') {
       this.promotion.discountValue = 100;

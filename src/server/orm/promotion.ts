@@ -55,7 +55,7 @@ export const Promotion = bookshelf.Model.extend({
       },
       {
         method: 'isIn',
-        args: { arr: ['SKU', 'OU'] },
+        args: { arr: ['SKU', 'Category'] },
         error: 'Your discount grouping is invalid.'
       }
     ],
@@ -66,7 +66,7 @@ export const Promotion = bookshelf.Model.extend({
       },
       {
         method: 'isIn',
-        args: { arr: ['BuyXGetNext', 'All'] },
+        args: { arr: ['BuyXGetNext', 'All', 'SetTo'] },
         error: 'Your promotion type is invalid.'
       }
     ],
