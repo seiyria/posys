@@ -16,6 +16,9 @@ export const Invoice = bookshelf.Model.extend({
   promotions: function() {
     return this.hasMany(InvoicePromo, 'invoiceId');
   },
+  invoices: function() {
+    return this.hasMany(Invoice, 'invoiceReferenceId');
+  },
   location: function() {
     return this.belongsTo(Location, 'locationId');
   },

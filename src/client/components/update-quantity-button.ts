@@ -6,7 +6,7 @@ import { AlertController } from 'ionic-angular';
 @Component({
   selector: 'update-quantity-button',
   template: `
-    <button ion-button small color="secondary" (click)="updateQuantity()">
+    <button ion-button small color="secondary" (click)="updateQuantity()" [disabled]="disabled">
       {{ quantity }}
     </button>
 `
@@ -14,6 +14,7 @@ import { AlertController } from 'ionic-angular';
 export class UpdateQuantityButtonComponent {
 
   @Input() quantity: number;
+  @Input() disabled: boolean;
   @Output() quantityChange = new EventEmitter();
 
   constructor(public alertCtrl: AlertController) {}

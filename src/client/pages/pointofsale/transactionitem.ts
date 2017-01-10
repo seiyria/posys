@@ -28,12 +28,12 @@ import { StockItem } from '../../models/stockitem';
           {{ item.sku }}
         </ion-col>
         <ion-col width-10 no-padding vertical-center>
-          <update-quantity-button [quantity]="item.quantity" (quantityChange)="updateQuantity($event, item)"></update-quantity-button>
+          <update-quantity-button [quantity]="item.quantity" [disabled]="disableQuantity" (quantityChange)="updateQuantity($event, item)"></update-quantity-button>
         </ion-col>
         <ion-col width-20 no-padding vertical-center>
           <ion-item shrunk-item-checkbox no-border-bottom label-right tax-cost-entry>
             <ion-label>{{ item.cost | currencyFromSettings }}</ion-label>
-            <ion-checkbox color="primary" [(ngModel)]="item.taxable"></ion-checkbox>
+            <ion-checkbox color="primary" [(ngModel)]="item.taxable" [disabled]="disableQuantity"></ion-checkbox>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -49,6 +49,7 @@ export class TransactionItemComponent {
   @Input() item: StockItem;
   @Input() buttons: any[];
   @Input() index: number;
+  @Input() disableQuantity: boolean;
 
   @Output() quantityChange = new EventEmitter();
 

@@ -124,7 +124,18 @@ export class PointOfSalePageComponent implements OnInit {
     this.prevTransaction = this.navParams.get('prevInvoice');
     this.isReturn = this.navParams.get('isReturn');
     if(this.prevTransaction) {
+      let allReturnedItems = _.flattenDeep(_.map(this.prevTransaction.invoices, 'stockitems'));
+
+      // get rid of all previously returned items so they can't be attempted to be returned again
       _.each(this.prevTransaction.stockitems, item => {
+        const foundMatch = _.find(allReturnedItems, (checkItem: any) => {
+          return checkItem.realData.sku === item.realData.sku && checkItem.quantity === item.quantity;
+        });
+
+        if(foundMatch) {
+          allReturnedItems = _.reject(allReturnedItems, check => check === foundMatch);
+          return;
+        }
         this.addTransactionItem(item.realData);
       });
     }
@@ -242,7 +253,8 @@ export class PointOfSalePageComponent implements OnInit {
               purchaseMethod: 'Return',
               purchasePrice: -this.total,
               isReturned: true,
-              isVoided: true
+              isVoided: true,
+              promotions: this.allPromotions
             });
           }
         }

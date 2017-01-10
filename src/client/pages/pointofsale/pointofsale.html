@@ -39,7 +39,11 @@
 
           <ion-list has-header can-scroll *ngIf="!showSearchItems && currentTransaction.length !== 0" no-margin-bottom id="transaction-list">
             <ion-item *ngFor="let item of currentTransaction; let i = index">
-              <transaction-item [item]="item" [index]="i+1" [buttons]="transactionItemButtons" (quantityChange)="updatePromos()"></transaction-item>
+              <transaction-item [item]="item"
+                                [index]="i+1"
+                                [buttons]="transactionItemButtons"
+                                [disableQuantity]="isReturn"
+                                (quantityChange)="updatePromos()"></transaction-item>
               <ion-list no-margin no-lines>
                 <ion-item *ngFor="let promo of itemPromos(item); let p = index;" no-margin>
                   <transaction-promo [item]="promo" [buttons]="promotionItemButtons"></transaction-promo>

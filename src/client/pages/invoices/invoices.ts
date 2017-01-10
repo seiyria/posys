@@ -82,7 +82,12 @@ export class InvoicesPageComponent implements OnInit {
       modal.present();
     };
 
-    openModal(item);
+    this.ivService
+      .get(item)
+      .toPromise()
+      .then(invoice => {
+        openModal(invoice);
+      });
   }
 
 }

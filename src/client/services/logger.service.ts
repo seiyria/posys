@@ -15,6 +15,12 @@ export class LoggerService {
     let errMsg: string;
 
     if (e instanceof Response) {
+
+      // swallow errors trying to hit while api is rebooting
+      if(e.status === 0) {
+        return;
+      }
+
       const body = e.json() || '';
       const err = body.error || JSON.stringify(body);
       errMsg = `${e.status} - ${e.statusText || ''} ${err}`;
@@ -39,6 +45,10 @@ export class LoggerService {
   observableUnwrap(e: any) {
     if(e.flash) {
       this.doFlash(e.flash);
+      return e.data;
+    }
+
+    if(e.data) {
       return e.data;
     }
 

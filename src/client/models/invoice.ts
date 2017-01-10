@@ -28,6 +28,7 @@ export class Invoice {
 
   invoiceReferenceId?: number;
   invoiceReference?: Invoice;
+  invoices?: Invoice[];
 
   stockitems?: InvoiceItem[];
   promotions?: InvoicePromo[];

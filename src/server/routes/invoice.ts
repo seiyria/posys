@@ -229,6 +229,24 @@ export default (app) => {
       });
   });
 
+  app.get('/invoice/:id', (req, res) => {
+
+    Invoice
+      .forge({ id: req.params.id })
+      .fetch({
+        withRelated: ['stockitems', 'promotions',
+          'stockitems._stockitemData', 'promotions._promoData',
+          'location', 'invoices', 'invoices.stockitems', 'invoices.stockitems._stockitemData']
+      })
+      .then(item => {
+        res.json({ data: item });
+      })
+      .catch(e => {
+        recordErrorMessageFromServer(req, MESSAGE_CATEGORIES.INVOICE, e);
+        res.status(500).json(Logger.browserError(Logger.error('Route:Invoice/:id:GET', e)));
+      });
+  });
+
   app.post('/invoice/void/:id', (req, res) => {
 
      Invoice

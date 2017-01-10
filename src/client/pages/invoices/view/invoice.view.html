@@ -24,7 +24,7 @@
           <ion-item *ngIf="!invoice.isOnHold">
             <ion-row>
               <ion-col *ngIf="!invoice.isReturned && !invoice.isVoided">
-                <resume-transaction-button isReturn="true" (click)="resumeTransaction(true)"></resume-transaction-button>
+                <resume-transaction-button isReturn="true" [disabled]="!canReturn()" (click)="resumeTransaction(true)"></resume-transaction-button>
               </ion-col>
               <ion-col>
                 <print-button (click)="printReceipt()" [disabled]="!settings.canPrint"></print-button>
@@ -85,7 +85,7 @@
           <ion-row>
             <ion-col>
               <ion-list no-margin-bottom>
-                <ion-list-header no-margin-bottom>Items Purchased ({{ totalItems() }})</ion-list-header>
+                <ion-list-header no-margin-bottom>Items {{ invoice.purchaseMethod === 'Return' ? 'Returned' : 'Purchased' }} ({{ totalItems() }})</ion-list-header>
               </ion-list>
             </ion-col>
           </ion-row>
@@ -96,6 +96,11 @@
                   <h2>{{ item.realData.name }} ({{ item.quantity }})</h2>
                   <p>{{ item.cost | currencyFromSettings }} ea <span *ngIf="item.taxable"> + Tax</span></p>
                   <ion-note item-right>{{ totalCostForItem(item) | currencyFromSettings }}</ion-note>
+                </ion-item>
+                <ion-item *ngFor="let item of returnedItems()" color="danger">
+                  <h2>{{ item.realData.name }} ({{ item.quantity }} Returned)</h2>
+                  <p>{{ item.cost | currencyFromSettings }} ea <span *ngIf="item.taxable"> + Tax</span></p>
+                  <ion-note item-right>-{{ totalCostForItem(item) | currencyFromSettings }}</ion-note>
                 </ion-item>
               </ion-list>
             </ion-col>

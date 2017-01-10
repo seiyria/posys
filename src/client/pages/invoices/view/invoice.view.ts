@@ -26,6 +26,9 @@ export class InvoiceViewComponent {
     this.invoice = params.get('invoice');
     _.each(this.invoice.stockitems, item => item.realData = this.invoiceItemData(item));
     _.each(this.invoice.promotions, item => item.realData = this.invoicePromoData(item));
+    _.each(this.invoice.invoices,   invoice => {
+      _.each(invoice.stockitems,    item => item.realData = this.invoiceItemData(item));
+    });
   }
 
   printReceipt() {
@@ -68,6 +71,19 @@ export class InvoiceViewComponent {
 
   totalCostForItem(item): number {
     return (item.realData.cost * item.quantity) + (item.taxable ? this.taxForItem(item) : 0);
+  }
+
+  canReturn() {
+    const itemCount = _.sumBy(this.invoice.stockitems, 'quantity');
+    const returnedItemCount = _.reduce(this.invoice.invoices, (prev, cur) => {
+      return prev + _.sumBy(cur.stockitems, 'quantity');
+    }, 0);
+
+    return itemCount !== returnedItemCount;
+  }
+
+  returnedItems() {
+    return _.compact(_.flattenDeep(_.map(this.invoice.invoices, 'stockitems')));
   }
 
   toggleVoid() {
