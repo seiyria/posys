@@ -28,7 +28,9 @@ import { StockItem } from '../../models/stockitem';
           {{ item.sku }}
         </ion-col>
         <ion-col width-10 no-padding vertical-center>
-          <update-quantity-button [quantity]="item.quantity" [disabled]="disableQuantity" (quantityChange)="updateQuantity($event, item)"></update-quantity-button>
+          <update-quantity-button [quantity]="item.quantity" 
+                                  [disabled]="disableQuantity" 
+                                  (quantityChange)="updateQuantity($event, item)"></update-quantity-button>
         </ion-col>
         <ion-col width-20 no-padding vertical-center>
           <ion-item shrunk-item-checkbox no-border-bottom label-right tax-cost-entry>
