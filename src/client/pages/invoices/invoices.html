@@ -9,13 +9,17 @@
 
     <ion-row>
       <ion-col width-20 vertical-center>
+        <invoice-search ignoreModalInput="true"
+                        (searchResult)="openItemModal($event, false)"></invoice-search>
+      </ion-col>
+      <ion-col width-20 vertical-center>
         <ion-item list-header shrunk-item-checkbox>
           <ion-label stacked>Earliest Date</ion-label>
           <ion-datetime displayFormat="MM/DD/YYYY hh:mm A" pickerFormat="MMM DD YYYY hh mm A" minuteValues="0,15,30,45" [(ngModel)]="earliestDate" (ionChange)="toggleFilter()"></ion-datetime>
         </ion-item>
       </ion-col>
 
-      <ion-col vertical-center width-10>
+      <ion-col vertical-center>
         <button ion-button [disabled]="!earliestDate" icon-only (click)="unsetDate('earliestDate')" color="danger" small>
           <ion-icon name="close"></ion-icon>
         </button>
@@ -28,7 +32,7 @@
         </ion-item>
       </ion-col>
 
-      <ion-col vertical-center width-10>
+      <ion-col vertical-center>
         <button ion-button [disabled]="!latestDate" icon-only (click)="unsetDate('latestDate')" color="danger" small>
           <ion-icon name="close"></ion-icon>
         </button>

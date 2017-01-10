@@ -70,7 +70,7 @@ export class InvoicesPageComponent implements OnInit {
       });
   }
 
-  openItemModal(item?: Invoice) {
+  openItemModal(item?: Invoice, doSearch = true) {
 
     const openModal = (invoice: Invoice) => {
       const modal = this.modalCtrl.create(InvoiceViewComponent, {
@@ -81,6 +81,15 @@ export class InvoicesPageComponent implements OnInit {
       });
       modal.present();
     };
+
+    if(!item) {
+      return;
+    }
+
+    if(!doSearch) {
+      openModal(item);
+      return;
+    }
 
     this.ivService
       .get(item)

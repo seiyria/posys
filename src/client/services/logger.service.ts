@@ -1,4 +1,6 @@
 
+import * as _ from 'lodash';
+
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
@@ -48,7 +50,7 @@ export class LoggerService {
       return e.data;
     }
 
-    if(e.data) {
+    if(!_.isUndefined(e.data)) {
       return e.data;
     }
 

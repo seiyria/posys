@@ -34,6 +34,7 @@ import { ReportingPageComponent } from '../pages/reporting/reporting';
 import { FormErrorComponent } from '../components/form-error';
 import { TopIconButtonComponent } from '../components/top-icon-button';
 import { OmnisearchComponent, OmnisearchWindowComponent, QueryItemComponent } from '../components/omni-search';
+import { InvoiceSearchComponent } from '../components/invoice-search';
 
 import { AddButtonComponent } from '../components/add-button';
 import { ConfirmButtonComponent } from '../components/confirm-button';
@@ -108,6 +109,7 @@ import { TruncatePipe } from '../pipes/truncate';
     TopIconButtonComponent,
     OmnisearchComponent,
     OmnisearchWindowComponent,
+    InvoiceSearchComponent,
     TransactionItemComponent,
     TransactionItemPopoverComponent,
     TransactionPromoComponent,

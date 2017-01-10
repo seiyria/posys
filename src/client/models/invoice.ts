@@ -10,9 +10,9 @@ export type PurchaseMethod =
 
 export class Invoice {
   id?: number;
-  purchaseTime: Date;
-  purchaseMethod: PurchaseMethod;
-  purchasePrice: number;
+  purchaseTime?: Date;
+  purchaseMethod?: PurchaseMethod;
+  purchasePrice?: number;
   cashGiven?: number;
   taxCollected?: number;
   subtotal?: number;
