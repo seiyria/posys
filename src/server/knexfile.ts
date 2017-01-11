@@ -1,5 +1,6 @@
 
-const config = require('./../../server.config.json');
+const appRoot = require('app-root-path');
+const config = require(`${appRoot}/server.config.json`);
 
 module.exports = {
   client: 'pg',

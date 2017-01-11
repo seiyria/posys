@@ -6,16 +6,27 @@
   "repository": "https://github.com/seiyria/posys",
   "scripts": {
     "electron": "electron .",
+
     "test:lint": "tslint --force 'src/**/*.ts'",
     "test:lint:fail": "tslint 'src/**/*.ts'",
     "test": "npm run test:lint:fail && npm run ionic:build",
-    "clear:all": "rm -rf ./platforms/*-x64",
-    "clear:osx": "rm -rf *-darwin-x64; rm -rf ./platforms/*-mas-x64",
-    "clear:win": "rm -rf *-win32-ia32; rm -rf ./platforms/*-win32-x64",
-    "clear:nix": "rm -rf *-linux-ia32; rm -rf ./platforms/*-linux-x64",
-    "pack:osx": "npm run clear:osx && electron-packager ./www/ --platform=darwin,mas --arch=x64 --asar --out=platforms",
-    "pack:win": "npm run clear:win && electron-packager ./www/ --platform=win32 --arch=ia32,x64 --asar --out=platforms",
-    "pack:nix": "npm run clear:nix && electron-packager ./www/ --platform=linux --arch=ia32,x64 --asar --out=platforms",
+
+    "build:osx:dev": "npm run clear:all && npm run ionic:build:electron && npm run pack:osx",
+    "build:osx:dist": "npm run clear:all && npm run ionic:build:electron && npm run pack:osx:asar",
+
+    "clear:all": "rm -rf ./www/",
+    "clear:osx": "rm -rf ./platforms/*-darwin-x64 && rm -rf ./platforms/*-mas-x64",
+    "clear:win": "rm -rf ./platforms/*-win32-ia32 && rm -rf ./platforms/*-win32-x64",
+    "clear:nix": "rm -rf ./platforms/*-linux-ia32 && rm -rf ./platforms/*-linux-x64",
+
+    "pack:osx": "npm run clear:osx && electron-packager ./www/ --platform=darwin,mas --arch=x64 --overwrite --out=platforms",
+    "pack:win": "npm run clear:win && electron-packager ./www/ --platform=win32 --arch=ia32,x64 --overwrite --out=platforms",
+    "pack:nix": "npm run clear:nix && electron-packager ./www/ --platform=linux --arch=ia32,x64 --overwrite --out=platforms",
+
+    "pack:osx:asar": "npm run clear:osx && electron-packager ./www/ --platform=darwin,mas --arch=x64 --asar --out=platforms",
+    "pack:win:asar": "npm run clear:win && electron-packager ./www/ --platform=win32 --arch=ia32,x64 --asar --out=platforms",
+    "pack:nix:asar": "npm run clear:nix && electron-packager ./www/ --platform=linux --arch=ia32,x64 --asar --out=platforms",
+
     "ionic:build": "ionic-app-scripts build",
     "ionic:build:electron": "npm run ionic:build && cp electron.js www/electron.js && cp package.json www/package.json && npm run server:build",
     "ionic:serve": "ionic-app-scripts serve",
