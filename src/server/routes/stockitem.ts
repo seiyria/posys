@@ -8,7 +8,7 @@ import { StockItemVendor } from '../orm/stockitemvendor';
 import { StockItem as StockItemModel } from '../../client/models/stockitem';
 
 import { Logger } from '../logger';
-import Settings from './_settings';
+import Settings from '../_settings';
 import { recordAuditMessage, recordErrorMessageFromServer, MESSAGE_CATEGORIES } from './_logging';
 
 const cleanItem = (item) => {

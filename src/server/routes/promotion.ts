@@ -11,7 +11,7 @@ import { Promotion as PromotionModel } from '../../client/models/promotion';
 import { StockItem as StockItemModel } from '../../client/models/stockitem';
 
 import { Logger } from '../logger';
-import Settings from './_settings';
+import Settings from '../_settings';
 import { recordAuditMessage, recordErrorMessageFromServer, MESSAGE_CATEGORIES } from './_logging';
 
 // used when figuring out SetTo promotions

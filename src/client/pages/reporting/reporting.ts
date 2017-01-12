@@ -225,7 +225,7 @@ export class ReportingPageComponent implements OnInit {
     this.reportService
       .runReport(this.currentReport)
       .toPromise()
-      .then(({ data }) => {
+      .then((data) => {
         this.runningReport = false;
         if(!data || !data.length) { return; }
         const transformedData = transformData(this.currentReport, this.settings, data);

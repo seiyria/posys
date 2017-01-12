@@ -1,6 +1,6 @@
 
 import * as _ from 'lodash';
-import { readSettings, writeSettings } from './_settings';
+import { readSettings, writeSettings } from '../_settings';
 import { recordAuditMessage, MESSAGE_CATEGORIES } from './_logging';
 
 const nodePrinter = require('printer');
@@ -19,7 +19,6 @@ export default (app) => {
       req.body.application.taxRate = +req.body.application.taxRate;
       req.body.application.businessName = _.truncate(req.body.application.businessName, { length: 50, omission: '' });
       req.body.application.locationName = +req.body.application.locationName;
-      req.body.application.terminalId = _.truncate(req.body.application.terminalId, { length: 50, omission: '' });
       req.body.application.customBusinessCurrency = _.truncate(req.body.application.customBusinessCurrency, { length: 25, omission: '' });
     }
 
@@ -27,7 +26,7 @@ export default (app) => {
       req.body.printer.characterWidth = +req.body.printer.characterWidth;
     }
 
-    writeSettings(JSON.stringify(req.body, null, 4), () => {
+    writeSettings(req.body, () => {
       recordAuditMessage(req, MESSAGE_CATEGORIES.SYSTEM, `System settings were updated.`, { settings: req.body });
       res.json({ flash: 'Settings updated successfully.', data: req.body });
     });

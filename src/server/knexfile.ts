@@ -11,9 +11,9 @@ module.exports = {
     database: config.db.database
   },
   migrations: {
-    directory: '../../migrations'
+    directory: `${appRoot}/migrations`
   },
   seeds: {
-    directory: '../../seeds'
+    directory: `${appRoot}/seeds`
   }
 };

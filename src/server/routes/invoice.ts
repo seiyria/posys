@@ -2,7 +2,7 @@
 
 import * as _ from 'lodash';
 
-import { readSettings } from './_settings';
+import { readSettings } from '../_settings';
 
 import { bookshelf, knex } from '../server';
 
@@ -17,7 +17,7 @@ import { InvoiceItem as InvoiceItemModel } from '../../client/models/invoiceitem
 import { InvoicePromo as InvoicePromoModel } from '../../client/models/invoicepromo';
 
 import { Logger } from '../logger';
-import Settings from './_settings';
+import Settings from '../_settings';
 
 import { recordAuditMessage, recordErrorMessageFromServer, MESSAGE_CATEGORIES } from './_logging';
 

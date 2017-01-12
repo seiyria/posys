@@ -3,7 +3,7 @@
 import { AuditMessage } from '../orm/auditmessage';
 
 import { Logger } from '../logger';
-import Settings from './_settings';
+import Settings from '../_settings';
 
 export default (app) => {
   app.get('/auditmessage', (req, res) => {

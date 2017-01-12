@@ -3,7 +3,7 @@
 import { ErrorMessage } from '../orm/errormessage';
 
 import { Logger } from '../logger';
-import Settings from './_settings';
+import Settings from '../_settings';
 
 import { recordErrorMessageFromClient, recordErrorMessageFromServer, MESSAGE_CATEGORIES } from './_logging';
 

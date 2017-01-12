@@ -12,7 +12,7 @@ const createOU = (knex, ou) => {
 
 exports.seed = (knex) => {
   return knex('organizationalunit')
-    .del()
+    // .del()
     .then(() => {
       return Promise.all(ous.map(ou => createOU(knex, ou)));
     });

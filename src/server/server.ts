@@ -5,6 +5,8 @@ import { Logger } from './logger';
 const fs = require('fs');
 const appRoot = require('app-root-path');
 
+import { readSettings, writeSettings } from './_settings';
+
 Logger.info('Init', 'Starting server...');
 
 const defaultConfig = {
@@ -28,15 +30,32 @@ try {
 
 const config = require(`${appRoot}/server.config.json`);
 
-export const knex = require('knex')(require('./knexfile'));
+const knexConfig = require('./knexfile');
+export const knex = require('knex')(knexConfig);
 
 export const bookshelf = require('bookshelf')(knex);
 
 const validator = require('./validator').default;
 
-bookshelf.plugin('pagination');
+bookshelf.plugin(require('./ext/bookshelf-pagination'));
 bookshelf.plugin(require('bookshelf-validate'), { validateOnSave: true, validator });
 bookshelf.plugin(require('bookshelf-paranoia'));
+
+export const setup = () => {
+  knex.migrate.latest(knexConfig)
+    .then(() => {
+      Logger.info('Init', 'At latest migration.');
+      readSettings(data => {
+        if(data.initialSetup) { return; }
+        knex.seed.run(knexConfig)
+          .then(() => {
+            Logger.info('Init', 'Seed data added.');
+            data.initialSetup = true;
+            writeSettings(data);
+          });
+      });
+    });
+};
 
 export const start = () => {
   const express = require('express');

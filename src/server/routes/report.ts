@@ -51,7 +51,6 @@ const fixReport = (config) => {
 
 export default (app) => {
   app.post('/report/base/inventory/current', (req, res) => {
-
     const config: ReportConfigurationModel = req.body;
 
     const { columns, withRelated } = getColumnsAndRelated(_.map(config.columns, 'key'));

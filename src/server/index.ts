@@ -1,3 +1,4 @@
+import { start, setup } from './server';
 
-import { start } from './server';
+setup();
 start();

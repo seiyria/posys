@@ -18,6 +18,13 @@
   "buildOnSave": false,
   "exclude": [
     "node_modules",
+    "platforms",
+    "hooks",
+    "migrations",
+    "plugins",
+    "resources",
+    "seeds",
+    "www",
     "src/client/app/main.prod.ts"
   ]
 }

@@ -18,9 +18,11 @@ export const readSettings = (callback) => {
   });
 };
 
-export const writeSettings = (data, callback) => {
-  fs.writeFile(`${appRoot}/server.config.json`, data, (err) => {
+export const writeSettings = (data, callback?) => {
+  fs.writeFile(`${appRoot}/server.config.json`, JSON.stringify(data, null, 4), (err) => {
     if(err) { throw err; }
-    callback();
+    if(callback) {
+      callback();
+    }
   });
 };
