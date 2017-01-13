@@ -14,6 +14,10 @@ try {
   console.error('Could not load electron-debug');
 }
 
+process.on('uncaughtException', function(err) {
+  fs.writeFile('error.log', JSON.stringify(err, null, 4));
+});
+
 let win;
 
 function createWindow() {

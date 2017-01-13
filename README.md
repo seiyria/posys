@@ -4,6 +4,8 @@ A PoS System.
 
 ## Installation
 
+If installing on windows, you may need `--msvs_version=<your_vs_version>` to install the printer module correctly.
+
 * clone the repository
 * install postgresql
 * `npm install -g ionic`

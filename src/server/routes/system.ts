@@ -16,6 +16,9 @@ export default (app) => {
   });
 
   app.get('/system/printers', (req, res) => {
+    if(!nodePrinter) {
+      return res.json([]);
+    }
     res.json(nodePrinter.getPrinters());
   });
 
