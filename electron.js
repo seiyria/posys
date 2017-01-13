@@ -8,7 +8,11 @@ const {
   BrowserWindow
 } = electron;
 
-require('electron-debug')({ showDevTools: true });
+try {
+  require('electron-debug')({ showDevTools: true });
+} catch(e) {
+  console.error('Could not load electron-debug');
+}
 
 let win;
 
@@ -22,8 +26,6 @@ function createWindow() {
       event.preventDefault();
       open(url);
     });
-
-    win.openDevTools();
 
     let url = 'http://localhost:8100';
     const args = process.argv.slice(2);

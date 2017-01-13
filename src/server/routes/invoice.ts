@@ -26,7 +26,7 @@ const thermalPrinter = require('node-thermal-printer');
 
 let nodePrinter = null;
 try {
-  nodePrinter = require('printer');
+  nodePrinter = require('node_printer.node');
 } catch(e) {
   console.error('Could not load node-printer.');
 }

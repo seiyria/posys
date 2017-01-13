@@ -3,7 +3,12 @@ import * as _ from 'lodash';
 import { readSettings, writeSettings } from '../_settings';
 import { recordAuditMessage, MESSAGE_CATEGORIES } from './_logging';
 
-const nodePrinter = require('printer');
+let nodePrinter = null;
+try {
+  nodePrinter = require('node_printer.node');
+} catch(e) {
+  console.error('Could not load node-printer.');
+}
 
 export default (app) => {
   app.get('/system', (req, res) => {
