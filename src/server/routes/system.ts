@@ -5,7 +5,7 @@ import { recordAuditMessage, MESSAGE_CATEGORIES } from './_logging';
 
 let nodePrinter = null;
 try {
-  nodePrinter = require('node_printer.node');
+  nodePrinter = require('printer');
 } catch(e) {
   console.error('Could not load node-printer.');
 }

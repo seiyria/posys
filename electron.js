@@ -3,6 +3,11 @@
 const electron = require('electron');
 const open = require('open');
 
+const isDev = require('electron-is-dev');
+const appRoot = require('app-root-path');
+
+const fs = require('fs');
+
 const {
   app,
   BrowserWindow
@@ -26,21 +31,26 @@ function createWindow() {
         height: 768
     });
 
+    let url = 'http://localhost:8100';
+
+    var express = require('express');
+    var expressApp = express();
+
+    expressApp.use(express.static(__dirname));
+    expressApp.listen(30517);
+
+    if(!isDev) {
+        url = 'http://localhost:30517/www/index.html';
+    }
+
+    win.loadURL(url);
+
+    require('./www/server/index');
+
     win.webContents.on('new-window', function(event, url) {
       event.preventDefault();
       open(url);
     });
-
-    let url = 'http://localhost:8100';
-    const args = process.argv.slice(2);
-    args.forEach(function(val) {
-        if(val === 'dist') {
-            url = 'file://' + __dirname + '/www/index.html';
-        }
-    });
-
-    win.loadURL(url);
-    require('./www/server/index');
 
     win.on('closed', () => {
         win = null;

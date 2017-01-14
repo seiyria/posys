@@ -26,7 +26,7 @@ const thermalPrinter = require('node-thermal-printer');
 
 let nodePrinter = null;
 try {
-  nodePrinter = require('node_printer.node');
+  nodePrinter = require('printer');
 } catch(e) {}
 
 const incrementItems = (items, transaction?) => {

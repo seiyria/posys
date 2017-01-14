@@ -107,7 +107,7 @@ exports.up = (knex) => {
       table.dateTime('purchaseTime');
       table.dateTime('deleted_at');
       table.integer('invoiceReferenceId').unsigned().references('invoice.id');
-      table.string('locationId').unsigned().references('location.id');
+      table.string('locationId'); // doesnt work?: .unsigned().references('location.id');
       table.string('terminalId').notNullable();
       table.string('purchaseMethod');
       table.decimal('purchasePrice', TOTAL_DIGITS, CENT_DIGITS);
