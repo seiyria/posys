@@ -1,7 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var ionicWebpackFactory = require(process.env.IONIC_WEBPACK_FACTORY);
-var GitRevisionPlugin = require('git-revision-webpack-plugin')
+var GitRevisionPlugin = require('git-revision-webpack-plugin');
 
 var gitRevisionPlugin = new GitRevisionPlugin();
 
@@ -13,6 +13,7 @@ module.exports = {
     devtoolModuleFilenameTemplate: ionicWebpackFactory.getSourceMapperFunction(),
   },
   devtool: process.env.IONIC_GENERATE_SOURCE_MAP ? process.env.IONIC_SOURCE_MAP_TYPE : '',
+  target: 'electron',
 
   resolve: {
     extensions: ['.ts', '.js', '.json'],

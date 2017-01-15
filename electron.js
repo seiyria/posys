@@ -26,9 +26,18 @@ process.on('uncaughtException', function(err) {
 let win;
 
 function createWindow() {
+    const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
     win = new BrowserWindow({
-        width: 1024,
-        height: 768
+        width,
+        height,
+        minWidth: 1024,
+        minHeight: 768,
+        title: 'Posys',
+        show: false
+    });
+
+    win.once('ready-to-show', () => {
+      win.show();
     });
 
     let url = 'http://localhost:8100';
@@ -48,9 +57,12 @@ function createWindow() {
     require('./www/server/index');
 
     win.webContents.on('new-window', function(event, url) {
+      if(_.includes(url, 'localhost')) { return; }
       event.preventDefault();
       open(url);
     });
+
+    win.openDevTools();
 
     win.on('closed', () => {
         win = null;

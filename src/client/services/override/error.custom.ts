@@ -1,3 +1,5 @@
+import * as _ from 'lodash';
+
 import { Injectable } from '@angular/core';
 import { ErrorHandler } from '@angular/core';
 import { IonicErrorHandler } from 'ionic-angular';
@@ -19,6 +21,10 @@ export class CustomErrorHandler extends IonicErrorHandler implements ErrorHandle
       stack: err.originalError ? err.originalError.stack : err.stack,
       foundAt: 'Client'
     });
+
+    if(_.includes(messageObject.message, 'ProgressEvent')) {
+      return;
+    }
 
     this.errorService
       .addClientError(messageObject)

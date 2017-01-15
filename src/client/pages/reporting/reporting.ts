@@ -229,25 +229,59 @@ export class ReportingPageComponent implements OnInit {
         this.runningReport = false;
         if(!data || !data.length) { return; }
         const transformedData = transformData(this.currentReport, this.settings, data);
-        const reportWindow = window.open('', this.formattedReportName, 'height=500&width=500');
 
-        if(!reportWindow) {
-          throw new Error('Report window could not be opened. Probably, something is blocking popups?');
+        let url = '';
+        if(window && (<any>window).process && (<any>window).process.type) {
+          url = 'http://localhost:30517/www/assets/empty.html';
         }
 
-        reportWindow.document.write(reportAggregate(this.currentReport, this.formattedReportName, this.settings, transformedData));
+        const htmlString = reportAggregate(this.currentReport, this.formattedReportName, this.settings, transformedData);
+        const arrayData = _.reduce(transformedData, (prev, cur: any) => {
+          prev.push(...cur.group);
+          return prev;
+        }, []);
+        const csv = Papa.unparse(arrayData);
 
-        const csvButton = reportWindow.document.getElementById('csv-button');
+        if(window && (<any>window).process && (<any>window).process.type) {
 
-        csvButton.onclick = () => {
-          const arrayData = _.reduce(transformedData, (prev, cur: any) => {
-            prev.push(...cur.group);
-            return prev;
-          }, []);
-          const csv = Papa.unparse(arrayData);
-          const blob = new Blob([csv], { type: 'text/plain;charset=utf-8' });
-          saveAs(blob, `${this.formattedReportName}.csv`);
-        };
+          const BrowserWindow = require('electron').remote.BrowserWindow;
+          let reportWindow = new BrowserWindow({ width: 800, height: 600, title: this.formattedReportName });
+          reportWindow.on('closed', () => {
+            reportWindow = null;
+          });
+          reportWindow.loadURL('http://localhost:30517/www/assets/empty.html');
+          reportWindow.webContents.executeJavaScript(`document.write(\`${htmlString}\`)`);
+
+          const clickCsv = `function() {
+            const remote = require('electron').remote;
+            const dialog = remote.dialog;
+            const app = remote.app;
+            const path = dialog.showSaveDialog(remote.getCurrentWindow(), {
+              title: 'Save as...',
+              defaultPath: app.getPath('documents'),
+              filters: [
+                {name: 'Comma-separated', extensions: ['csv']},
+                {name: 'All Files', extensions: ['*']}
+              ]
+            });
+            require('fs').writeFileSync(path, \`${csv}\`);
+          }`;
+          reportWindow.webContents.executeJavaScript(`document.getElementById('csv-button').onclick = ${clickCsv.toString()}`);
+
+        } else {
+          const reportWindow = window.open(url, this.formattedReportName, 'height=500&width=500');
+
+          if(!reportWindow) {
+            throw new Error('Report window could not be opened. Probably, something is blocking popups?');
+          }
+
+          let doc = reportWindow.document;
+          doc.write(htmlString);
+          doc.getElementById('csv-button').onclick = () => {
+            const blob = new Blob([csv], { type: 'text/plain;charset=utf-8' });
+            saveAs(blob, `${this.formattedReportName}.csv`);
+          };
+        }
       }, () => {
         this.runningReport = false;
       });

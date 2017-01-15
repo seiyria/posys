@@ -19,6 +19,7 @@ exports.up = (knex) => {
       table.increments('id').primary();
       table.integer('locationId').unsigned().references('location.id');
       table.string('terminalId');
+      table.string('module');
       table.string('message', 500);
       table.string('foundAt'); // client or server
       table.string('stack', 5000);

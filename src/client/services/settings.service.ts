@@ -30,7 +30,7 @@ export class ApplicationSettingsService {
   }
 
   private safeify(str: string): string {
-    return str.split(' ').join('');
+    return (str || '').split(' ').join('');
   }
 
   get hasCustomCurrency(): boolean {
@@ -42,7 +42,7 @@ export class ApplicationSettingsService {
   }
 
   get terminalId(): string {
-    return this.settings.application.terminalId;
+    return this.localStorage.retrieve('terminalId');
   }
 
   get safeTerminalId(): string {
