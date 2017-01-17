@@ -62,8 +62,6 @@ function createWindow() {
       open(url);
     });
 
-    win.openDevTools();
-
     win.on('closed', () => {
         win = null;
     });

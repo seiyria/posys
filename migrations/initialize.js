@@ -80,6 +80,12 @@ exports.up = (knex) => {
       table.decimal('cost', TOTAL_DIGITS, CENT_DIGITS);
       table.boolean('isPreferred');
     })
+    .createTable('stockitemquantity', (table) => {
+      table.increments('id').primary();
+      table.integer('stockitemId').unsigned().references('stockitem.id');
+      table.integer('locationId').unsigned().references('location.id');
+      table.integer('quantity');
+    })
     .createTable('promo', (table) => {
       table.increments('id').primary();
       table.string('name', 50);

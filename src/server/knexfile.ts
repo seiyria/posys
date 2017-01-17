@@ -1,6 +1,9 @@
 
 const appRoot = require('app-root-path');
 const config = require(`${appRoot}/server.config.json`);
+const isElectron = process.execPath.toLowerCase().search('electron') === -1;
+
+const env = isElectron ? 'prod' : 'dev';
 
 module.exports = {
   client: 'pg',
@@ -14,6 +17,6 @@ module.exports = {
     directory: `${appRoot}/migrations`
   },
   seeds: {
-    directory: `${appRoot}/seeds`
+    directory: `${appRoot}/seeds/${env}`
   }
 };
