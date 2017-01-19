@@ -66,7 +66,6 @@ exports.up = (knex) => {
       table.integer('organizationalunitId').unsigned().references('organizationalunit.id');
       table.boolean('taxable');
       table.decimal('cost', TOTAL_DIGITS, CENT_DIGITS);
-      table.integer('quantity');
       table.integer('reorderThreshold');
       table.integer('reorderUpToAmount');
       table.dateTime('lastSoldAt');

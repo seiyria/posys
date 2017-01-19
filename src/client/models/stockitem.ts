@@ -14,7 +14,9 @@ export class StockItem {
   organizationalunit?: OrganizationalUnit;
   taxable: boolean;
   cost: number;
+
   quantity: number;
+
   reorderThreshold?: number;
   reorderUpToAmount?: number;
   lastSoldAt?: Date;
