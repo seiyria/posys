@@ -40,6 +40,7 @@ set PGPASSWORD=postgres
 echo Creating backup script (backups to %BackupDirectory%)...
 (
 echo "%InstallDirectory%\bin\pg_dump.exe" posys ^> "%BackupDirectory%\posys_%%date%%_%%time%%.bak"
+echo forfiles -p "%InstallDirectory%" -s -m *.* -d 30 -c "cmd /c del @path"
 ) > "%InstallDirectory%\backup.bat"
 
 :: create scheduled task for every day at 3 AM
