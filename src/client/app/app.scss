@@ -1,0 +1,198 @@
+// http://ionicframework.com/docs/v2/theming/
+
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+[full-height] {
+  height: 100%;
+}
+
+ion-grid[vertical-center] {
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+[main-button] {
+
+  height: 30%;
+
+  button {
+    height: 100%;
+  }
+}
+
+[no-border-top] {
+  border-top: none !important;
+
+  & .item-inner {
+    border-top: none !important;
+  }
+}
+
+[no-border-bottom] {
+  border-bottom: none !important;
+
+  & .item-inner {
+    border-bottom: none !important;
+  }
+}
+
+[no-margin-bottom] {
+  margin-bottom: 0 !important;
+}
+
+ion-item[no-margin] .label {
+  margin: 0 !important;
+}
+
+[full-height] {
+  height: 100%;
+}
+
+[true-center] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[flex-right] {
+  justify-content: flex-end;
+}
+
+[vertical-center] {
+  display: flex;
+  align-items: center;
+}
+
+[vertical-bottom] {
+  display: flex;
+  align-items: flex-end;
+}
+
+[big-text] {
+  font-size: 300%;
+}
+
+[background-text] {
+  color: #999;
+}
+
+[list-header] {
+  border-bottom: 1px solid #dedede;
+}
+
+[shrunk-item-checkbox] {
+  padding: 0 !important;
+  min-height: 0 !important;
+
+  ion-checkbox {
+    margin: 0 !important;
+  }
+
+  .item-inner {
+
+    .label {
+      text-align: left;
+      margin-left: 5px !important;
+    }
+  }
+
+  &[label-right] {
+    .item-inner {
+      .label {
+        text-align: right;
+      }
+    }
+  }
+}
+
+[form-item] {
+  &[required] > .item-inner > .input-wrapper > .label::after {
+    content: ' *'
+  }
+}
+
+[small-item] {
+  font-size: 1.2rem;
+  min-height: 2.2rem;
+
+  .item-inner {
+    border-bottom: none !important;
+  }
+
+  &:not([small-form-item-header]) .label {
+    margin: 0;
+  }
+}
+
+[noScroll] .scroll-content {
+  overflow: hidden;
+}
+
+[text-center] {
+  justify-content: center;
+}
+
+[text-right] {
+  justify-content: flex-end;
+  text-align: right !important;
+}
+
+[column-headers] {
+  ion-col {
+    font-weight: bold;
+  }
+}
+
+[scroll-grid] {
+  height: 100%;
+
+  [scroll-row] {
+    overflow: auto;
+    flex: 1;
+  }
+}
+
+[flex] {
+  flex: 1;
+}
+
+[flex-wrap] {
+  flex-wrap: wrap;
+}
+
+[invisible] {
+  visibility: hidden !important;
+}
+
+.datetime-md {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+[width-40] {
+  flex: 0 0 40%;
+  max-width: 40%;
+}
+
+[width-30] {
+  flex: 0 0 30%;
+  max-width: 30%;
+}
+
+.scroll-content {
+  overflow-y: auto;
+}

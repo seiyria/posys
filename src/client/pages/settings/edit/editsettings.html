@@ -1,0 +1,109 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Edit Settings
+    </ion-title>
+    <ion-buttons start>
+      <confirm-button (click)="saveSettings()"></confirm-button>
+      <button ion-button (click)="dismiss()">
+        <span color="danger">Close</span>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+
+    <ion-list-header>Regional Settings</ion-list-header>
+    <ion-item>
+      <ion-label stacked>Business Name</ion-label>
+      <ion-input type="text" [(ngModel)]="settings.application.businessName" maxlength="50"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Location</ion-label>
+      <ion-select [(ngModel)]="settings.application.locationName">
+        <ion-option *ngFor="let location of locations" [value]="location.id">{{ location.name }}</ion-option>
+      </ion-select>
+      <manage-button item-right (click)="manageLocations()"></manage-button>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Terminal Identifier</ion-label>
+      <ion-input type="text" [(ngModel)]="terminalId" maxlength="50"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Tax Rate (%)</ion-label>
+      <ion-input type="number" [(ngModel)]="settings.application.taxRate"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Currency Code</ion-label>
+      <ion-select [(ngModel)]="settings.application.currencyCode">
+        <ion-option *ngFor="let code of currencyCodes" [value]="code">{{ code }}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Custom Business Currency</ion-label>
+      <ion-input type="text" [(ngModel)]="settings.application.customBusinessCurrency" maxlength="25"></ion-input>
+    </ion-item>
+
+    <ion-list-header>Printer Settings</ion-list-header>
+    <ion-item>
+      <ion-label stacked>Printer</ion-label>
+      <ion-select [(ngModel)]="settings.printer.name">
+        <ion-option *ngFor="let printer of printers" [value]="printer.name">{{ printer.name }} ({{ printer.status || 'Unknown' }})</ion-option>
+      </ion-select>
+      <refresh-button item-right (click)="refreshPrinters()"></refresh-button>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Printer Type</ion-label>
+      <ion-select [(ngModel)]="settings.printer.type">
+        <ion-option value="epson">Epson-compatible</ion-option>
+        <ion-option value="star">STAR-compatible</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Character Width</ion-label>
+      <ion-input type="number" [(ngModel)]="settings.printer.characterWidth"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Header</ion-label>
+      <ion-textarea [(ngModel)]="settings.printer.header"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Footer</ion-label>
+      <ion-textarea [(ngModel)]="settings.printer.footer"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Print Merchant Receipts</ion-label>
+      <ion-checkbox [(ngModel)]="settings.printer.printMerchantReceipts"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Print Receipt Barcodes</ion-label>
+      <ion-checkbox [(ngModel)]="settings.printer.printReceiptBarcodes"></ion-checkbox>
+    </ion-item>
+
+    <ion-list-header>Database Settings</ion-list-header>
+    <ion-item>
+      <ion-label stacked>Hostname</ion-label>
+      <ion-input type="text" [(ngModel)]="settings.db.hostname"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Username</ion-label>
+      <ion-input type="text" [(ngModel)]="settings.db.username"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Password</ion-label>
+      <ion-input type="text" [(ngModel)]="settings.db.password"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Database</ion-label>
+      <ion-input type="text" [(ngModel)]="settings.db.database"></ion-input>
+    </ion-item>
+
+  </ion-list>
+</ion-content>

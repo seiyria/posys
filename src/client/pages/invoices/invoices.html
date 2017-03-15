@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Posys Invoices</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid scroll-grid>
+
+    <ion-row>
+      <ion-col width-20 vertical-center>
+        <invoice-search ignoreModalInput="true"
+                        (searchResult)="openItemModal($event, false)"></invoice-search>
+      </ion-col>
+      <ion-col width-20 vertical-center>
+        <ion-item list-header shrunk-item-checkbox>
+          <ion-label stacked>Earliest Date</ion-label>
+          <ion-datetime displayFormat="MM/DD/YYYY hh:mm A" pickerFormat="MMM DD YYYY hh mm A" minuteValues="0,15,30,45" [(ngModel)]="earliestDate" (ionChange)="toggleFilter()"></ion-datetime>
+        </ion-item>
+      </ion-col>
+
+      <ion-col vertical-center>
+        <button ion-button [disabled]="!earliestDate" icon-only (click)="unsetDate('earliestDate')" color="danger" small>
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-col>
+
+      <ion-col width-20 vertical-center>
+        <ion-item list-header shrunk-item-checkbox>
+          <ion-label stacked>Latest Date</ion-label>
+          <ion-datetime displayFormat="MM/DD/YYYY hh:mm A" pickerFormat="MMM DD YYYY hh mm A" minuteValues="0,15,30,45" [(ngModel)]="latestDate" (ionChange)="toggleFilter()"></ion-datetime>
+        </ion-item>
+      </ion-col>
+
+      <ion-col vertical-center>
+        <button ion-button [disabled]="!latestDate" icon-only (click)="unsetDate('latestDate')" color="danger" small>
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-col>
+
+      <ion-col>
+        <ion-item shrunk-item-checkbox no-border-bottom>
+          <ion-label>Hide Voided</ion-label>
+          <ion-checkbox color="primary" [(ngModel)]="hideVoided" (ionChange)="toggleFilter()"></ion-checkbox>
+        </ion-item>
+        <ion-item shrunk-item-checkbox no-border-bottom>
+          <ion-label>Hide Returns</ion-label>
+          <ion-checkbox color="primary" [(ngModel)]="hideReturns" (ionChange)="toggleFilter()"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+
+      <ion-col>
+        <ion-item shrunk-item-checkbox no-border-bottom>
+          <ion-label>Hide Holds</ion-label>
+          <ion-checkbox color="primary" [(ngModel)]="hideHolds" (ionChange)="toggleFilter()"></ion-checkbox>
+        </ion-item>
+        <ion-item shrunk-item-checkbox no-border-bottom>
+          <ion-label>Hide Completed</ion-label>
+          <ion-checkbox color="primary" [(ngModel)]="hideCompleted" (ionChange)="toggleFilter()"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-list no-margin-bottom>
+          <ion-item>
+            <ion-grid no-padding>
+              <ion-row column-headers>
+                <ion-col width-10 no-padding>Id</ion-col>
+                <ion-col width-20 no-padding>Transaction Time</ion-col>
+                <ion-col width-10 no-padding>Method</ion-col>
+                <ion-col width-10 no-padding>Status</ion-col>
+                <ion-col width-10 no-padding text-right>Items Sold</ion-col>
+                <ion-col width-10 no-padding text-right>Total Sale</ion-col>
+                <ion-col no-padding text-right></ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row scroll-row>
+      <ion-col>
+        <ion-list>
+          <ion-item *ngFor="let item of currentInvoices">
+            <invoice-item [item]="item" (view)="openItemModal(item)"></invoice-item>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="paginationInfo">
+      <ion-col width-50 offset-25>
+        <ionc-pagination
+          color="light"
+          (clickBeginning)="changePage(1)"
+          (clickPrevious)="changePage(paginationInfo.page - 1)"
+          (clickNext)="changePage(paginationInfo.page + 1)"
+          (clickEnd)="changePage(paginationInfo.pageCount)"
+          [pagination]="paginationInfo"></ionc-pagination>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

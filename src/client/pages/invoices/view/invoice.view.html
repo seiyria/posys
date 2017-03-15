@@ -1,0 +1,138 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Invoice #{{ invoice.id }}
+    </ion-title>
+    <ion-buttons start>
+      <void-button (click)="toggleVoid()" [item]="invoice" *ngIf="!invoice.isOnHold && invoice.purchaseMethod !== 'Void'"></void-button>
+      <button ion-button (click)="dismiss()">
+        <span color="danger">Close</span>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content my-modal-invoice-view>
+  <ion-grid scroll-grid>
+    <ion-row top-row scroll-row>
+      <ion-col>
+        <ion-list>
+          <ion-item *ngIf="invoice.isOnHold">
+            <resume-transaction-button (click)="resumeTransaction()"></resume-transaction-button>
+          </ion-item>
+
+          <ion-item *ngIf="!invoice.isOnHold">
+            <ion-row>
+              <ion-col *ngIf="!invoice.isReturned && !invoice.isVoided">
+                <resume-transaction-button isReturn="true" [disabled]="!canReturn()" (click)="resumeTransaction(true)"></resume-transaction-button>
+              </ion-col>
+              <ion-col>
+                <print-button (click)="printReceipt()" [disabled]="!settings.canPrint"></print-button>
+              </ion-col>
+            </ion-row>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row info-row scroll-row>
+      <ion-col>
+        <ion-list>
+
+          <ion-item *ngIf="!invoice.isOnHold">
+            <ion-icon name="calendar" item-left></ion-icon>
+            Purchase Date
+            <ion-note item-right>{{ invoice.purchaseTime | date:'medium' }}</ion-note>
+          </ion-item>
+
+          <ion-item *ngIf="!invoice.isOnHold">
+            <ion-icon name="card" item-left></ion-icon>
+            Purchase Method
+            <ion-note item-right>{{ settings.invoiceMethodDisplay(invoice.purchaseMethod) }}</ion-note>
+          </ion-item>
+
+          <ion-item *ngIf="invoice.purchaseMethod === 'Cash'">
+            <ion-icon name="cash" item-left></ion-icon>
+            Cash Given
+            <ion-note item-right>{{ invoice.cashGiven | currencyFromSettings }}</ion-note>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon name="pricetag" item-left></ion-icon>
+            Total Sale
+            <ion-note item-right>{{ invoice.purchasePrice | currencyFromSettings }}</ion-note>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon name="globe" item-left></ion-icon>
+            Location
+            <ion-note item-right>{{ invoice.location.name }}</ion-note>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon name="desktop" item-left></ion-icon>
+            Terminal
+            <ion-note item-right>{{ invoice.terminalId }}</ion-note>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row bottom-row>
+      <ion-col width-50 scroll-grid>
+
+        <ion-grid scroll-grid>
+          <ion-row>
+            <ion-col>
+              <ion-list no-margin-bottom>
+                <ion-list-header no-margin-bottom>Items {{ invoice.purchaseMethod === 'Return' ? 'Returned' : 'Purchased' }} ({{ totalItems() }})</ion-list-header>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+          <ion-row scroll-row>
+            <ion-col>
+              <ion-list>
+                <ion-item *ngFor="let item of invoice.stockitems">
+                  <h2>{{ item.realData.name }} ({{ item.quantity }})</h2>
+                  <p>{{ item.cost | currencyFromSettings }} ea <span *ngIf="item.taxable"> + Tax</span></p>
+                  <ion-note item-right>{{ totalCostForItem(item) | currencyFromSettings }}</ion-note>
+                </ion-item>
+                <ion-item *ngFor="let item of returnedItems()" color="danger">
+                  <h2>{{ item.realData.name }} ({{ item.quantity }} Returned)</h2>
+                  <p>{{ item.cost | currencyFromSettings }} ea <span *ngIf="item.taxable"> + Tax</span></p>
+                  <ion-note item-right>-{{ totalCostForItem(item) | currencyFromSettings }}</ion-note>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+      </ion-col>
+      <ion-col width-50>
+
+        <ion-grid scroll-grid>
+          <ion-row>
+            <ion-col>
+              <ion-list no-margin-bottom>
+                <ion-list-header no-margin-bottom>Promotions Used ({{invoice.promotions.length}})</ion-list-header>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+          <ion-row scroll-row>
+            <ion-col>
+              <ion-list>
+                <ion-item *ngIf="invoice.promotions.length === 0">None</ion-item>
+                <ion-item *ngFor="let item of invoice.promotions">
+                  {{ item.realData.name }}
+                  <ion-note item-right>{{ item.cost | currencyFromSettings }}</ion-note>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

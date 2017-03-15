@@ -1,0 +1,100 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Posys Promotions</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-fab top right edge>
+    <button ion-fab>
+      <ion-icon name="arrow-down"></ion-icon>
+    </button>
+    <ion-fab-list>
+      <button ion-fab (click)="openPromoModal()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-grid scroll-grid>
+
+    <ion-row>
+      <ion-col width-20 vertical-center>
+        <ion-item shrunk-item-checkbox no-border-bottom>
+          <ion-label>Hide Current</ion-label>
+          <ion-checkbox color="primary" [(ngModel)]="hideCurrent" (ionChange)="toggleHide()"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+
+      <ion-col width-20 vertical-center>
+        <ion-item shrunk-item-checkbox no-border-bottom>
+          <ion-label>Hide Future</ion-label>
+          <ion-checkbox color="primary" [(ngModel)]="hideFuture" (ionChange)="toggleHide()"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+
+      <ion-col width-20 vertical-center>
+        <ion-item shrunk-item-checkbox no-border-bottom>
+          <ion-label>Hide Past</ion-label>
+          <ion-checkbox color="primary" [(ngModel)]="hidePast" (ionChange)="toggleHide()"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-list no-margin-bottom>
+          <ion-item>
+            <ion-grid no-padding>
+              <ion-row column-headers>
+                <ion-col width-20 no-padding>Name</ion-col>
+                <ion-col width-20 no-padding>Start</ion-col>
+                <ion-col width-20 no-padding>End</ion-col>
+                <ion-col width-10 no-padding>Discount</ion-col>
+                <ion-col width-20 no-padding>Affected</ion-col>
+                <ion-col no-padding text-right></ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row scroll-row>
+      <ion-col>
+        <ion-list>
+          <ion-item *ngIf="!hasResults">
+            No search results.
+          </ion-item>
+
+          <ion-list-header *ngIf="promotions.current.length > 0">Current Promotions</ion-list-header>
+          <ion-item *ngFor="let item of promotions.current">
+            <promotion-display [item]="item" (edit)="openPromoModal(item)" (remove)="removePromo(item)"></promotion-display>
+          </ion-item>
+
+          <ion-list-header *ngIf="promotions.future.length > 0">Future Promotions</ion-list-header>
+          <ion-item *ngFor="let item of promotions.future">
+            <promotion-display [item]="item" (edit)="openPromoModal(item)" (remove)="removePromo(item)"></promotion-display>
+          </ion-item>
+
+          <ion-list-header *ngIf="promotions.past.length > 0">Past Promotions</ion-list-header>
+          <ion-item *ngFor="let item of promotions.past">
+            <promotion-display [item]="item" (edit)="openPromoModal(item)" (remove)="removePromo(item)"></promotion-display>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="paginationInfo">
+      <ion-col width-50 offset-25>
+        <ionc-pagination
+          color="light"
+          (clickBeginning)="changePage(1)"
+          (clickPrevious)="changePage(paginationInfo.page - 1)"
+          (clickNext)="changePage(paginationInfo.page + 1)"
+          (clickEnd)="changePage(paginationInfo.pageCount)"
+          [pagination]="paginationInfo"></ionc-pagination>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

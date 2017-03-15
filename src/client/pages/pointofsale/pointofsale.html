@@ -1,0 +1,158 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Posys Point of Sale</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid full-height>
+    <ion-row full-height>
+      <ion-col width-67 full-height>
+
+        <ion-row search-area>
+          <ion-col>
+            <omni-search
+              offerToAdd="true"
+              allowTemporaryAdd="true"
+              useSearchWindow="true"
+              [cancelWatcher]="omniCancelControl"
+              (singleSearchItemResult)="addToTransaction($event)"
+              (searchResults)="setSearchResults($event)"></omni-search>
+          </ion-col>
+        </ion-row>
+
+        <div body-area>
+
+          <ion-list *ngIf="!showSearchItems && currentTransaction.length !== 0" no-margin-bottom header>
+            <ion-item>
+              <ion-grid no-padding>
+                <ion-row column-headers>
+                  <ion-col width-10 no-padding></ion-col>
+                  <ion-col no-padding>Product</ion-col>
+                  <ion-col width-20 no-padding>SKU</ion-col>
+                  <ion-col width-10 no-padding>Quantity</ion-col>
+                  <ion-col width-20 no-padding text-right tax-cost-header><div flex text-left>Tax</div><div flex>Cost</div></ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+          </ion-list>
+
+          <ion-list has-header can-scroll *ngIf="!showSearchItems && currentTransaction.length !== 0" no-margin-bottom id="transaction-list">
+            <ion-item *ngFor="let item of currentTransaction; let i = index">
+              <transaction-item [item]="item"
+                                [index]="i+1"
+                                [buttons]="transactionItemButtons"
+                                [disableQuantity]="isReturn"
+                                (quantityChange)="updatePromos()"></transaction-item>
+              <ion-list no-margin no-lines>
+                <ion-item *ngFor="let promo of itemPromos(item); let p = index;" no-margin>
+                  <transaction-promo [item]="promo" [buttons]="promotionItemButtons"></transaction-promo>
+                </ion-item>
+              </ion-list>
+            </ion-item>
+          </ion-list>
+
+          <div full-height true-center big-text background-text *ngIf="!showSearchItems && currentTransaction.length === 0">
+            No items in current transaction.
+          </div>
+        </div>
+
+        <ion-list total-area>
+          <ion-item>
+            Subtotal
+            <ion-note item-right>{{ subtotal | currencyFromSettings }}</ion-note>
+          </ion-item>
+          <ion-item>
+            Tax
+            <ion-note item-right>{{ tax | currencyFromSettings }}</ion-note>
+          </ion-item>
+          <ion-item>
+            Grand Total
+            <ion-note item-right>{{ total | currencyFromSettings }}</ion-note>
+          </ion-item>
+          <ion-item>
+            Savings
+            <ion-note item-right>{{ -promoDiscount | currencyFromSettings }}</ion-note>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+
+      <ion-col width-33 full-height>
+        <ion-grid>
+          <ion-row>
+            <ion-col main-button>
+              <top-icon-button text="Hold"
+                               icon="pause"
+                               size="medium"
+                               (subClick)="holdTransaction()"
+                               [disabled]="currentTransaction.length === 0 || isReturn"></top-icon-button>
+            </ion-col>
+            <ion-col main-button>
+              <top-icon-button text="Return"
+                               icon="exit"
+                               size="medium"
+                               (subClick)="returnItems()"
+                               [disabled]="currentTransaction.length === 0"></top-icon-button>
+            </ion-col>
+            <ion-col main-button>
+              <top-icon-button text="Void"
+                               icon="close"
+                               size="medium"
+                               *ngIf="!isReturn"
+                               (subClick)="voidTransaction()"
+                               [disabled]="currentTransaction.length === 0"></top-icon-button>
+
+              <top-icon-button text="Cancel"
+                               icon="close"
+                               size="medium"
+                               *ngIf="isReturn"
+                               (subClick)="voidTransaction()"
+                               [disabled]="currentTransaction.length === 0"></top-icon-button>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-row>
+                <ion-col main-button>
+                  <top-icon-button text="Cash"
+                                   icon="calculator"
+                                   size="medium"
+                                   (subClick)="getCashValue()"
+                                   [disabled]="currentTransaction.length === 0 || isReturn"></top-icon-button>
+                </ion-col>
+                <ion-col main-button>
+                  <top-icon-button text="Check"
+                                   icon="cash"
+                                   size="medium"
+                                   (subClick)="finalize('Check')"
+                                   [disabled]="currentTransaction.length === 0 || isReturn"></top-icon-button>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col main-button>
+                  <top-icon-button text="Credit"
+                                   icon="card"
+                                   size="medium"
+                                   (subClick)="finalize('Credit')"
+                                   [disabled]="currentTransaction.length === 0 || isReturn"></top-icon-button>
+                </ion-col>
+                <ion-col main-button>
+                  <top-icon-button text="Debit"
+                                   icon="card"
+                                   size="medium"
+                                   (subClick)="finalize('Debit')"
+                                   [disabled]="currentTransaction.length === 0 || isReturn"></top-icon-button>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col width-50 main-button *ngIf="settings.hasCustomCurrency">
+                  <top-icon-button [text]="settings.settings.application.customBusinessCurrency" icon="card" size="medium" (subClick)="finalize('Custom')" [disabled]="currentTransaction.length === 0 || isReturn"></top-icon-button>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

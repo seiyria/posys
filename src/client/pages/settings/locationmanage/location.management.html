@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Manage Locations
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span color="danger">Cancel</span>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [attr.noScroll]="true" my-modal-location-management>
+  <ion-grid scroll-grid>
+    <ion-row>
+      <ion-col width-67>
+        <ion-list>
+          <ion-item form-item *ngIf="!location.id">
+            <ion-label stacked>New Location Name</ion-label>
+            <ion-input type="text" [(ngModel)]="location.name" maxlength="50" (keyup.enter)="addNewLocation()"></ion-input>
+          </ion-item>
+          <ion-item form-item *ngIf="location.id">
+            <ion-label stacked>Category Name</ion-label>
+            <ion-input type="text" [(ngModel)]="location.name" maxlength="50" (keyup.enter)="updateLocation(ou)"></ion-input>
+          </ion-item>
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="name"></form-error>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col width-33 flex-right vertical-center>
+        <add-button (click)="addNewLocation()" *ngIf="!location.id"></add-button>
+        <reset-button (click)="resetLocation()" *ngIf="location.id"></reset-button>
+        <update-button (click)="updateLocation(location)" *ngIf="location.id"></update-button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="allLocations.length === 0">
+      <ion-col>
+        <div full-height true-center text-center big-text background-text>
+          You don't have any Locations. You'll need to create one to create items.
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row scroll-row>
+      <ion-col>
+        <ion-list>
+          <ion-item *ngFor="let location of allLocations" no-margin>
+            <ion-grid no-padding>
+              <ion-row no-padding>
+                <ion-col width-67 vertical-center>{{ location.name }}</ion-col>
+                <ion-col width-33 flex-right vertical-center>
+                  <edit-button (click)="editLocation(location)"></edit-button>
+                  <remove-button (click)="removeLocation(location)" *ngIf="location.id !== 1"></remove-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

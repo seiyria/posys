@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Posys Inventory</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-fab top right edge>
+    <button ion-fab>
+      <ion-icon name="arrow-down"></ion-icon>
+    </button>
+    <ion-fab-list side="bottom">
+      <button ion-fab (click)="openItemModal()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+      <button ion-fab (click)="openOUModal()">
+        <ion-icon name="filing"></ion-icon>
+      </button>
+      <button ion-fab (click)="openQuickModal()">
+        <ion-icon name="barcode"></ion-icon>
+      </button>
+      <button ion-fab color="danger" (click)="importData()">
+        <ion-icon name="cloud-upload"></ion-icon>
+      </button>
+      <button ion-fab color="danger" (click)="exportData()">
+        <ion-icon name="cloud-download"></ion-icon>
+      </button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-grid scroll-grid>
+    <ion-row>
+      <ion-col width-50>
+        <omni-search
+          preventEnterClear="true"
+          ignoreModalInput="true"
+          offerToAdd="true"
+          (hasQuery)="toggleSearchResults($event)"
+          (searchResults)="changeSearchResults($event)"></omni-search>
+      </ion-col>
+      <ion-col width-20 vertical-center>
+        <ion-item shrunk-item-checkbox no-border-bottom>
+          <ion-label>Hide Out of Stock Items</ion-label>
+          <ion-checkbox color="primary" [(ngModel)]="hideOutOfStock" (ionChange)="toggleOOS()"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="!hasSearchResults || hasSearchResults && searchResults.length > 0">
+      <ion-col>
+        <ion-list no-margin-bottom>
+          <ion-item>
+            <ion-grid no-padding>
+              <ion-row column-headers>
+                <ion-col width-33 no-padding>Product</ion-col>
+                <ion-col width-20 no-padding>Category</ion-col>
+                <ion-col width-10 no-padding>SKU</ion-col>
+                <ion-col width-10 no-padding text-right>Quantity</ion-col>
+                <ion-col width-10 no-padding text-right>Consumer Cost</ion-col>
+                <ion-col no-padding text-right></ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row scroll-row *ngIf="!hasSearchResults">
+      <ion-col>
+        <ion-list>
+          <ion-item *ngFor="let item of currentInventoryItems">
+            <inventory-item [item]="item" (edit)="openItemModal(item)"></inventory-item>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row scroll-row *ngIf="hasSearchResults && searchResults.length > 0">
+      <ion-col>
+        <ion-list>
+          <ng-container *ngFor="let item of searchResults">
+            <ion-item *ngIf="hideOutOfStock && item.quantity > 0 || !hideOutOfStock">
+              <inventory-item [item]="item" (edit)="openItemModal(item)"></inventory-item>
+            </ion-item>
+          </ng-container>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row scroll-row *ngIf="hasSearchResults && searchResults.length === 0">
+      <ion-col full-height true-center big-text background-text>
+        No items match your search query.
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="paginationInfo && !hasSearchResults">
+      <ion-col width-50 offset-25>
+        <ionc-pagination
+          color="light"
+          (clickBeginning)="changePage(1)"
+          (clickPrevious)="changePage(paginationInfo.page - 1)"
+          (clickNext)="changePage(paginationInfo.page + 1)"
+          (clickEnd)="changePage(paginationInfo.pageCount)"
+          [pagination]="paginationInfo"></ionc-pagination>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

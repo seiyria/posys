@@ -1,0 +1,182 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Posys Reporting</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid full-height>
+    <ion-row full-height>
+      <ion-col width-20 full-height scroll-list-container>
+        <ion-list scroll-list>
+          <ion-list-header no-border-top>Base Reports</ion-list-header>
+          <button ion-item *ngFor="let report of baseReports" (click)="selectNewReport(report)" [disabled]="runningReport">
+            {{ report.name }}
+          </button>
+
+          <ion-list-header no-border-top *ngIf="customReports && customReports.length > 0">Custom Reports</ion-list-header>
+          <button ion-item *ngFor="let report of customReports" (click)="loadReport(report)" [disabled]="runningReport">
+            {{ report.name }}
+          </button>
+        </ion-list>
+      </ion-col>
+
+      <ion-col full-height report-container>
+        <ion-row full-height true-center big-text background-text *ngIf="!currentReport">
+          Select a report to get started.
+        </ion-row>
+
+        <ion-row *ngIf="currentReport" header-row>
+          <ion-col text-center width-50>
+            <h1>{{ currentReport.name }} <span *ngIf="!currentReport.internalId">(custom)</span></h1>
+          </ion-col>
+
+          <ion-col vertical-center text-right width-50>
+            <remove-button *ngIf="!currentReport.internalId" (click)="removeReport()"></remove-button>
+            <update-button *ngIf="!currentReport.internalId" (click)="updateReport()"></update-button>
+            <button ion-button icon-left color="primary" *ngIf="currentReport.internalId" (click)="saveReport()">
+              <ion-icon name="bookmark"></ion-icon>
+              Save Report As...
+            </button>
+            <button ion-button icon-left color="secondary" (click)="runReport()" [disabled]="runningReport">
+              <ion-icon name="clipboard"></ion-icon>
+              {{ runningReport ? 'Running report...' : 'Run Report' }}
+            </button>
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="currentReport && currentReport.filters" padding-left padding-right filter-row>
+
+          <ion-col width-20 *ngIf="currentReport.filters.singleDateFilter">
+            <ion-item list-header shrunk-item-checkbox>
+              <ion-label stacked>{{ currentReport.dateText || 'Single Date' }}</ion-label>
+              <ion-datetime displayFormat="MM/DD/YYYY hh:mm A" pickerFormat="MMM DD YYYY hh mm A" minuteValues="0,15,30,45" [(ngModel)]="currentReport.startDate"></ion-datetime>
+            </ion-item>
+          </ion-col>
+
+          <ion-col width-20 *ngIf="currentReport.filters.multiDateFilter">
+
+            <ion-row no-padding *ngIf="!currentReport.optionValues?.useCustomDatePicker">
+              <ion-col width-50 no-padding>
+                <ion-item list-header shrunk-item-checkbox>
+                  <ion-label stacked>Time Period</ion-label>
+                  <ion-select [(ngModel)]="currentReport.datePeriod" (ionChange)="updateDatesBasedOnPeriodAndDenomination()">
+                    <ion-option *ngFor="let per of datePeriods" [value]="per.sub">{{ per.name }}</ion-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+
+              <ion-col width-50 no-padding>
+                <ion-item list-header shrunk-item-checkbox>
+                  <ion-label stacked>Time Denomination</ion-label>
+                  <ion-select [(ngModel)]="currentReport.dateDenomination" (ionChange)="updateDatesBasedOnPeriodAndDenomination()">
+                    <ion-option *ngFor="let den of dateDenominations">{{ den.name }}</ion-option>
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+            <ion-row no-padding *ngIf="currentReport.optionValues?.useCustomDatePicker">
+              <ion-col width-50 no-padding>
+                <ion-item list-header shrunk-item-checkbox>
+                  <ion-label stacked>{{ currentReport.dateText || 'Start Date' }}</ion-label>
+                  <ion-datetime displayFormat="MM/DD/YYYY hh:mm A" pickerFormat="MMM DD YYYY hh mm A" minuteValues="0,15,30,45" [(ngModel)]="currentReport.startDate"></ion-datetime>
+                </ion-item>
+              </ion-col>
+
+              <ion-col width-50 no-padding>
+                <ion-item list-header shrunk-item-checkbox>
+                  <ion-label stacked>{{ currentReport.dateText || 'End Date' }}</ion-label>
+                  <ion-datetime displayFormat="MM/DD/YYYY hh:mm A" pickerFormat="MMM DD YYYY hh mm A" minuteValues="0,15,30,45" [(ngModel)]="currentReport.endDate"></ion-datetime>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+
+          </ion-col>
+
+          <ion-col width-20 *ngIf="currentReport.filters.sortBy">
+            <ion-item list-header shrunk-item-checkbox>
+              <ion-label stacked>Sort By</ion-label>
+              <ion-select [(ngModel)]="currentReport.sortBy" placeholder="Nothing">
+                <ion-option selected="true" value="">Nothing</ion-option>
+                <ion-option *ngFor="let col of currentReport.columns" [disabled]="!col.checked">{{ col.name }}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col width-20 *ngIf="currentReport.filters.groupBy">
+            <ion-item list-header shrunk-item-checkbox>
+              <ion-label stacked>Group By</ion-label>
+              <ion-select [(ngModel)]="currentReport.groupBy" placeholder="Nothing">
+                <ion-option selected="true" value="">Nothing</ion-option>
+                <ion-option *ngFor="let col of groupBys()" [disabled]="!col.checked">{{ col.name }}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col width-20 *ngIf="currentReport.filters.groupByDate">
+            <ion-item list-header shrunk-item-checkbox>
+              <ion-label stacked>Group By Date</ion-label>
+              <ion-select [(ngModel)]="currentReport.groupByDate" placeholder="Nothing">
+                <ion-option selected="true" value="">Nothing</ion-option>
+                <ion-option *ngFor="let den of dateDenominations">{{ den.name }}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col width-20 *ngIf="currentReport.filters.ouFilter">
+            <ion-item list-header shrunk-item-checkbox>
+              <ion-label stacked>Category Filter</ion-label>
+              <ion-select [(ngModel)]="currentReport.ouFilter" placeholder="Nothing">
+                <ion-option selected="true" value="">Nothing</ion-option>
+                <ion-option *ngFor="let ou of ous" [value]="ou.id">{{ ou.name }}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+
+          <ion-col width-20 *ngIf="currentReport.filters.locationFilter">
+            <ion-item list-header shrunk-item-checkbox>
+              <ion-label stacked>Location Filter</ion-label>
+              <ion-select [(ngModel)]="currentReport.locationFilter" placeholder="Nothing">
+                <ion-option selected="true" value="">Nothing</ion-option>
+                <ion-option *ngFor="let loca of locations" [value]="loca.id">{{ loca.name }}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="currentReport" options-row>
+          <ion-col scroll-list-container width-67 full-height>
+            <ion-list scroll-list-header no-margin-bottom>
+              <ion-list-header no-border-top>Report Columns</ion-list-header>
+            </ion-list>
+            <ion-list scroll-list>
+              <ion-item-group reorder="true" (ionItemReorder)="reorderColumns($event)">
+                <ion-item *ngFor="let item of currentReport.columns">
+                  <ion-label>{{ item.name }}</ion-label>
+                  <ion-checkbox [(ngModel)]="item.checked"></ion-checkbox>
+                </ion-item>
+              </ion-item-group>
+            </ion-list>
+          </ion-col>
+
+          <ion-col width-33 full-height>
+            <ion-row>
+              <ion-col scroll-list-container *ngIf="currentReport.options">
+                <ion-list scroll-list-header no-margin-bottom>
+                  <ion-list-header no-border-top>Report Options</ion-list-header>
+                </ion-list>
+                <ion-list scroll-list>
+                  <ion-item *ngFor="let item of currentReport.options">
+                    <ion-label>{{ item.name }}</ion-label>
+                    <ion-checkbox [(ngModel)]="item.checked" (ionChange)="updateOptionValues()"></ion-checkbox>
+                  </ion-item>
+                </ion-list>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

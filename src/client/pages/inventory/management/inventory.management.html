@@ -1,0 +1,131 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      {{ stockItem.id ? 'Update' : 'Add' }} Inventory Item
+    </ion-title>
+    <ion-buttons start>
+      <add-button (click)="create()" *ngIf="!stockItem.id"></add-button>
+      <update-button (click)="update()" *ngIf="stockItem.id"></update-button>
+      <button ion-button (click)="dismiss()">
+        <span color="danger">Cancel</span>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col width-50>
+        <ion-list>
+
+          <ion-item form-item required>
+            <ion-label stacked>Name</ion-label>
+            <ion-input type="text" [(ngModel)]="stockItem.name" maxlength="50"></ion-input>
+          </ion-item>
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="name"></form-error>
+          </ion-item>
+
+          <ion-item form-item>
+            <ion-label stacked>Description</ion-label>
+            <ion-textarea [(ngModel)]="stockItem.description" maxlength="500"></ion-textarea>
+          </ion-item>
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="description"></form-error>
+          </ion-item>
+
+          <ion-item form-item required>
+            <ion-label stacked>Stock Keeping Unit (SKU)</ion-label>
+            <ion-input type="text" [(ngModel)]="stockItem.sku" maxlength="50"></ion-input>
+          </ion-item>
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="sku"></form-error>
+          </ion-item>
+
+          <ion-item form-item required>
+            <ion-label stacked>Category</ion-label>
+            <ion-select [(ngModel)]="stockItem.organizationalunitId">
+              <ion-option *ngFor="let ou of allOU | async" value="{{ou.id}}">{{ou.name}}</ion-option>
+            </ion-select>
+          </ion-item>
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="organizationalunitId"></form-error>
+          </ion-item>
+
+          <ion-item form-item required>
+            <ion-label stacked>Quantity</ion-label>
+            <ion-input type="number" [(ngModel)]="stockItem.quantity"></ion-input>
+          </ion-item>
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="quantity"></form-error>
+          </ion-item>
+
+          <ion-item form-item no-border-bottom vertical-center>
+            <ion-label stacked>Taxable</ion-label>
+            <ion-checkbox [(ngModel)]="stockItem.taxable"></ion-checkbox>
+          </ion-item>
+
+          <ion-item form-item required>
+            <ion-label stacked>Consumer Cost</ion-label>
+            <ion-input type="number" [(ngModel)]="stockItem.cost"></ion-input>
+          </ion-item>
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="cost"></form-error>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col width-50>
+        <ion-list>
+
+          <ion-item form-item>
+            <ion-label stacked>Reorder Alert Threshold</ion-label>
+            <ion-input type="number" [(ngModel)]="stockItem.reorderThreshold"></ion-input>
+          </ion-item>
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="reorderThreshold"></form-error>
+          </ion-item>
+
+          <ion-item form-item>
+            <ion-label stacked>Reorder Up-To Quantity</ion-label>
+            <ion-input type="number" [(ngModel)]="stockItem.reorderUpToAmount"></ion-input>
+          </ion-item>
+          <ion-item small-item>
+            <form-error [errorObj]="formErrors | async" key="reorderUpToAmount"></form-error>
+          </ion-item>
+
+          <button form-item ion-button full icon-left color="secondary" (click)="addVendor()">
+            <ion-icon name="add"></ion-icon>
+            Add New Vendor
+          </button>
+
+          <ion-item *ngIf="stockItem.vendors.length === 0">
+            <ion-note>No vendors added for this item.</ion-note>
+          </ion-item>
+
+          <ion-item scroll-grid>
+            <ion-grid scroll-row no-padding>
+              <ion-row no-padding *ngFor="let vendor of stockItem.vendors">
+                <ion-col vertical-center text-center width-10>
+                  <button ion-button small round icon-only color="secondary" (click)="togglePreferred(vendor)" [disabled]="vendor.isPreferred">
+                    <ion-icon name="star"></ion-icon>
+                  </button>
+                </ion-col>
+                <ion-col>
+                  <h4>{{ vendor.name | truncate:15 }}</h4>
+                  <p>{{ vendor.cost | currencyFromSettings }}</p>
+                  <p>{{ vendor.stockId | truncate:15 }}</p>
+                </ion-col>
+                <ion-col text-right>
+                  <remove-button (click)="removeVendor(vendor)"></remove-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
