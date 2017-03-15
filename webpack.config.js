@@ -10,7 +10,7 @@ module.exports = {
   output: {
     path: '{{BUILD}}',
     filename: process.env.IONIC_OUTPUT_JS_FILE_NAME,
-    devtoolModuleFilenameTemplate: ionicWebpackFactory.getSourceMapperFunction(),
+    devtoolModuleFilenameTemplate: ionicWebpackFactory.getSourceMapperFunction()
   },
   devtool: process.env.IONIC_GENERATE_SOURCE_MAP ? process.env.IONIC_SOURCE_MAP_TYPE : '',
   target: 'electron',
